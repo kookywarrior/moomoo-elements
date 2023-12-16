@@ -403,26 +403,27 @@ function renderPlayer(colour, skin, tail, weapon, weaponVariant, build, ctxt) {
 	// SKIN:
 	if (skin) {
 		ctxt.rotate(Math.PI / 2)
-		renderSkin(skin, ctxt, null)
+		renderSkin(skin, ctxt, null, null)
 	}
 }
 
 // RENDER SKINS:
-function renderSkin(index, ctxt, parentSkin) {
+function renderSkin(index, ctxt, scale, parentSkin) {
 	const tmpObj = HATS[index]
 	const tmpSprite = skinSprites[index]
+	scale = parentSkin ? scale : tmpObj.scale
 	ctxt.save()
 	ctxt.drawImage(
 		tmpSprite,
-		(-tmpObj.scale * scaleFactor) / 2,
-		(-tmpObj.scale * scaleFactor) / 2,
-		tmpObj.scale * scaleFactor,
-		tmpObj.scale * scaleFactor
+		(-scale * scaleFactor) / 2,
+		(-scale * scaleFactor) / 2,
+		scale * scaleFactor,
+		scale * scaleFactor
 	)
 	ctxt.restore()
 	if (!parentSkin && tmpObj.topSprite) {
 		ctxt.save()
-		renderSkin(index + "_top", ctxt, tmpObj)
+		renderSkin(index + "_top", ctxt, scale, tmpObj)
 		ctxt.restore()
 	}
 }
@@ -545,7 +546,9 @@ function onlyAnimals(name, resolution, filter = true) {
 	var tmpScale = obj.scale * 1.2 * (obj.spriteMlt || 1)
 	spriteContext.save()
 	spriteContext.translate(resolution / 2, resolution / 2)
-	spriteContext.drawImage(tmpSprite, -tmpScale * scaleFactor, -tmpScale * scaleFactor, tmpScale * 2 * scaleFactor, tmpScale * 2 * scaleFactor)
+	if (name != "none") {
+		spriteContext.drawImage(tmpSprite, -tmpScale * scaleFactor, -tmpScale * scaleFactor, tmpScale * 2 * scaleFactor, tmpScale * 2 * scaleFactor)
+	}
 	spriteContext.restore()
 
 	mainContext.drawImage(spriteCanvas, 0, 0)
