@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>MooMoo Elements</title>
+		<link rel="stylesheet" href="main.css" />
+		<link rel="icon" type="image/png" href="favicon.png" />
+	</head>
+	<body>
+		<div id="loading">LOADING...</div>
+		<div id="menu">
+			<div class="container">
+				<div onclick="changeCategory(this)" name="buildings" class="selectCategory selected">Buildings</div>
+				<div onclick="changeCategory(this)" name="resources" class="selectCategory">Resources</div>
+				<div onclick="changeCategory(this)" name="player" class="selectCategory">Player</div>
+				<div onclick="changeCategory(this)" name="animals" class="selectCategory">Animals</div>
+			</div>
+			<div class="container">
+				<div id="canvasContainer">
+					<div id="canvasBackground"></div>
+					<div id="canvasBackgroundFilter"></div>
+					<canvas id="canvas"></canvas>
+				</div>
+				<div style="width: 90%; display: flex; justify-content: space-between">
+					<span class="boolean">
+						<input id="filter" name="filter" type="checkbox" checked />
+						<label for="filter">Filter</label>
+					</span>
+					<input type="number" name="resolution" id="resolution" placeholder="Resolution" value="500" />
+				</div>
+				<div onclick="generate()" class="button">Regenerate</div>
+				<div onclick="copy()" class="button">Copy</div>
+				<div onclick="save()" class="button">Save</div>
+			</div>
+			<div class="container" style="height: 100%; justify-content: start">
+				<section id="buildings">
+					<div id="buildingsContainer">
+						<div name="none" class="selectBuilding selected" onclick="selectBuidling(this)"></div>
+					</div>
+				</section>
+				<section id="resources" hidden>
+					<div id="resourcesContainer">
+						<div name="none" class="selectResource selected" onclick="selectResource(this)"></div>
+					</div>
+				</section>
+				<section id="player" hidden>
+					<div id="coloursContainer">
+						<div name="1" style="background-color: #bf8f54" class="selectColour selected" onclick="selectColour(this)"></div>
+						<div name="2" style="background-color: #cbb091" class="selectColour" onclick="selectColour(this)"></div>
+						<div name="3" style="background-color: #896c4b" class="selectColour" onclick="selectColour(this)"></div>
+						<div name="4" style="background-color: #fadadc" class="selectColour" onclick="selectColour(this)"></div>
+						<div name="5" style="background-color: #ececec" class="selectColour" onclick="selectColour(this)"></div>
+						<div name="6" style="background-color: #c37373" class="selectColour" onclick="selectColour(this)"></div>
+						<div name="7" style="background-color: #4c4c4c" class="selectColour" onclick="selectColour(this)"></div>
+						<div name="8" style="background-color: #ecaff7" class="selectColour" onclick="selectColour(this)"></div>
+						<div name="9" style="background-color: #738cc3" class="selectColour" onclick="selectColour(this)"></div>
+						<div name="10" style="background-color: #8bc373" class="selectColour" onclick="selectColour(this)"></div>
+						<div name="11" style="background-color: #91b2db" class="selectColour" onclick="selectColour(this)"></div>
+						<div name="12" style="background-image: linear-gradient(to right, #c37373, #8bc373, #91b2db)" class="selectColour" onclick="selectCustomColour(this)">
+							<input id="customColour" type="color" style="opacity: 0; position: absolute; z-index: -1;"/>
+						</div>
+					</div>
+					<div id="hatsContainer">
+						<div class="selectHat selected" onclick="selectHat(this)"></div>
+					</div>
+					<div id="accessContainer">
+						<div class="selectAccess selected" onclick="selectAccess(this)"></div>
+					</div>
+					<div id="weaponsContainer">
+						<div class="selectWeapon selected" onclick="selectWeapon(this)"></div>
+					</div>
+				</section>
+				<section id="animals" hidden>
+					<div id="animalsContainer">
+						<div name="none" class="selectAnimal selected" onclick="selectAnimal(this)"></div>
+					</div>
+				</section>
+			</div>
+		</div>
+		<a id="tmpDownload" hidden></a>
+		<script src="config.js"></script>
+		<script src="preload.js"></script>
+		<script src="render.js"></script>
+		<script src="index.js"></script>
+	</body>
+</html>
