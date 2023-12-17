@@ -11,9 +11,9 @@ body {
 }
 
 #loading {
-    color: white;
-    font-size: xx-large;
-    position: absolute;
+	color: white;
+	font-size: xx-large;
+	position: absolute;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
@@ -22,7 +22,7 @@ body {
 #menu {
 	display: none;
 	justify-content: space-between;
-    aspect-ratio: 16 / 9;
+	aspect-ratio: 16 / 9;
 	white-space: nowrap;
 	text-align: center;
 	position: absolute;
@@ -48,7 +48,7 @@ body {
 }
 
 section {
-    margin-top: 5%;
+	margin-top: 5%;
 }
 
 .container > * {
@@ -58,50 +58,50 @@ section {
 }
 
 #canvasContainer {
-    position: relative;
-    width: 90%;
+	position: relative;
+	width: 90%;
 	aspect-ratio: 1 / 1;
 }
 
 #canvasBackground {
-    width: 100%;
-    height: 100%;
-    background-color: #b6db66;
+	width: 100%;
+	height: 100%;
+	background-color: #b6db66;
 }
 
 #canvasBackgroundFilter {
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 70, 0.35);
-    position: absolute;
-    top: 0;
-    left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 70, 0.35);
+	position: absolute;
+	top: 0;
+	left: 0;
 }
 
 #canvas {
 	width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
 }
 
 .boolean {
-    width: 40%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
+	width: 40%;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
 }
 
 input[type="checkbox"] {
-    width: 1.5em;
-    height: 1.5em;
-    margin-right: 0.65rem;
+	width: 1.5em;
+	height: 1.5em;
+	margin-right: 0.65rem;
 }
 
 input[type="number"] {
-    width: 30%;
-    margin-right: 0.65rem;
+	width: 30%;
+	margin-right: 0.65rem;
 }
 
 .button {
@@ -112,7 +112,7 @@ input[type="number"] {
 	background-color: #7ee559;
 	border-radius: 0.3vw;
 	cursor: pointer;
-    width: 90%;
+	width: 90%;
 }
 
 .button:hover {
@@ -120,225 +120,234 @@ input[type="number"] {
 }
 
 .selectCategory {
-    font-size: larger;
-    width: 90%;
-    color: black;
-    cursor: pointer;
+	font-size: larger;
+	width: 90%;
+	color: black;
+	cursor: pointer;
 }
 
 .selectCategory.selected {
-    border-left: 0.2em solid #525252;
+	border-left: 0.2em solid #525252;
 }
 
 .selectCategory:hover {
-    color: grey;
+	color: grey;
 }
 
 #buildings {
-    width: 90%;
-    overflow-y: auto;
+	width: 90%;
+	overflow-y: auto;
 }
 
 #buildingsContainer {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    flex-wrap: wrap;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	flex-wrap: wrap;
 }
 
 .selectBuilding {
-    width: 25%;
-    aspect-ratio: 1;
-    cursor: pointer;
-    background-color: #586b43;
-    border-radius: 10%;
-    margin: 3%;
-    background-size: 100% 100%;
+	width: 25%;
+	aspect-ratio: 1;
+	cursor: pointer;
+	background-color: #586b43;
+	border-radius: 10%;
+	margin: 3%;
+	background-size: 100% 100%;
 }
 
 .selectBuilding.selected {
-    border-radius: 100%;
+	border-radius: 100%;
 }
 
 .selectBuilding:hover {
-    background-color: #657850;
+	background-color: #657850;
 }
 
 #resources {
-    width: 90%;
-    overflow-y: auto;
+	width: 90%;
+	overflow-y: auto;
 }
 
 #resourcesContainer {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    flex-wrap: wrap;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	flex-wrap: wrap;
 }
 
 .selectResource {
-    width: 25%;
-    aspect-ratio: 1;
-    cursor: pointer;
-    background-color: #586b43;
-    border-radius: 10%;
-    margin: 3%;
-    background-size: 100% 100%;
+	width: 25%;
+	aspect-ratio: 1;
+	cursor: pointer;
+	background-color: #586b43;
+	border-radius: 10%;
+	margin: 3%;
+	background-size: 100% 100%;
 }
 
 .selectResource.selected {
-    border-radius: 100%;
+	border-radius: 100%;
 }
 
 .selectResource:hover {
-    background-color: #657850;
+	background-color: #657850;
 }
 
 #player {
-    width: 90%;
-    overflow-y: auto;
+	width: 90%;
+	overflow-y: auto;
 }
 
 #player > * {
-    margin-bottom: 5%;
+	margin-bottom: 5%;
 }
 
 #player > :last-child {
-    margin-bottom: 0 !important;
+	margin-bottom: 0 !important;
 }
 
-#coloursContainer{
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    flex-wrap: wrap;
+#coloursContainer {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	flex-wrap: wrap;
 }
 
 .selectColour {
-    width: 10%;
-    aspect-ratio: 1;
-    cursor: pointer;
-    border-radius: 100%;
-    margin: 2%;
-    border: 0.2em solid #525252;
+	width: 10%;
+	aspect-ratio: 1;
+	cursor: pointer;
+	border-radius: 100%;
+	margin: 2%;
+	border: 0.2em solid #525252;
 }
 
 .selectColour.selected {
-    border-radius: 10%;
+	border-radius: 10%;
 }
 
 .selectColour:hover {
-    border-radius: 10%;
+	border-radius: 10%;
 }
 
 #hatsContainer {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    flex-wrap: wrap;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	flex-wrap: wrap;
 }
 
 .selectHat {
-    width: 15%;
-    aspect-ratio: 1;
-    cursor: pointer;
-    background-color: #586b43;
-    border-radius: 10%;
-    margin: 1.5%;
-    background-size: 100% 100%;
+	width: 15%;
+	aspect-ratio: 1;
+	cursor: pointer;
+	background-color: #586b43;
+	border-radius: 10%;
+	margin: 1.5%;
+	background-size: 80% 80%;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position: center;
 }
 
 .selectHat.selected {
-    border-radius: 100%;
+	border-radius: 100%;
 }
 
 .selectHat:hover {
-    background-color: #657850;
+	background-color: #657850;
 }
 
 #accessContainer {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    flex-wrap: wrap;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	flex-wrap: wrap;
 }
 
 .selectAccess {
-    width: 15%;
-    aspect-ratio: 1;
-    cursor: pointer;
-    background-color: #586b43;
-    border-radius: 10%;
-    margin: 1.5%;
-    background-size: 100% 100%;
+	width: 15%;
+	aspect-ratio: 1;
+	cursor: pointer;
+	background-color: #586b43;
+	border-radius: 10%;
+	margin: 1.5%;
+	background-size: 80% 80%;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position: center;
 }
 
 .selectAccess.selected {
-    border-radius: 100%;
+	border-radius: 100%;
 }
 
 .selectAccess:hover {
-    background-color: #657850;
+	background-color: #657850;
 }
 
 #weaponsContainer {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    flex-wrap: wrap;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	flex-wrap: wrap;
 }
 
 .selectWeapon {
-    width: 15%;
-    aspect-ratio: 1;
-    cursor: pointer;
-    background-color: #586b43;
-    border-radius: 10%;
-    margin: 1.5%;
-    background-size: 100% 100%;
+	width: 15%;
+	aspect-ratio: 1;
+	cursor: pointer;
+	background-color: #586b43;
+	border-radius: 10%;
+	margin: 1.5%;
+	background-size: 100% 100%;
 }
 
 .selectWeapon.selected {
-    border-radius: 100%;
+	border-radius: 100%;
 }
 
 .selectWeapon:hover {
-    background-color: #657850;
+	background-color: #657850;
 }
 
 #animals {
-    width: 90%;
-    overflow-y: auto;
+	width: 90%;
+	overflow-y: auto;
 }
 
 #animalsContainer {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    flex-wrap: wrap;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	flex-wrap: wrap;
 }
 
 .selectAnimal {
-    width: 25%;
-    aspect-ratio: 1;
-    cursor: pointer;
-    background-color: #586b43;
-    border-radius: 10%;
-    margin: 3%;
-    background-size: 100% 100%;
+	width: 25%;
+	aspect-ratio: 1;
+	cursor: pointer;
+	background-color: #586b43;
+	border-radius: 10%;
+	margin: 3%;
+	background-size: 80% 80%;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position: center;
 }
 
 .selectAnimal.selected {
-    border-radius: 100%;
+	border-radius: 100%;
 }
 
 .selectAnimal:hover {
-    background-color: #657850;
+	background-color: #657850;
 }
