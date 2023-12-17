@@ -69,7 +69,9 @@ window.selectCustomColour = (element) => {
     }
     element.classList.add("selected")
     SELECTCOLOURNUMBER = element.getAttribute("name")
-    document.getElementById('customColour').click()
+	document.getElementById('customColour').click()
+	SELECTCOLOUR = document.getElementById('customColour').value
+    window.generate()
 }
 document.getElementById('customColour').addEventListener("change", () => {
     SELECTCOLOUR = document.getElementById('customColour').value
