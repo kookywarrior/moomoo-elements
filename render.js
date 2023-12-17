@@ -143,7 +143,7 @@ function getResSprite(name, scale, biomeID, asIcon) {
 	}
 	scaleFactor = asIcon ? 1 : scaleFactor
 	const tmpCanvas = document.createElement("canvas")
-	tmpCanvas.width = tmpCanvas.height = (scale * 2.1 + outlineWidth) * scaleFactor
+	tmpCanvas.width = tmpCanvas.height = ((name == "volcano" ? 640 : scale) * 2.1 + outlineWidth) * scaleFactor
 	const tmpContext = tmpCanvas.getContext("2d")
 	tmpContext.translate(tmpCanvas.width / 2, tmpCanvas.height / 2)
 	tmpContext.strokeStyle = outlineColor
@@ -191,6 +191,19 @@ function getResSprite(name, scale, biomeID, asIcon) {
 		tmpContext.fillStyle = name == "rock" ? (biomeID == 2 ? "#b2ab90" : "#bcbcbc") : "#ebdca3"
 		renderStar(tmpContext, 3, scale * 0.55, scale * 0.65)
 		tmpContext.fill()
+	} else if (name == "volcano") {
+		tmpContext.strokeStyle = "#3e3e3e"
+		tmpContext.lineWidth = outlineWidth * (asIcon ? tmpCanvas.width / 81 : 1) * scaleFactor * 2
+		tmpContext.fillStyle = "#7f7f7f"
+		renderStar(tmpContext, 5, 640, 640)
+		tmpContext.fill()
+		tmpContext.stroke()
+		tmpContext.strokeStyle = "#f56f16"
+		tmpContext.lineWidth = outlineWidth * (asIcon ? tmpCanvas.width / 81 : 1) * scaleFactor * 1.6
+		tmpContext.fillStyle = "#f54e16"
+		renderStar(tmpContext, 5, scale * 2, scale * 2)
+		tmpContext.fill()
+		tmpContext.stroke()
 	}
 	return tmpCanvas
 }
@@ -413,13 +426,7 @@ function renderSkin(index, ctxt, scale, parentSkin) {
 	const tmpSprite = skinSprites[index]
 	scale = parentSkin ? scale : tmpObj.scale
 	ctxt.save()
-	ctxt.drawImage(
-		tmpSprite,
-		(-scale * scaleFactor) / 2,
-		(-scale * scaleFactor) / 2,
-		scale * scaleFactor,
-		scale * scaleFactor
-	)
+	ctxt.drawImage(tmpSprite, (-scale * scaleFactor) / 2, (-scale * scaleFactor) / 2, scale * scaleFactor, scale * scaleFactor)
 	ctxt.restore()
 	if (!parentSkin && tmpObj.topSprite) {
 		ctxt.save()
@@ -519,8 +526,8 @@ function onlyResources(name, biomeID, resolution, filter = true) {
 			: name == "bush"
 			? bushScales[UTILS.randInt(0, 2)]
 			: treeScales[UTILS.randInt(0, 3)]
-	scaleFactor = name == "none" ? 1 : resolution / (tmpScale * 2.1 + outlineWidth)
-	const tmpSprite = getResSprite(name, tmpScale, biomeID, false)
+	scaleFactor = name == "none" ? 1 : resolution / ((name == "volcano" ? 640 : tmpScale) * 2.1 + outlineWidth)
+	const tmpSprite = getResSprite(name, name == "volcano" ? UTILS.randInt(170, 200) :tmpScale, biomeID, false)
 	spriteContext.save()
 	spriteContext.drawImage(tmpSprite, spriteCanvas.width / 2 - tmpSprite.width / 2, spriteCanvas.height / 2 - tmpSprite.height / 2)
 	spriteContext.restore()
