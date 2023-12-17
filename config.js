@@ -547,7 +547,8 @@ const RESOURCES = {
 	sevenstartree: [0, 1],
 	bush: [0, 1, 2],
 	rock: [0, 2],
-	gold: [0]
+	gold: [0],
+	volcano: [0]
 }
 
 const ANIMALS = {
