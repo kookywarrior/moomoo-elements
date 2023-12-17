@@ -23,12 +23,11 @@ var toolsSrc = [
 ]
 var aiSprites = {}
 
-const time = Date.now()
 async function preload() {
 	function loadImage(fileName) {
 		return new Promise((resolve) => {
 			var tmpSprite = new Image()
-			tmpSprite.src = fileName
+			tmpSprite.src = fileName === "img/weapons/bow_1_d.png" ? fileName : "https://moomoo.io/" + fileName
 			tmpSprite.onload = function () {
 				this.isLoaded = true
 				resolve(tmpSprite)
@@ -72,15 +71,31 @@ async function preload() {
 	}
 
 	for (const name in ANIMALS) {
-		aiSprites[name] = await loadImage(`img/animals/${name}.png`)
+		const tmpSprite = await loadImage(`img/animals/${name}.png`)
+		aiSprites[name] = tmpSprite
 		const tmpElement = document.createElement("div")
 		tmpElement.className = "selectAnimal"
 		tmpElement.setAttribute("name", name)
-		tmpElement.style.backgroundImage = `url(img/animals/${name}.png)`
+		tmpElement.style.backgroundImage = `url(${tmpSprite.src})`
 		document.getElementById("animalsContainer").appendChild(tmpElement)
 		tmpElement.setAttribute("onclick", "selectAnimal(this)")
 	}
-	console.log(Date.now() - time)
+
+	const variants = ["", "_g", "_d", "_r"]
+	for (const name in WEAPONS) {
+		for (let i = 0; i < 4; i++) {
+			const variant = variants[i]
+			const tmpSprite = await loadImage("img/weapons/" + WEAPONS[name].src + variant + ".png")
+			toolSprites[WEAPONS[name].src + variant] = tmpSprite
+			const tmpElement = document.createElement("div")
+			tmpElement.className = "selectWeapon"
+			tmpElement.setAttribute("name", name)
+			tmpElement.setAttribute("variant", variant)
+			tmpElement.style.backgroundImage = `url(${tmpSprite.src})`
+			document.getElementById("weaponsContainer").appendChild(tmpElement)
+			tmpElement.setAttribute("onclick", "selectWeapon(this)")
+		}
+	}
 
 	for (const name in ITEMS) {
 		const tmpCanvas = document.createElement("canvas")
@@ -143,47 +158,7 @@ async function preload() {
 		})
 	}
 
-	for (const name in WEAPONS) {
-		Array.from(["", "_g", "_d", "_r"]).forEach(async (variant) => {
-			const tmpSprite = await loadImage("img/weapons/" + WEAPONS[name].src + variant + ".png")
-			toolSprites[WEAPONS[name].src + variant] = tmpSprite
-			if (tmpSprite) {
-				const tmpCanvas = document.createElement("canvas")
-				tmpCanvas.width = tmpCanvas.height = 100
-				const tmpContext = tmpCanvas.getContext("2d")
-				tmpContext.imageSmoothingEnabled = false
-				tmpContext.webkitImageSmoothingEnabled = false
-				tmpContext.mozImageSmoothingEnabled = false
-
-				const tmpPad = 1 / (tmpSprite.height / tmpSprite.width)
-				const tmpMlt = WEAPONS[name].iPad || 1
-
-				tmpContext.translate(tmpCanvas.width / 2, tmpCanvas.height / 2)
-				tmpContext.rotate(Math.PI / 4 + Math.PI)
-				tmpContext.drawImage(
-					tmpSprite,
-					-(tmpCanvas.width * tmpMlt * 0.9 * tmpPad) / 2,
-					-(tmpCanvas.height * tmpMlt * 0.9) / 2,
-					tmpCanvas.width * tmpMlt * tmpPad * 0.9,
-					tmpCanvas.height * tmpMlt * 0.9
-				)
-				tmpContext.fillStyle = "rgba(0, 0, 70, 0.1)"
-				tmpContext.globalCompositeOperation = "source-atop"
-				tmpContext.fillRect(-tmpCanvas.width / 2, -tmpSprite.height / 2, tmpCanvas.width, tmpSprite.height)
-
-				const tmpElement = document.createElement("div")
-				tmpElement.className = "selectWeapon"
-				tmpElement.setAttribute("name", name)
-				tmpElement.setAttribute("variant", variant)
-				tmpElement.style.backgroundImage = `url(${tmpCanvas.toDataURL()})`
-				document.getElementById("weaponsContainer").appendChild(tmpElement)
-				tmpElement.setAttribute("onclick", "selectWeapon(this)")
-			}
-		})
-	}
-
 	document.getElementById("loading").style.display = "none"
 	document.getElementById("menu").style.display = "flex"
-	console.log(Date.now() - time)
 }
 preload()
