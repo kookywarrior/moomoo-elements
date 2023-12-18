@@ -397,7 +397,7 @@ function getItemSprite(name, rotate, asIcon, spikeBuild = false) {
 }
 
 // RENDER PLAYER:
-async function renderPlayer(colour, skin, tail, weapon, weaponVariant, build, ctxt) {
+async function renderPlayer(colour, skin, tail, weapon, weaponVariant, build, player, ctxt) {
 	ctxt = ctxt || spriteContext
 	ctxt.lineWidth = outlineWidth * scaleFillNative
 	ctxt.lineJoin = "miter"
@@ -437,12 +437,12 @@ async function renderPlayer(colour, skin, tail, weapon, weaponVariant, build, ct
 	// SKIN:
 	if (skin) {
 		ctxt.rotate(Math.PI / 2)
-		await renderSkin(skin, ctxt, null, null)
+		await renderSkin(skin, ctxt, null, null, player)
 	}
 }
 
 // RENDER SKINS:
-async function renderSkin(index, ctxt, scale, parentSkin) {
+async function renderSkin(index, ctxt, scale, parentSkin, player) {
 	const tmpObj = HATS[index]
 	const tmpSprite = await loadImage("img/hats/hat_" + index, skinSprites)
 	scale = parentSkin ? scale : tmpObj.scale
@@ -451,6 +451,7 @@ async function renderSkin(index, ctxt, scale, parentSkin) {
 	ctxt.restore()
 	if (!parentSkin && tmpObj.topSprite) {
 		ctxt.save()
+		ctxt.rotate((parseFloat(player.TOPHATDIRECTION) * Math.PI) / 180 || 0)
 		await renderSkin(index + "_top", ctxt, scale, tmpObj)
 		ctxt.restore()
 	}
@@ -514,7 +515,7 @@ function roundRect(x, y, w, h, r, ctx) {
 async function onlyPlayer(colour, skin, tail, weapon, weaponVariant, build, player, filter = true) {
 	spriteContext.save()
 	spriteContext.rotate((parseFloat(player.DIRECTION) * Math.PI) / 180 || 0)
-	await renderPlayer(colour, skin, tail, weapon, weaponVariant, build, spriteContext)
+	await renderPlayer(colour, skin, tail, weapon, weaponVariant, build, player, spriteContext)
 	spriteContext.restore()
 
 	const tmpCanvas = document.createElement("canvas")
