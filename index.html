@@ -31,11 +31,11 @@
 					<label for="filter">Filter</label>
 				</span>
 				<div style="width: 90%; display: flex; justify-content: space-between">
-					<input type="number" id="resolution" placeholder="Resolution" value="500" />
-					<input type="number" id="zoom" placeholder="Zoom Scale" value="25" />
+					<input type="number" id="resolution" placeholder="Resolution" value="500" style="float: left; width: 40%;"/>
+					<input type="number" id="zoom" placeholder="Zoom Scale" value="25" style="float: right; width: 40%"/>
 				</div>
 				<div onclick="generate()" class="button">Regenerate</div>
-				<div onclick="copy()" class="button">Copy</div>
+				<div onclick="copy()" id="copy" class="button">Copy</div>
 				<div onclick="save()" class="button">Save</div>
 			</div>
 			<div class="container" style="height: 100%; justify-content: start">
@@ -66,8 +66,8 @@
 							<input id="customColour" type="color" style="opacity: 0; position: absolute; z-index: -1" />
 						</div>
 					</div>
-					<input onchange="changePlayerValue('NAME', this.value)" type="text" autocomplete="off" placeholder="Name" style="margin-bottom: 1%" />
-					<input onchange="changePlayerValue('TRIBENAME', this.value)" type="text" autocomplete="off" placeholder="Tribe Name" />
+					<input oninput="changePlayerValue('NAME', this.value)" onchange="changePlayerValue('NAME', this.value)" type="text" autocomplete="off" placeholder="Name" style="margin-bottom: 1%" />
+					<input oninput="changePlayerValue('TRIBENAME', this.value)" onchange="changePlayerValue('TRIBENAME', this.value)" type="text" autocomplete="off" placeholder="Tribe Name" />
 					<span class="boolean" style="width: 100%; margin-bottom: 1%">
 						<input onchange="changePlayerValue('SKULL', this.checked)" id="skull" type="checkbox" />
 						<label for="skull">Show Skull</label>
@@ -76,7 +76,7 @@
 						<input onchange="changePlayerValue('CROWN', this.checked)" id="crown" type="checkbox" />
 						<label for="crown">Show Crown</label>
 					</span>
-					<input onchange="changePlayerValue('HEALTH', this.value)" type="number" placeholder="Health" min="0" max="100" style="float: left" />
+					<input oninput="changePlayerValue('HEALTH', this.value)" onchange="changePlayerValue('HEALTH', this.value)" type="number" placeholder="Health" min="0" max="100" style="float: left" />
 					<div class="radio" style="margin-bottom: 1%">
 						<input onchange="changePlayerValue('HPCOLOUR', 'green')" type="radio" name="healthbar" id="greenhp" checked />
 						<label for="greenhp">Green Health Bar</label>
@@ -85,7 +85,8 @@
 						<input onchange="changePlayerValue('HPCOLOUR', 'red')" type="radio" name="healthbar" id="redhp" />
 						<label for="redhp">Red Health Bar</label>
 					</div>
-					<input onchange="changePlayerValue('DIRECTION', this.value)" type="number" placeholder="Direction" min="0" max="359" style="float: left" />
+					<input oninput="changePlayerValue('DIRECTION', this.value)" onchange="changePlayerValue('DIRECTION', this.value)" type="number" placeholder="Direction" min="0" max="359" style="float: left" />
+					<input oninput="changePlayerValue('TOPHATDIRECTION', this.value)" onchange="changePlayerValue('TOPHATDIRECTION', this.value)" type="number" placeholder="Top Hat Direction" min="0" max="359" style="float: left" />
 					<div id="hatsContainer">
 						<div class="selectHat selected" onclick="selectHat(this)"></div>
 					</div>
@@ -97,9 +98,9 @@
 					</div>
 				</section>
 				<section id="animals" hidden>
-					<input onchange="changeAIValue('DIRECTION', this.value)" type="number" placeholder="Direction" min="0" max="359" style="float: left" />
-					<input onchange="changeAIValue('NAME', this.value)" type="text" autocomplete="off" placeholder="Name" />
-					<input onchange="changeAIValue('HEALTH', this.value)" type="number" placeholder="Health" min="0" max="100" style="float: left" />
+					<input oninput="changeAIValue('DIRECTION', this.value)" onchange="changeAIValue('DIRECTION', this.value)" type="number" placeholder="Direction" min="0" max="359" style="float: left" />
+					<input oninput="changeAIValue('NAME', this.value)" onchange="changeAIValue('NAME', this.value)" type="text" autocomplete="off" placeholder="Name" />
+					<input oninput="changeAIValue('HEALTH', this.value)" onchange="changeAIValue('HEALTH', this.value)" type="number" placeholder="Health" min="0" max="100" style="float: left" />
 					<div id="animalsContainer">
 						<div name="none" class="selectAnimal selected" onclick="selectAnimal(this)"></div>
 					</div>
