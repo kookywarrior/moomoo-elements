@@ -69,11 +69,11 @@
 					<input onchange="changePlayerValue('NAME', this.value)" type="text" autocomplete="off" placeholder="Name" style="margin-bottom: 1%" />
 					<input onchange="changePlayerValue('TRIBENAME', this.value)" type="text" autocomplete="off" placeholder="Tribe Name" />
 					<span class="boolean" style="width: 100%; margin-bottom: 1%">
-						<input onchange="changePlayerValue('SKULL', this.checked)" type="checkbox" />
+						<input onchange="changePlayerValue('SKULL', this.checked)" id="skull" type="checkbox" />
 						<label for="skull">Show Skull</label>
 					</span>
 					<span class="boolean" style="width: 100%">
-						<input onchange="changePlayerValue('CROWN', this.checked)" type="checkbox" />
+						<input onchange="changePlayerValue('CROWN', this.checked)" id="crown" type="checkbox" />
 						<label for="crown">Show Crown</label>
 					</span>
 					<input onchange="changePlayerValue('HEALTH', this.value)" type="number" placeholder="Health" min="0" max="100" style="float: left" />
