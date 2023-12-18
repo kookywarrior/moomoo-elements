@@ -4,6 +4,9 @@ var RESOLUTION = 500
 const ZOOMFACTOR = {
 	buildings: 25,
 	resources: 35,
+	hats: 30,
+	access: 30,
+	weapons: 30,
 	player: 45,
 	animals: 40,
 	background: 100,
@@ -203,6 +206,12 @@ window.generate = () => {
 		onlyBuildings(SELECTBUILDING, FILTER)
 	} else if (CATEGORY === "resources") {
 		onlyResources(SELECTRESOURCE, SELECTBIOME, FILTER)
+	} else if (CATEGORY === "hats") {
+		onlyHats(SELECTHAT, FILTER)
+	} else if (CATEGORY === "access") {
+		onlyAccess(SELECTACCESS, FILTER)
+	} else if (CATEGORY === "weapons") {
+		onlyWeapons(SELECTWEAPON, SELECTVARIANT, FILTER)
 	} else if (CATEGORY === "player") {
 		onlyPlayer(SELECTCOLOUR, SELECTHAT, SELECTACCESS, SELECTWEAPON, SELECTVARIANT, SELECTBUILD, PLAYER, FILTER)
 	} else if (CATEGORY === "animals") {
