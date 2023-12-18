@@ -85,12 +85,28 @@ section {
 	left: 0;
 }
 
+.title {
+	font-size: larger;
+	text-align: start;
+	margin-bottom: auto !important;
+}
+
 .boolean {
-	width: 40%;
+	width: 90%;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	justify-content: center;
+}
+
+.radio {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	align-items: flex-end;
+}
+
+input {
+	font-family: "Hammersmith One";
 }
 
 input[type="checkbox"] {
@@ -99,9 +115,28 @@ input[type="checkbox"] {
 	margin-right: 0.65rem;
 }
 
+input[type="radio"] {
+	width: 1.5em;
+	height: 1.5em;
+	margin-right: 0.65rem;
+}
+
 input[type="number"] {
 	width: 30%;
 	margin-right: 0.65rem;
+}
+
+input[type="text"] {
+	text-align: center;
+    font-size: large;
+    padding: 0.4em;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+    color: #4A4A4A;
+    background-color: #e5e3e3;
+    width: 80%;
+	float: left;
 }
 
 .button {
@@ -326,6 +361,14 @@ input[type="number"] {
 	overflow-y: auto;
 }
 
+#animals > * {
+	margin-bottom: 5%;
+}
+
+#animals > :last-child {
+	margin-bottom: 0 !important;
+}
+
 #animalsContainer {
 	width: 100%;
 	display: flex;
@@ -353,4 +396,42 @@ input[type="number"] {
 
 .selectAnimal:hover {
 	background-color: #657850;
+}
+
+#background {
+	width: 90%;
+	overflow-y: auto;
+}
+
+#background > * {
+	margin-bottom: 5%;
+}
+
+#background > :last-child {
+	margin-bottom: 0 !important;
+}
+
+#background > .radio {
+	margin-bottom: 0 !important;
+}
+
+#map {
+	position: relative;
+	cursor: pointer;
+	width: 100%;
+	aspect-ratio: 1;
+	overflow: hidden;
+	background-image: linear-gradient(to right, rgba(0, 0, 70, 0.35), rgba(0, 0, 70, 0.35)),
+		-webkit-linear-gradient(top, #fff, #fff 16.5%, #b6db66 16.5%, #b6db66 47.1%, #91b2db 47.1%, #91b2db 52.9%, #b6db66 52.9%, #b6db66 83.5%, #dbc666 83.5%, #dbc666);
+}
+
+#position {
+	width: 4%;
+	height: 4%;
+	border-radius: 100%;
+	background-color: white;
+	position: absolute;
+	left: 48%;
+	top: 48%;
+	pointer-events: none;
 }
