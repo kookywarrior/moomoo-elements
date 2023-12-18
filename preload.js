@@ -22,61 +22,32 @@ var toolsSrc = [
 	"sword_1"
 ]
 var aiSprites = {}
+var iconSprites = {}
 
 async function preload() {
-	function loadImage(fileName) {
-		return new Promise((resolve) => {
-			var tmpSprite = new Image()
-			tmpSprite.src = fileName === "img/weapons/bow_1_d.png" ? fileName : "https://moomoo.io/" + fileName
-			tmpSprite.onload = function () {
-				this.isLoaded = true
-				resolve(tmpSprite)
-			}
-			tmpSprite.onerror = function () {
-				resolve(null)
-			}
-		})
-	}
-
-	projectilesSrc.forEach(async (e) => {
-		projectileSprites[e] = await loadImage("img/weapons/" + e + ".png")
-	})
-
 	for (const id in HATS) {
-		var tmpSprite = await loadImage("img/hats/hat_" + id + ".png")
-		skinSprites[id.toString()] = tmpSprite
-		if (HATS[id].topSprite) {
-			tmpSprite = await loadImage("img/hats/hat_" + id + "_top.png")
-			skinSprites[`${id}_top`] = tmpSprite
-			tmpSprite = await loadImage("img/hats/hat_" + id + "_p.png")
-			skinSprites[`${id}_p`] = tmpSprite
-		}
 		const tmpElement = document.createElement("div")
 		tmpElement.className = "selectHat"
 		tmpElement.setAttribute("name", id)
-		tmpElement.style.backgroundImage = `url(${tmpSprite.src})`
+		tmpElement.style.backgroundImage = `url(https://moomoo.io/img/hats/hat_${id}${HATS[id].topSprite ? "_p" : ""}.png)`
 		document.getElementById("hatsContainer").appendChild(tmpElement)
 		tmpElement.setAttribute("onclick", "selectHat(this)")
 	}
 
 	for (const id in ACCESSORIES) {
-		var tmpSprite = await loadImage("img/accessories/access_" + id + ".png")
-		accessSprites[id.toString()] = tmpSprite
 		const tmpElement = document.createElement("div")
 		tmpElement.className = "selectAccess"
 		tmpElement.setAttribute("name", id)
-		tmpElement.style.backgroundImage = `url(${tmpSprite.src})`
+		tmpElement.style.backgroundImage = `url(https://moomoo.io/img/accessories/access_${id}.png)`
 		document.getElementById("accessContainer").appendChild(tmpElement)
 		tmpElement.setAttribute("onclick", "selectAccess(this)")
 	}
 
 	for (const name in ANIMALS) {
-		const tmpSprite = await loadImage(`img/animals/${name}.png`)
-		aiSprites[name] = tmpSprite
 		const tmpElement = document.createElement("div")
 		tmpElement.className = "selectAnimal"
 		tmpElement.setAttribute("name", name)
-		tmpElement.style.backgroundImage = `url(${tmpSprite.src})`
+		tmpElement.style.backgroundImage = `url(https://moomoo.io/img/animals/${name}.png)`
 		document.getElementById("animalsContainer").appendChild(tmpElement)
 		tmpElement.setAttribute("onclick", "selectAnimal(this)")
 	}
@@ -85,13 +56,13 @@ async function preload() {
 	for (const name in WEAPONS) {
 		for (let i = 0; i < 4; i++) {
 			const variant = variants[i]
-			const tmpSprite = await loadImage("img/weapons/" + WEAPONS[name].src + variant + ".png")
-			toolSprites[WEAPONS[name].src + variant] = tmpSprite
 			const tmpElement = document.createElement("div")
 			tmpElement.className = "selectWeapon"
 			tmpElement.setAttribute("name", name)
 			tmpElement.setAttribute("variant", variant)
-			tmpElement.style.backgroundImage = `url(${tmpSprite.src})`
+			tmpElement.style.backgroundImage = `url(${WEAPONS[name].src === "bow_1" && variant === "_d" ? "" : "https://moomoo.io/"}img/weapons/${
+				WEAPONS[name].src + variant
+			}.png)`
 			document.getElementById("weaponsContainer").appendChild(tmpElement)
 			tmpElement.setAttribute("onclick", "selectWeapon(this)")
 		}
