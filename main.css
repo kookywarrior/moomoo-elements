@@ -122,8 +122,7 @@ input[type="radio"] {
 }
 
 input[type="number"] {
-	width: 30%;
-	margin-right: 0.65rem;
+	width: 55%;
 }
 
 input[type="text"] {
