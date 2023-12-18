@@ -207,16 +207,34 @@ window.generate = () => {
 	}
 }
 
+var COPYCOUNT = 0
 window.copy = () => {
-	mainCanvas.toBlob((blob) => navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]))
+	try {
+		mainCanvas.toBlob((blob) => navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]))
+		document.getElementById("copy").innerText = "Copied"
+		COPYCOUNT++
+		setTimeout(() => {
+			COPYCOUNT--
+			if (COPYCOUNT <= 0) {
+				COPYCOUNT = 0
+				document.getElementById("copy").innerText = "Copy"
+			}
+		}, 1000)
+	} catch (error) {
+		window.alert("Error! Please try to copy it manually by right-clicking the canvas.")
+	}
 }
 
 window.save = async () => {
-	const blob = await new Promise((resolve) => mainCanvas.toBlob(resolve))
-	const link = document.getElementById("tmpDownload")
-	link.setAttribute("download", `MooMooElement_${Date.now()}.png`)
-	link.setAttribute("href", window.URL.createObjectURL(blob))
-	link.click()
+	try {
+		const blob = await new Promise((resolve) => mainCanvas.toBlob(resolve))
+		const link = document.getElementById("tmpDownload")
+		link.setAttribute("download", `MooMooElement_${Date.now()}.png`)
+		link.setAttribute("href", window.URL.createObjectURL(blob))
+		link.click()
+	} catch (error) {
+		window.alert("Error! Please try to save it manually by right-clicking the canvas.")
+	}
 }
 
 const MAP = document.getElementById("map")
