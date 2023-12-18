@@ -230,6 +230,19 @@ input[type="text"] {
 	background-color: #657850;
 }
 
+#hats, #weapons, #access {
+	width: 90%;
+	overflow-y: auto;
+}
+
+#hatsContainer, #accessContainer, #weaponsContainer {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	flex-wrap: wrap;
+}
+
 #player {
 	width: 90%;
 	overflow-y: auto;
@@ -268,7 +281,7 @@ input[type="text"] {
 	border-radius: 10%;
 }
 
-#hatsContainer {
+#playerHatsContainer {
 	width: 100%;
 	display: flex;
 	flex-direction: row;
@@ -277,16 +290,21 @@ input[type="text"] {
 }
 
 .selectHat {
-	width: 15%;
+	width: 25%;
 	aspect-ratio: 1;
 	cursor: pointer;
 	background-color: #586b43;
 	border-radius: 10%;
-	margin: 1.5%;
+	margin: 3%;
 	background-size: 80% 80%;
 	background-repeat: no-repeat;
 	background-attachment: fixed;
 	background-position: center;
+}
+
+#playerHatsContainer > .selectHat {
+	width: 15%;
+	margin: 1.5%;
 }
 
 .selectHat.selected {
@@ -297,7 +315,7 @@ input[type="text"] {
 	background-color: #657850;
 }
 
-#accessContainer {
+#playerAccessContainer {
 	width: 100%;
 	display: flex;
 	flex-direction: row;
@@ -306,16 +324,21 @@ input[type="text"] {
 }
 
 .selectAccess {
-	width: 15%;
+	width: 25%;
 	aspect-ratio: 1;
 	cursor: pointer;
 	background-color: #586b43;
 	border-radius: 10%;
-	margin: 1.5%;
+	margin: 3%;
 	background-size: 80% 80%;
 	background-repeat: no-repeat;
 	background-attachment: fixed;
 	background-position: center;
+}
+
+#playerAccessContainer > .selectAccess {
+	width: 15%;
+	margin: 1.5%;
 }
 
 .selectAccess.selected {
@@ -326,7 +349,7 @@ input[type="text"] {
 	background-color: #657850;
 }
 
-#weaponsContainer {
+#playerWeaponsContainer {
 	width: 100%;
 	display: flex;
 	flex-direction: row;
@@ -335,16 +358,21 @@ input[type="text"] {
 }
 
 .selectWeapon {
-	width: 15%;
+	width: 25%;
 	aspect-ratio: 1;
 	cursor: pointer;
 	background-color: #586b43;
 	border-radius: 10%;
-	margin: 1.5%;
+	margin: 3%;
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-attachment: fixed;
 	background-position: center;
+}
+
+#playerWeaponsContainer > .selectWeapon {
+	width: 15%;
+	margin: 1.5%;
 }
 
 .selectWeapon.selected {
