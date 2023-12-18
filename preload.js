@@ -32,6 +32,13 @@ async function preload() {
 		tmpElement.style.backgroundImage = `url(https://moomoo.io/img/hats/hat_${id}${HATS[id].topSprite ? "_p" : ""}.png)`
 		document.getElementById("hatsContainer").appendChild(tmpElement)
 		tmpElement.setAttribute("onclick", "selectHat(this)")
+
+		const tmpElement2 = document.createElement("div")
+		tmpElement2.className = "selectHat"
+		tmpElement2.setAttribute("name", id)
+		tmpElement2.style.backgroundImage = `url(https://moomoo.io/img/hats/hat_${id}${HATS[id].topSprite ? "_p" : ""}.png)`
+		document.getElementById("playerHatsContainer").appendChild(tmpElement2)
+		tmpElement2.setAttribute("onclick", "selectHat(this)")
 	}
 
 	for (const id in ACCESSORIES) {
@@ -41,6 +48,13 @@ async function preload() {
 		tmpElement.style.backgroundImage = `url(https://moomoo.io/img/accessories/access_${id}.png)`
 		document.getElementById("accessContainer").appendChild(tmpElement)
 		tmpElement.setAttribute("onclick", "selectAccess(this)")
+
+		const tmpElement2 = document.createElement("div")
+		tmpElement2.className = "selectAccess"
+		tmpElement2.setAttribute("name", id)
+		tmpElement2.style.backgroundImage = `url(https://moomoo.io/img/accessories/access_${id}.png)`
+		document.getElementById("playerAccessContainer").appendChild(tmpElement2)
+		tmpElement2.setAttribute("onclick", "selectAccess(this)")
 	}
 
 	for (const name in ANIMALS) {
@@ -56,6 +70,7 @@ async function preload() {
 	for (const name in WEAPONS) {
 		for (let i = 0; i < 4; i++) {
 			const variant = variants[i]
+
 			const tmpElement = document.createElement("div")
 			tmpElement.className = "selectWeapon"
 			tmpElement.setAttribute("name", name)
@@ -65,6 +80,16 @@ async function preload() {
 			}.png)`
 			document.getElementById("weaponsContainer").appendChild(tmpElement)
 			tmpElement.setAttribute("onclick", "selectWeapon(this)")
+
+			const tmpElement2 = document.createElement("div")
+			tmpElement2.className = "selectWeapon"
+			tmpElement2.setAttribute("name", name)
+			tmpElement2.setAttribute("variant", variant)
+			tmpElement2.style.backgroundImage = `url(${WEAPONS[name].src === "bow_1" && variant === "_d" ? "" : "https://moomoo.io/"}img/weapons/${
+				WEAPONS[name].src + variant
+			}.png)`
+			document.getElementById("playerWeaponsContainer").appendChild(tmpElement2)
+			tmpElement2.setAttribute("onclick", "selectWeapon(this)")
 		}
 	}
 
@@ -96,7 +121,7 @@ async function preload() {
 			tmpElement2.className = "selectWeapon"
 			tmpElement2.setAttribute("build", name)
 			tmpElement2.style.backgroundImage = `url(${tmpCanvas.toDataURL()})`
-			document.getElementById("weaponsContainer").appendChild(tmpElement2)
+			document.getElementById("playerWeaponsContainer").appendChild(tmpElement2)
 			tmpElement2.setAttribute("onclick", "selectWeapon(this)")
 		}
 	}
