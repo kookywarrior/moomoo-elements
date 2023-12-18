@@ -6,6 +6,9 @@
 		<title>MooMoo Elements</title>
 		<link rel="stylesheet" href="main.css" />
 		<link rel="icon" type="image/png" href="favicon.png" />
+		<meta content="kookywarrior.github.io" property="og:site_name">
+		<meta content="MooMoo Elements" property="og:title">
+		<meta content="Struggling to find game object img for making yt thumbnail? This might help you out!" property="og:description">
 	</head>
 	<body>
 		<div id="loading">LOADING...</div>
@@ -15,6 +18,7 @@
 				<div onclick="changeCategory(this)" name="resources" class="selectCategory">Resources</div>
 				<div onclick="changeCategory(this)" name="player" class="selectCategory">Player</div>
 				<div onclick="changeCategory(this)" name="animals" class="selectCategory">Animals</div>
+				<div onclick="changeCategory(this)" name="background" class="selectCategory">Background</div>
 			</div>
 			<div class="container">
 				<div id="canvasContainer">
@@ -22,12 +26,13 @@
 					<div id="canvasBackgroundFilter"></div>
 					<canvas id="canvas"></canvas>
 				</div>
+				<span class="boolean">
+					<input id="filter" type="checkbox" checked />
+					<label for="filter">Filter</label>
+				</span>
 				<div style="width: 90%; display: flex; justify-content: space-between">
-					<span class="boolean">
-						<input id="filter" name="filter" type="checkbox" checked />
-						<label for="filter">Filter</label>
-					</span>
-					<input type="number" name="resolution" id="resolution" placeholder="Resolution" value="500" />
+					<input type="number" id="resolution" placeholder="Resolution" value="500" />
+					<input type="number" id="zoom" placeholder="Zoom Scale" value="25" />
 				</div>
 				<div onclick="generate()" class="button">Regenerate</div>
 				<div onclick="copy()" class="button">Copy</div>
@@ -58,9 +63,29 @@
 						<div name="10" style="background-color: #8bc373" class="selectColour" onclick="selectColour(this)"></div>
 						<div name="11" style="background-color: #91b2db" class="selectColour" onclick="selectColour(this)"></div>
 						<div name="12" style="background-image: linear-gradient(to right, #c37373, #8bc373, #91b2db)" class="selectColour" onclick="selectCustomColour(this)">
-							<input id="customColour" type="color" style="opacity: 0; position: absolute; z-index: -1;"/>
+							<input id="customColour" type="color" style="opacity: 0; position: absolute; z-index: -1" />
 						</div>
 					</div>
+					<input onchange="changePlayerValue('NAME', this.value)" type="text" autocomplete="off" placeholder="Name" style="margin-bottom: 1%" />
+					<input onchange="changePlayerValue('TRIBENAME', this.value)" type="text" autocomplete="off" placeholder="Tribe Name" />
+					<span class="boolean" style="width: 100%; margin-bottom: 1%">
+						<input onchange="changePlayerValue('SKULL', this.checked)" type="checkbox" />
+						<label for="skull">Show Skull</label>
+					</span>
+					<span class="boolean" style="width: 100%">
+						<input onchange="changePlayerValue('CROWN', this.checked)" type="checkbox" />
+						<label for="crown">Show Crown</label>
+					</span>
+					<input onchange="changePlayerValue('HEALTH', this.value)" type="number" placeholder="Health" min="0" max="100" style="float: left" />
+					<div class="radio" style="margin-bottom: 1%">
+						<input onchange="changePlayerValue('HPCOLOUR', 'green')" type="radio" name="healthbar" id="greenhp" checked />
+						<label for="greenhp">Green Health Bar</label>
+					</div>
+					<div class="radio">
+						<input onchange="changePlayerValue('HPCOLOUR', 'red')" type="radio" name="healthbar" id="redhp" />
+						<label for="redhp">Red Health Bar</label>
+					</div>
+					<input onchange="changePlayerValue('DIRECTION', this.value)" type="number" placeholder="Direction" min="0" max="359" style="float: left" />
 					<div id="hatsContainer">
 						<div class="selectHat selected" onclick="selectHat(this)"></div>
 					</div>
@@ -72,16 +97,28 @@
 					</div>
 				</section>
 				<section id="animals" hidden>
+					<input onchange="changeAIValue('DIRECTION', this.value)" type="number" placeholder="Direction" min="0" max="359" style="float: left" />
+					<input onchange="changeAIValue('NAME', this.value)" type="text" autocomplete="off" placeholder="Name" />
+					<input onchange="changeAIValue('HEALTH', this.value)" type="number" placeholder="Health" min="0" max="100" style="float: left" />
 					<div id="animalsContainer">
 						<div name="none" class="selectAnimal selected" onclick="selectAnimal(this)"></div>
 					</div>
+				</section>
+				<section id="background" hidden>
+					<div id="map">
+						<div id="position"></div>
+					</div>
+					<span class="boolean">
+						<input id="grid" name="grid" type="checkbox" checked />
+						<label for="grid">Show Grid</label>
+					</span>
 				</section>
 			</div>
 		</div>
 		<a id="tmpDownload" hidden></a>
 		<script src="config.js"></script>
-		<script src="preload.js"></script>
 		<script src="render.js"></script>
+		<script src="preload.js"></script>
 		<script src="index.js"></script>
 	</body>
 </html>
