@@ -5,8 +5,9 @@ const ZOOMFACTOR = {
 	buildings: 25,
 	resources: 35,
 	player: 45,
-	animals: 35,
-	background: 100
+	animals: 40,
+	background: 100,
+	volcano: 125
 }
 var xOffset, yOffset
 
@@ -22,7 +23,7 @@ window.changeCategory = (element) => {
 	}
 	document.getElementById(element.getAttribute("name")).hidden = false
 	CATEGORY = element.getAttribute("name")
-	document.getElementById("zoom").value = ZOOMFACTOR[CATEGORY]
+	document.getElementById("zoom").value = ZOOMFACTOR[CATEGORY === "resources" && SELECTRESOURCE === "volcano" ? "volcano" : CATEGORY]
 	window.generate()
 }
 
@@ -37,14 +38,14 @@ document.getElementById("resolution").addEventListener("change", () => {
 	window.generate()
 })
 document.getElementById("zoom").addEventListener("change", () => {
-	ZOOMFACTOR[CATEGORY] = parseFloat(document.getElementById("zoom").value) || 100
-	document.getElementById("zoom").value = ZOOMFACTOR[CATEGORY]
+	ZOOMFACTOR[CATEGORY === "resources" && SELECTRESOURCE === "volcano" ? "volcano" : CATEGORY] = parseFloat(document.getElementById("zoom").value) || 100
+	document.getElementById("zoom").value = ZOOMFACTOR[CATEGORY === "resources" && SELECTRESOURCE === "volcano" ? "volcano" : CATEGORY]
 	window.generate()
 })
 
 function backgroundScaler(square = true) {
-	maxScreenWidth = (1920 * ZOOMFACTOR[CATEGORY]) / 100
-	maxScreenHeight = (1080 * ZOOMFACTOR[CATEGORY]) / 100
+	maxScreenWidth = (1920 * parseFloat(document.getElementById("zoom").value)) / 100
+	maxScreenHeight = (1080 * parseFloat(document.getElementById("zoom").value)) / 100
 	const width = square ? RESOLUTION : (16 * RESOLUTION) / 9
 	scaleFillNative = Math.max(width / maxScreenWidth, RESOLUTION / maxScreenHeight)
 	mainCanvas.width = spriteCanvas.width = filterCanvas.width = width
@@ -69,7 +70,8 @@ var PLAYER = {
 	NAME: "",
 	TRIBENAME: "",
 	HPCOLOUR: "green",
-	DIRECTION: "0"
+	DIRECTION: "0",
+	TOPHATDIRECTION: "0"
 }
 window.changePlayerValue = (key, value) => {
 	PLAYER[key] = value
@@ -113,6 +115,7 @@ window.selectResource = (element) => {
 	element.classList.add("selected")
 	SELECTRESOURCE = element.getAttribute("name")
 	SELECTBIOME = parseInt(element.getAttribute("biome"))
+	document.getElementById("zoom").value = ZOOMFACTOR[SELECTRESOURCE === "volcano" ? "volcano" : CATEGORY]
 	window.generate()
 }
 
@@ -136,10 +139,12 @@ window.selectCustomColour = (element) => {
 	element.classList.add("selected")
 	SELECTCOLOURNUMBER = element.getAttribute("name")
 	document.getElementById("customColour").click()
+}
+document.getElementById("customColour").addEventListener("click", () => {
 	SELECTCOLOUR = document.getElementById("customColour").value
 	window.generate()
-}
-document.getElementById("customColour").addEventListener("change", () => {
+})
+document.getElementById("customColour").addEventListener("input", () => {
 	SELECTCOLOUR = document.getElementById("customColour").value
 	window.generate()
 })
@@ -221,6 +226,7 @@ window.copy = () => {
 			}
 		}, 1000)
 	} catch (error) {
+		console.error(error)
 		window.alert("Error! Please try to copy it manually by right-clicking the canvas.")
 	}
 }
