@@ -536,6 +536,7 @@ async function onlyPlayer(colour, skin, tail, weapon, weaponVariant, build, play
 		var tmpText = (player.TRIBENAME ? "[" + player.TRIBENAME + "] " : "") + (player.NAME || "")
 		mainContext.font = `30px Hammersmith One`
 		mainContext.fillStyle = "#fff"
+		mainContext.strokeStyle = darkOutlineColor
 		mainContext.textBaseline = "middle"
 		mainContext.textAlign = "center"
 		mainContext.lineWidth = 8
@@ -643,6 +644,7 @@ async function onlyAnimals(name, ai, filter = true) {
 		var tmpText = ai.NAME || ""
 		mainContext.font = `30px Hammersmith One`
 		mainContext.fillStyle = "#fff"
+		mainContext.strokeStyle = darkOutlineColor
 		mainContext.textBaseline = "middle"
 		mainContext.textAlign = "center"
 		mainContext.lineWidth = 8
