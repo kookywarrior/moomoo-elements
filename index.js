@@ -213,21 +213,26 @@ window.generate = () => {
 }
 
 var COPYCOUNT = 0
-window.copy = () => {
+window.copy = async () => {
+	var noerror = true
 	try {
 		mainCanvas.toBlob((blob) => navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]))
-		document.getElementById("copy").innerText = "Copied"
-		COPYCOUNT++
-		setTimeout(() => {
-			COPYCOUNT--
-			if (COPYCOUNT <= 0) {
-				COPYCOUNT = 0
-				document.getElementById("copy").innerText = "Copy"
-			}
-		}, 1000)
 	} catch (error) {
+		noerror = false
 		console.error(error)
 		window.alert("Error! Please try to copy it manually by right-clicking the canvas.")
+	} finally {
+		if (noerror) {
+			document.getElementById("copy").innerText = "Copied"
+			COPYCOUNT++
+			setTimeout(() => {
+				COPYCOUNT--
+				if (COPYCOUNT <= 0) {
+					COPYCOUNT = 0
+					document.getElementById("copy").innerText = "Copy"
+				}
+			}, 1000)
+		}
 	}
 }
 
