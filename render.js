@@ -410,7 +410,7 @@ async function renderPlayer(colour, skin, tail, weapon, weaponVariant, build, pl
 	}
 	// WEAPON BELLOW HANDS:
 	if (weapon && !WEAPONS[weapon].aboveHand) {
-		await renderTool(WEAPONS[weapon], weaponVariant, 35, 0, ctxt)
+		await renderTool(WEAPONS[weapon], weaponVariant, 35, 0, true, ctxt)
 		if (WEAPONS[weapon].projectile != undefined && !WEAPONS[weapon].hideProjectile) {
 			await renderProjectile(35, 0, PROJECTILES[WEAPONS[weapon].projectile], spriteContext)
 		}
@@ -422,7 +422,7 @@ async function renderPlayer(colour, skin, tail, weapon, weaponVariant, build, pl
 	renderCircle(35 * oHandDist * Math.cos(-handAngle * oHandAngle), 35 * oHandDist * Math.sin(-handAngle * oHandAngle), 14)
 	// WEAPON ABOVE HANDS:
 	if (weapon && WEAPONS[weapon].aboveHand) {
-		await renderTool(WEAPONS[weapon], weaponVariant, 35, 0, ctxt)
+		await renderTool(WEAPONS[weapon], weaponVariant, 35, 0, true, ctxt)
 		if (WEAPONS[weapon].projectile != undefined) {
 			await renderProjectile(35, 0, PROJECTILES[WEAPONS[weapon].projectile], spriteContext)
 		}
@@ -458,11 +458,13 @@ async function renderSkin(index, ctxt, scale, parentSkin, player) {
 }
 
 // RENDER TAIL:
-async function renderTail(index, ctxt) {
+async function renderTail(index, ctxt, translate = true) {
 	const tmpObj = ACCESSORIES[index]
 	const tmpSprite = await loadImage("img/accessories/access_" + index, accessSprites)
 	ctxt.save()
-	ctxt.translate((-20 - (tmpObj.xOff || 0)) * scaleFillNative, 0)
+	if (translate) {
+		ctxt.translate((-20 - (tmpObj.xOff || 0)) * scaleFillNative, 0)
+	}
 	ctxt.drawImage(
 		tmpSprite,
 		(-tmpObj.scale * scaleFillNative) / 2,
@@ -474,12 +476,12 @@ async function renderTail(index, ctxt) {
 }
 
 // RENDER TOOL:
-async function renderTool(obj, variant, x, y, ctxt) {
+async function renderTool(obj, variant, x, y, translate = true, ctxt) {
 	const tmpSprite = await loadImage("img/weapons/" + obj.src + (variant || ""), toolSprites)
 	ctxt.drawImage(
 		tmpSprite,
-		(x + obj.xOff - obj.length / 2) * scaleFillNative,
-		(y + obj.yOff - obj.width / 2) * scaleFillNative,
+		((translate ? x + obj.xOff : 0) - obj.length / 2) * scaleFillNative,
+		((translate ? y + obj.yOff : 0) - obj.width / 2) * scaleFillNative,
 		obj.length * scaleFillNative,
 		obj.width * scaleFillNative
 	)
@@ -510,6 +512,66 @@ function roundRect(x, y, w, h, r, ctx) {
 	ctx.arcTo(x, y + h, x, y, r)
 	ctx.arcTo(x, y, x + w, y, r)
 	ctx.closePath()
+}
+
+async function onlyHats(id, filter = true) {
+	if (!id) {
+		const tmpCanvas = document.createElement("canvas")
+		tmpCanvas.width = tmpCanvas.height = 1
+		return tmpCanvas
+	}
+
+	spriteContext.save()
+	await renderSkin(id, spriteContext, null, null, { TOPHATDIRECTION: 0 })
+	spriteContext.restore()
+
+	mainContext.drawImage(spriteCanvas, 0, 0)
+	if (filter) {
+		filterContext.fillStyle = "rgba(0, 0, 70, 0.35)"
+		filterContext.fillRect(0, 0, filterCanvas.width, filterCanvas.height)
+		mainContext.globalCompositeOperation = "source-atop"
+		mainContext.drawImage(filterCanvas, 0, 0)
+	}
+}
+
+async function onlyAccess(id, filter = true) {
+	if (!id) {
+		const tmpCanvas = document.createElement("canvas")
+		tmpCanvas.width = tmpCanvas.height = 1
+		return tmpCanvas
+	}
+
+	spriteContext.save()
+	await renderTail(id, spriteContext, false)
+	spriteContext.restore()
+
+	mainContext.drawImage(spriteCanvas, 0, 0)
+	if (filter) {
+		filterContext.fillStyle = "rgba(0, 0, 70, 0.35)"
+		filterContext.fillRect(0, 0, filterCanvas.width, filterCanvas.height)
+		mainContext.globalCompositeOperation = "source-atop"
+		mainContext.drawImage(filterCanvas, 0, 0)
+	}
+}
+
+async function onlyWeapons(name, variant, filter = true) {
+	if (!name) {
+		const tmpCanvas = document.createElement("canvas")
+		tmpCanvas.width = tmpCanvas.height = 1
+		return tmpCanvas
+	}
+
+	spriteContext.save()
+	await renderTool(WEAPONS[name], variant, 0, 0, false, spriteContext)
+	spriteContext.restore()
+
+	mainContext.drawImage(spriteCanvas, 0, 0)
+	if (filter) {
+		filterContext.fillStyle = "rgba(0, 0, 70, 0.35)"
+		filterContext.fillRect(0, 0, filterCanvas.width, filterCanvas.height)
+		mainContext.globalCompositeOperation = "source-atop"
+		mainContext.drawImage(filterCanvas, 0, 0)
+	}
 }
 
 async function onlyPlayer(colour, skin, tail, weapon, weaponVariant, build, player, filter = true) {
