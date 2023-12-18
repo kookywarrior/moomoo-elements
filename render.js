@@ -1,13 +1,38 @@
 const UTILS = {
 	randInt: function (min, max) {
 		return Math.floor(Math.random() * (max - min + 1)) + min
+	},
+	randFloat: function (min, max) {
+		return Math.random() * (max - min) + min
 	}
 }
+
+function loadImage(fileName, storage) {
+	return new Promise((resolve) => {
+		if (storage[fileName]) {
+			resolve(storage[fileName])
+		} else {
+			var tmpSprite = new Image()
+			tmpSprite.src = (fileName === "img/weapons/bow_1_d" ? "" : "https://moomoo.io/") + fileName + ".png"
+			tmpSprite.onload = function () {
+				storage[fileName] = tmpSprite
+				resolve(tmpSprite)
+			}
+			tmpSprite.onerror = function () {
+				resolve(null)
+			}
+		}
+	})
+}
+
+var maxScreenWidth = 1920,
+	maxScreenHeight = 1080,
+	scaleFillNative = 1
 
 var outlineColor = "#525252",
 	darkOutlineColor = "#3d3f42",
 	outlineWidth = 5.5
-var scaleFactor
+var scaleFillNative
 const mainCanvas = document.getElementById("canvas")
 const mainContext = mainCanvas.getContext("2d")
 const spriteCanvas = document.createElement("canvas")
@@ -18,9 +43,9 @@ mainCanvas.width = mainCanvas.height = spriteCanvas.width = spriteCanvas.height 
 
 // RENDER LEAF:
 function renderLeaf(x, y, l, r, ctxt) {
-	x *= scaleFactor
-	y *= scaleFactor
-	l *= scaleFactor
+	x *= scaleFillNative
+	y *= scaleFillNative
+	l *= scaleFillNative
 	var endX = x + l * Math.cos(r)
 	var endY = y + l * Math.sin(r)
 	var width = l * 0.4
@@ -35,9 +60,9 @@ function renderLeaf(x, y, l, r, ctxt) {
 
 // RENDER CIRCLE:
 function renderCircle(x, y, scale, tmpContext, dontStroke, dontFill) {
-	x *= scaleFactor
-	y *= scaleFactor
-	scale *= scaleFactor
+	x *= scaleFillNative
+	y *= scaleFillNative
+	scale *= scaleFillNative
 	tmpContext = tmpContext || spriteContext
 	tmpContext.beginPath()
 	tmpContext.arc(x, y, scale, 0, 2 * Math.PI)
@@ -47,8 +72,8 @@ function renderCircle(x, y, scale, tmpContext, dontStroke, dontFill) {
 
 // RENDER STAR SHAPE:
 function renderStar(ctxt, spikes, outer, inner) {
-	outer *= scaleFactor
-	inner *= scaleFactor
+	outer *= scaleFillNative
+	inner *= scaleFillNative
 	var rot = (Math.PI / 2) * 3
 	var x, y
 	var step = Math.PI / spikes
@@ -70,10 +95,10 @@ function renderStar(ctxt, spikes, outer, inner) {
 
 // RENDER RECTANGLE:
 function renderRect(x, y, w, h, ctxt, stroke) {
-	x *= scaleFactor
-	y *= scaleFactor
-	w *= scaleFactor
-	h *= scaleFactor
+	x *= scaleFillNative
+	y *= scaleFillNative
+	w *= scaleFillNative
+	h *= scaleFillNative
 	ctxt.fillRect(x - w / 2, y - h / 2, w, h)
 	if (!stroke) {
 		ctxt.strokeRect(x - w / 2, y - h / 2, w, h)
@@ -82,8 +107,8 @@ function renderRect(x, y, w, h, ctxt, stroke) {
 
 // RENDER RECTCIRCLE:
 function renderRectCircle(x, y, s, sw, seg, ctxt, stroke) {
-	x *= scaleFactor
-	y *= scaleFactor
+	x *= scaleFillNative
+	y *= scaleFillNative
 	ctxt.save()
 	ctxt.translate(x, y)
 	seg = Math.ceil(seg / 2)
@@ -96,8 +121,8 @@ function renderRectCircle(x, y, s, sw, seg, ctxt, stroke) {
 
 // RENDER BLOB:
 function renderBlob(ctxt, spikes, outer, inner) {
-	outer *= scaleFactor
-	inner *= scaleFactor
+	outer *= scaleFillNative
+	inner *= scaleFillNative
 	var rot = (Math.PI / 2) * 3
 	var step = Math.PI / spikes
 	var tmpOuter
@@ -119,7 +144,7 @@ function renderBlob(ctxt, spikes, outer, inner) {
 
 // RENDER TRIANGLE:
 function renderTriangle(s, ctx) {
-	s *= scaleFactor
+	s *= scaleFillNative
 	ctx = ctx || spriteContext
 	var h = s * (Math.sqrt(3) / 2)
 	ctx.beginPath()
@@ -130,24 +155,20 @@ function renderTriangle(s, ctx) {
 	ctx.fill()
 	ctx.closePath()
 }
-biome = [0, 1, 2]
-type = [0, 1, 2, 3]
-const a = {
-	bush: []
-}
+
 function getResSprite(name, scale, biomeID, asIcon) {
 	if (name == "none") {
 		const tmpCanvas = document.createElement("canvas")
 		tmpCanvas.width = tmpCanvas.height = 1
 		return tmpCanvas
 	}
-	scaleFactor = asIcon ? 1 : scaleFactor
+	scaleFillNative = asIcon ? 1 : scaleFillNative
 	const tmpCanvas = document.createElement("canvas")
-	tmpCanvas.width = tmpCanvas.height = ((name == "volcano" ? 640 : scale) * 2.1 + outlineWidth) * scaleFactor
+	tmpCanvas.width = tmpCanvas.height = ((name == "volcano" ? 640 : scale) * 2.1 + outlineWidth) * scaleFillNative
 	const tmpContext = tmpCanvas.getContext("2d")
 	tmpContext.translate(tmpCanvas.width / 2, tmpCanvas.height / 2)
 	tmpContext.strokeStyle = outlineColor
-	tmpContext.lineWidth = outlineWidth * (asIcon ? tmpCanvas.width / 81 : 1) * scaleFactor
+	tmpContext.lineWidth = outlineWidth * (asIcon ? tmpCanvas.width / 81 : 1) * scaleFillNative
 	if (name == "fivestartree" || name == "sevenstartree") {
 		var tmpScale
 		for (var i = 0; i < 2; ++i) {
@@ -193,13 +214,13 @@ function getResSprite(name, scale, biomeID, asIcon) {
 		tmpContext.fill()
 	} else if (name == "volcano") {
 		tmpContext.strokeStyle = "#3e3e3e"
-		tmpContext.lineWidth = outlineWidth * (asIcon ? tmpCanvas.width / 81 : 1) * scaleFactor * 2
+		tmpContext.lineWidth = outlineWidth * (asIcon ? tmpCanvas.width / 81 : 1) * scaleFillNative * 2
 		tmpContext.fillStyle = "#7f7f7f"
 		renderStar(tmpContext, 5, 640, 640)
 		tmpContext.fill()
 		tmpContext.stroke()
 		tmpContext.strokeStyle = "#f56f16"
-		tmpContext.lineWidth = outlineWidth * (asIcon ? tmpCanvas.width / 81 : 1) * scaleFactor * 1.6
+		tmpContext.lineWidth = outlineWidth * (asIcon ? tmpCanvas.width / 81 : 1) * scaleFillNative * 1.6
 		tmpContext.fillStyle = "#f54e16"
 		renderStar(tmpContext, 5, scale * 2, scale * 2)
 		tmpContext.fill()
@@ -214,7 +235,7 @@ function getItemSprite(name, rotate, asIcon, spikeBuild = false) {
 		tmpCanvas.width = tmpCanvas.height = 1
 		return tmpCanvas
 	}
-	scaleFactor = asIcon ? 1 : scaleFactor
+	scaleFillNative = asIcon ? 1 : scaleFillNative
 	const obj = ITEMS[name]
 	const tmpCanvas = document.createElement("canvas")
 	var spritePadding = 0
@@ -227,12 +248,12 @@ function getItemSprite(name, rotate, asIcon, spikeBuild = false) {
 			spritePadding = obj.spritePadding
 		}
 	}
-	tmpCanvas.width = tmpCanvas.height = (obj.scale * 2.5 + outlineWidth + spritePadding) * scaleFactor
+	tmpCanvas.width = tmpCanvas.height = (obj.scale * 2.5 + outlineWidth + spritePadding) * scaleFillNative
 	const tmpContext = tmpCanvas.getContext("2d")
 	tmpContext.translate(tmpCanvas.width / 2, tmpCanvas.height / 2)
 	tmpContext.rotate(asIcon || !rotate ? 0 : Math.PI / 2)
 	tmpContext.strokeStyle = outlineColor
-	tmpContext.lineWidth = outlineWidth * (asIcon ? tmpCanvas.width / 81 : 1) * scaleFactor
+	tmpContext.lineWidth = outlineWidth * (asIcon ? tmpCanvas.width / 81 : 1) * scaleFillNative
 	if (name == "apple") {
 		tmpContext.fillStyle = "#c15555"
 		renderCircle(0, 0, obj.scale, tmpContext)
@@ -376,22 +397,22 @@ function getItemSprite(name, rotate, asIcon, spikeBuild = false) {
 }
 
 // RENDER PLAYER:
-function renderPlayer(colour, skin, tail, weapon, weaponVariant, build, ctxt) {
+async function renderPlayer(colour, skin, tail, weapon, weaponVariant, build, ctxt) {
 	ctxt = ctxt || spriteContext
-	ctxt.lineWidth = outlineWidth * scaleFactor
+	ctxt.lineWidth = outlineWidth * scaleFillNative
 	ctxt.lineJoin = "miter"
 	var handAngle = (Math.PI / 4) * (WEAPONS[weapon]?.armS || 1)
 	var oHandAngle = weapon ? WEAPONS[weapon].hndS || 1 : 1
 	var oHandDist = weapon ? WEAPONS[weapon].hndD || 1 : 1
 	// TAIL/CAPE:
 	if (tail) {
-		renderTail(tail, ctxt)
+		await renderTail(tail, ctxt)
 	}
 	// WEAPON BELLOW HANDS:
 	if (weapon && !WEAPONS[weapon].aboveHand) {
-		renderTool(WEAPONS[weapon], weaponVariant, 35, 0, ctxt)
+		await renderTool(WEAPONS[weapon], weaponVariant, 35, 0, ctxt)
 		if (WEAPONS[weapon].projectile != undefined && !WEAPONS[weapon].hideProjectile) {
-			renderProjectile(35, 0, PROJECTILES[WEAPONS[weapon].projectile], spriteContext)
+			await renderProjectile(35, 0, PROJECTILES[WEAPONS[weapon].projectile], spriteContext)
 		}
 	}
 	// HANDS:
@@ -401,9 +422,9 @@ function renderPlayer(colour, skin, tail, weapon, weaponVariant, build, ctxt) {
 	renderCircle(35 * oHandDist * Math.cos(-handAngle * oHandAngle), 35 * oHandDist * Math.sin(-handAngle * oHandAngle), 14)
 	// WEAPON ABOVE HANDS:
 	if (weapon && WEAPONS[weapon].aboveHand) {
-		renderTool(WEAPONS[weapon], weaponVariant, 35, 0, ctxt)
+		await renderTool(WEAPONS[weapon], weaponVariant, 35, 0, ctxt)
 		if (WEAPONS[weapon].projectile != undefined) {
-			renderProjectile(35, 0, PROJECTILES[WEAPONS[weapon].projectile], spriteContext)
+			await renderProjectile(35, 0, PROJECTILES[WEAPONS[weapon].projectile], spriteContext)
 		}
 	}
 	// BUILD ITEM:
@@ -416,153 +437,313 @@ function renderPlayer(colour, skin, tail, weapon, weaponVariant, build, ctxt) {
 	// SKIN:
 	if (skin) {
 		ctxt.rotate(Math.PI / 2)
-		renderSkin(skin, ctxt, null, null)
+		await renderSkin(skin, ctxt, null, null)
 	}
 }
 
 // RENDER SKINS:
-function renderSkin(index, ctxt, scale, parentSkin) {
+async function renderSkin(index, ctxt, scale, parentSkin) {
 	const tmpObj = HATS[index]
-	const tmpSprite = skinSprites[index]
+	const tmpSprite = await loadImage("img/hats/hat_" + index, skinSprites)
 	scale = parentSkin ? scale : tmpObj.scale
 	ctxt.save()
-	ctxt.drawImage(tmpSprite, (-scale * scaleFactor) / 2, (-scale * scaleFactor) / 2, scale * scaleFactor, scale * scaleFactor)
+	ctxt.drawImage(tmpSprite, (-scale * scaleFillNative) / 2, (-scale * scaleFillNative) / 2, scale * scaleFillNative, scale * scaleFillNative)
 	ctxt.restore()
 	if (!parentSkin && tmpObj.topSprite) {
 		ctxt.save()
-		renderSkin(index + "_top", ctxt, scale, tmpObj)
+		await renderSkin(index + "_top", ctxt, scale, tmpObj)
 		ctxt.restore()
 	}
 }
 
 // RENDER TAIL:
-function renderTail(index, ctxt) {
+async function renderTail(index, ctxt) {
 	const tmpObj = ACCESSORIES[index]
-	const tmpSprite = accessSprites[index]
+	const tmpSprite = await loadImage("img/accessories/access_" + index, accessSprites)
 	ctxt.save()
-	ctxt.translate((-20 - (tmpObj.xOff || 0)) * scaleFactor, 0)
+	ctxt.translate((-20 - (tmpObj.xOff || 0)) * scaleFillNative, 0)
 	ctxt.drawImage(
 		tmpSprite,
-		(-tmpObj.scale * scaleFactor) / 2,
-		(-tmpObj.scale * scaleFactor) / 2,
-		tmpObj.scale * scaleFactor,
-		tmpObj.scale * scaleFactor
+		(-tmpObj.scale * scaleFillNative) / 2,
+		(-tmpObj.scale * scaleFillNative) / 2,
+		tmpObj.scale * scaleFillNative,
+		tmpObj.scale * scaleFillNative
 	)
 	ctxt.restore()
 }
 
 // RENDER TOOL:
-function renderTool(obj, variant, x, y, ctxt) {
-	const tmpSprite = toolSprites[obj.src + (variant || "")]
+async function renderTool(obj, variant, x, y, ctxt) {
+	const tmpSprite = await loadImage("img/weapons/" + obj.src + (variant || ""), toolSprites)
 	ctxt.drawImage(
 		tmpSprite,
-		(x + obj.xOff - obj.length / 2) * scaleFactor,
-		(y + obj.yOff - obj.width / 2) * scaleFactor,
-		obj.length * scaleFactor,
-		obj.width * scaleFactor
+		(x + obj.xOff - obj.length / 2) * scaleFillNative,
+		(y + obj.yOff - obj.width / 2) * scaleFillNative,
+		obj.length * scaleFillNative,
+		obj.width * scaleFillNative
 	)
 }
 
 // RENDER PROJECTILE:
-function renderProjectile(x, y, obj, ctxt) {
-	const tmpSprite = projectileSprites[obj.src]
-	ctxt.drawImage(tmpSprite, (x - obj.scale / 2) * scaleFactor, (y - obj.scale / 2) * scaleFactor, obj.scale * scaleFactor, obj.scale * scaleFactor)
+async function renderProjectile(x, y, obj, ctxt) {
+	const tmpSprite = await loadImage("img/weapons/" + obj.src, projectileSprites)
+	ctxt.drawImage(
+		tmpSprite,
+		(x - obj.scale / 2) * scaleFillNative,
+		(y - obj.scale / 2) * scaleFillNative,
+		obj.scale * scaleFillNative,
+		obj.scale * scaleFillNative
+	)
 }
 
-function onlyPlayer(colour, skin, tail, weapon, weaponVariant, build, resolution, filter = true) {
-	mainCanvas.width = mainCanvas.height = spriteCanvas.width = spriteCanvas.height = filterCanvas.width = filterCanvas.height = resolution
-	mainContext.clearRect(0, 0, resolution, resolution)
-	spriteContext.clearRect(0, 0, resolution, resolution)
-	filterContext.clearRect(0, 0, resolution, resolution)
+function roundRect(x, y, w, h, r, ctx) {
+	if (w < 2 * r) r = w / 2
+	if (h < 2 * r) r = h / 2
+	if (r < 0) {
+		r = 0
+	}
+	ctx.beginPath()
+	ctx.moveTo(x + r, y)
+	ctx.arcTo(x + w, y, x + w, y + h, r)
+	ctx.arcTo(x + w, y + h, x, y + h, r)
+	ctx.arcTo(x, y + h, x, y, r)
+	ctx.arcTo(x, y, x + w, y, r)
+	ctx.closePath()
+}
 
-	scaleFactor = resolution / 500
+async function onlyPlayer(colour, skin, tail, weapon, weaponVariant, build, player, filter = true) {
 	spriteContext.save()
-	spriteContext.translate(resolution / 2, resolution / 2)
-	renderPlayer(colour, skin, tail, weapon, weaponVariant, build, spriteContext)
+	spriteContext.rotate((parseFloat(player.DIRECTION) * Math.PI) / 180 || 0)
+	await renderPlayer(colour, skin, tail, weapon, weaponVariant, build, spriteContext)
 	spriteContext.restore()
 
-	mainContext.drawImage(spriteCanvas, 0, 0)
+	const tmpCanvas = document.createElement("canvas")
+	tmpCanvas.width = tmpCanvas.height = mainCanvas.width
+	const tmpContext = tmpCanvas.getContext("2d")
+
+	tmpContext.drawImage(spriteCanvas, 0, 0)
 	if (filter) {
 		filterContext.fillStyle = "rgba(0, 0, 70, 0.35)"
-		filterContext.fillRect(0, 0, resolution, resolution)
-		mainContext.globalCompositeOperation = "source-atop"
-		mainContext.drawImage(filterCanvas, 0, 0)
+		filterContext.fillRect(0, 0, filterCanvas.width, filterCanvas.height)
+		tmpContext.globalCompositeOperation = "source-atop"
+		tmpContext.drawImage(filterCanvas, 0, 0)
+	}
+
+	mainContext.drawImage(tmpCanvas, 0, 0)
+	mainContext.setTransform(scaleFillNative, 0, 0, scaleFillNative, mainCanvas.width / 2, mainCanvas.height / 2)
+	if (player.TRIBENAME || player.NAME || player.SKULL || player.CROWN) {
+		mainContext.save()
+		var tmpText = (player.TRIBENAME ? "[" + player.TRIBENAME + "] " : "") + (player.NAME || "")
+		mainContext.font = `30px Hammersmith One`
+		mainContext.fillStyle = "#fff"
+		mainContext.textBaseline = "middle"
+		mainContext.textAlign = "center"
+		mainContext.lineWidth = 8
+		mainContext.lineJoin = "round"
+		mainContext.strokeText(tmpText, 0, -35 - 34)
+		mainContext.fillText(tmpText, 0, -35 - 34)
+		if (player.CROWN) {
+			mainContext.drawImage(
+				await loadImage("img/icons/crown", iconSprites),
+				-60 / 2 - mainContext.measureText(tmpText).width / 2 - 35,
+				-35 - 34 - 60 / 2 - 5,
+				60,
+				60
+			)
+		}
+		if (player.SKULL) {
+			mainContext.drawImage(
+				await loadImage("img/icons/skull", iconSprites),
+				-60 / 2 + mainContext.measureText(tmpText).width / 2 + 35,
+				-35 - 34 - 60 / 2 - 5,
+				60,
+				60
+			)
+		}
+		mainContext.restore()
+	}
+	if (parseFloat(player.HEALTH)) {
+		mainContext.save()
+		mainContext.fillStyle = darkOutlineColor
+		roundRect(-50 - 4.5, 35 + 34, 50 * 2 + 4.5 * 2, 17, 8, mainContext)
+		mainContext.fill()
+		mainContext.fillStyle = PLAYER.HPCOLOUR === "green" ? "#8ecc51" : "#cc5151"
+		roundRect(-50, 35 + 34 + 4.5, 50 * 2 * (parseFloat(player.HEALTH) / 100), 17 - 4.5 * 2, 7, mainContext)
+		mainContext.fill()
+		mainContext.restore()
 	}
 }
 
-function onlyBuildings(name, resolution, filter = true) {
-	mainCanvas.width = mainCanvas.height = spriteCanvas.width = spriteCanvas.height = filterCanvas.width = filterCanvas.height = resolution
-	mainContext.clearRect(0, 0, resolution, resolution)
-	spriteContext.clearRect(0, 0, resolution, resolution)
-	filterContext.clearRect(0, 0, resolution, resolution)
-
-	const obj = name == "none" ? {} : ITEMS[name]
-	var spritePadding = obj.spritePadding && !(name == "spikes" || name == "greaterspikes" || name == "poisonspikes") ? obj.spritePadding : 0
-	scaleFactor = name == "none" ? 1 : resolution / (obj.scale * 2.5 + outlineWidth + spritePadding)
+function onlyBuildings(name, filter = true) {
 	const tmpSprite = getItemSprite(name, false)
 	spriteContext.save()
 	spriteContext.globalAlpha = name == "invisiblepittrap" ? 0.6 : 1
-	spriteContext.drawImage(tmpSprite, spriteCanvas.width / 2 - tmpSprite.width / 2, spriteCanvas.height / 2 - tmpSprite.height / 2)
+	spriteContext.translate(0, 0)
+	spriteContext.drawImage(tmpSprite, -tmpSprite.width / 2, -tmpSprite.height / 2)
 	spriteContext.restore()
 
 	mainContext.drawImage(spriteCanvas, 0, 0)
 	if (filter) {
 		filterContext.fillStyle = "rgba(0, 0, 70, 0.35)"
-		filterContext.fillRect(0, 0, resolution, resolution)
+		filterContext.fillRect(0, 0, filterCanvas.width, filterCanvas.height)
 		mainContext.globalCompositeOperation = "source-atop"
 		mainContext.drawImage(filterCanvas, 0, 0)
 	}
 }
 
-function onlyResources(name, biomeID, resolution, filter = true) {
-	mainCanvas.width = mainCanvas.height = spriteCanvas.width = spriteCanvas.height = filterCanvas.width = filterCanvas.height = resolution
-	mainContext.clearRect(0, 0, resolution, resolution)
-	spriteContext.clearRect(0, 0, resolution, resolution)
-	filterContext.clearRect(0, 0, resolution, resolution)
-
+function onlyResources(name, biomeID, filter = true) {
 	const tmpScale =
 		name == "gold" || name == "rock"
 			? rockScales[UTILS.randInt(0, 2)]
 			: name == "bush"
 			? bushScales[UTILS.randInt(0, 2)]
 			: treeScales[UTILS.randInt(0, 3)]
-	scaleFactor = name == "none" ? 1 : resolution / ((name == "volcano" ? 640 : tmpScale) * 2.1 + outlineWidth)
-	const tmpSprite = getResSprite(name, name == "volcano" ? UTILS.randInt(170, 200) :tmpScale, biomeID, false)
+	const tmpSprite = getResSprite(name, name == "volcano" ? UTILS.randFloat(170, 200) : tmpScale, biomeID, false)
 	spriteContext.save()
-	spriteContext.drawImage(tmpSprite, spriteCanvas.width / 2 - tmpSprite.width / 2, spriteCanvas.height / 2 - tmpSprite.height / 2)
+	spriteContext.drawImage(tmpSprite, -tmpSprite.width / 2, -tmpSprite.height / 2)
 	spriteContext.restore()
 
 	mainContext.drawImage(spriteCanvas, 0, 0)
 	if (filter) {
 		filterContext.fillStyle = "rgba(0, 0, 70, 0.35)"
-		filterContext.fillRect(0, 0, resolution, resolution)
+		filterContext.fillRect(0, 0, filterCanvas.width, filterCanvas.height)
 		mainContext.globalCompositeOperation = "source-atop"
 		mainContext.drawImage(filterCanvas, 0, 0)
 	}
 }
 
-function onlyAnimals(name, resolution, filter = true) {
-	mainCanvas.width = mainCanvas.height = spriteCanvas.width = spriteCanvas.height = filterCanvas.width = filterCanvas.height = resolution
-	mainContext.clearRect(0, 0, resolution, resolution)
-	spriteContext.clearRect(0, 0, resolution, resolution)
-	filterContext.clearRect(0, 0, resolution, resolution)
-
-	scaleFactor = resolution / 500
-	const tmpSprite = aiSprites[name]
+async function onlyAnimals(name, ai, filter = true) {
 	const obj = name == "none" ? {} : ANIMALS[name]
-	var tmpScale = obj.scale * 1.2 * (obj.spriteMlt || 1)
+	var tmpScale = obj.scale * 1.2 * (obj.spriteMlt || 1) * scaleFillNative
 	spriteContext.save()
-	spriteContext.translate(resolution / 2, resolution / 2)
+	spriteContext.rotate((parseFloat(ai.DIRECTION) * Math.PI) / 180 || 0)
 	if (name != "none") {
-		spriteContext.drawImage(tmpSprite, -tmpScale * scaleFactor, -tmpScale * scaleFactor, tmpScale * 2 * scaleFactor, tmpScale * 2 * scaleFactor)
+		const tmpSprite = await loadImage("img/animals/" + name, aiSprites)
+		spriteContext.drawImage(tmpSprite, -tmpScale, -tmpScale, tmpScale * 2, tmpScale * 2)
 	}
 	spriteContext.restore()
 
-	mainContext.drawImage(spriteCanvas, 0, 0)
+	const tmpCanvas = document.createElement("canvas")
+	tmpCanvas.width = tmpCanvas.height = mainCanvas.width
+	const tmpContext = tmpCanvas.getContext("2d")
+
+	tmpContext.drawImage(spriteCanvas, 0, 0)
 	if (filter) {
 		filterContext.fillStyle = "rgba(0, 0, 70, 0.35)"
-		filterContext.fillRect(0, 0, resolution, resolution)
-		mainContext.globalCompositeOperation = "source-atop"
-		mainContext.drawImage(filterCanvas, 0, 0)
+		filterContext.fillRect(0, 0, filterCanvas.width, filterCanvas.height)
+		tmpContext.globalCompositeOperation = "source-atop"
+		tmpContext.drawImage(filterCanvas, 0, 0)
+	}
+
+	mainContext.drawImage(tmpCanvas, 0, 0)
+	if (name === "none") return
+	mainContext.setTransform(scaleFillNative, 0, 0, scaleFillNative, mainCanvas.width / 2, mainCanvas.height / 2)
+	if (ai.NAME) {
+		mainContext.save()
+		var tmpText = ai.NAME || ""
+		mainContext.font = `30px Hammersmith One`
+		mainContext.fillStyle = "#fff"
+		mainContext.textBaseline = "middle"
+		mainContext.textAlign = "center"
+		mainContext.lineWidth = 8
+		mainContext.lineJoin = "round"
+		mainContext.strokeText(tmpText, 0, -obj.scale - 34)
+		mainContext.fillText(tmpText, 0, -obj.scale - 34)
+		mainContext.restore()
+	}
+	if (parseFloat(ai.HEALTH)) {
+		mainContext.save()
+		mainContext.fillStyle = darkOutlineColor
+		roundRect(-50 - 4.5, obj.scale + 34, 50 * 2 + 4.5 * 2, 17, 8, mainContext)
+		mainContext.fill()
+		mainContext.fillStyle = "#cc5151"
+		roundRect(-50, obj.scale + 34 + 4.5, 50 * 2 * (parseFloat(ai.HEALTH) / 100), 17 - 4.5 * 2, 7, mainContext)
+		mainContext.fill()
+		mainContext.restore()
+	}
+}
+
+function onlyBackground(grid, filter = true) {
+	spriteContext.globalAlpha = 1
+	if (2400 - yOffset <= 0 && 14400 - 2400 - yOffset >= maxScreenHeight) {
+		spriteContext.fillStyle = "#b6db66"
+		spriteContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight)
+	} else if (14400 - 2400 - yOffset <= 0) {
+		spriteContext.fillStyle = "#dbc666"
+		spriteContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight)
+	} else if (2400 - yOffset >= maxScreenHeight) {
+		spriteContext.fillStyle = "#fff"
+		spriteContext.fillRect(0, 0, maxScreenWidth, maxScreenHeight)
+	} else if (2400 - yOffset >= 0) {
+		spriteContext.fillStyle = "#fff"
+		spriteContext.fillRect(0, 0, maxScreenWidth, 2400 - yOffset)
+		spriteContext.fillStyle = "#b6db66"
+		spriteContext.fillRect(0, 2400 - yOffset, maxScreenWidth, maxScreenHeight - (2400 - yOffset))
+	} else {
+		spriteContext.fillStyle = "#b6db66"
+		spriteContext.fillRect(0, 0, maxScreenWidth, 14400 - 2400 - yOffset)
+		spriteContext.fillStyle = "#dbc666"
+		spriteContext.fillRect(0, 14400 - 2400 - yOffset, maxScreenWidth, maxScreenHeight - (14400 - 2400 - yOffset))
+	}
+
+	function renderWaterBodies(ctxt, padding) {
+		var tmpW = 724 + padding
+		var tmpY = 14400 / 2 - yOffset - tmpW / 2
+		if (tmpY < maxScreenHeight && tmpY + tmpW > 0) {
+			ctxt.fillRect(0, tmpY, maxScreenWidth, tmpW)
+		}
+	}
+
+	spriteContext.fillStyle = "#dbc666"
+	renderWaterBodies(spriteContext, 114)
+	spriteContext.fillStyle = "#91b2db"
+	renderWaterBodies(spriteContext, UTILS.randFloat(0, 0.3) * 250)
+
+	if (grid) {
+		spriteContext.lineWidth = 4
+		spriteContext.strokeStyle = "#000"
+		spriteContext.globalAlpha = 0.06
+		spriteContext.beginPath()
+		for (var x = -POSITIONX; x < maxScreenWidth; x += maxScreenHeight / 18) {
+			if (x > 0) {
+				spriteContext.moveTo(x, 0)
+				spriteContext.lineTo(x, maxScreenHeight)
+			}
+		}
+		for (var y = -POSITIONY; y < maxScreenHeight; y += maxScreenHeight / 18) {
+			if (x > 0) {
+				spriteContext.moveTo(0, y)
+				spriteContext.lineTo(maxScreenWidth, y)
+			}
+		}
+		spriteContext.stroke()
+	}
+
+	spriteContext.fillStyle = "#000"
+	spriteContext.globalAlpha = 0.09
+	if (xOffset <= 0) {
+		spriteContext.fillRect(0, 0, -xOffset, maxScreenHeight)
+	}
+	if (14400 - xOffset <= maxScreenWidth) {
+		var tmpY = Math.max(0, -yOffset)
+		spriteContext.fillRect(14400 - xOffset, tmpY, maxScreenWidth - (14400 - xOffset), maxScreenHeight - tmpY)
+	}
+	if (yOffset <= 0) {
+		spriteContext.fillRect(-xOffset, 0, maxScreenWidth + xOffset, -yOffset)
+	}
+	if (14400 - yOffset <= maxScreenHeight) {
+		let tmpX = Math.max(0, -xOffset)
+		var tmpMin = 0
+		if (14400 - xOffset <= maxScreenWidth) {
+			tmpMin = maxScreenWidth - (14400 - xOffset)
+		}
+		spriteContext.fillRect(tmpX, 14400 - yOffset, maxScreenWidth - tmpX - tmpMin, maxScreenHeight - (14400 - yOffset))
+	}
+
+	mainContext.drawImage(spriteCanvas, 0, 0)
+	if (filter) {
+		mainContext.globalAlpha = 1
+		mainContext.fillStyle = "rgba(0, 0, 70, 0.35)"
+		mainContext.fillRect(0, 0, mainCanvas.width, mainCanvas.height)
 	}
 }
