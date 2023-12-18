@@ -705,12 +705,12 @@ async function onlyAnimals(name, ai, filter = true) {
 	if (ai.NAME) {
 		mainContext.save()
 		var tmpText = ai.NAME || ""
-		mainContext.font = `30px Hammersmith One`
+		mainContext.font = `${obj.nameScale || 30}px Hammersmith One`
 		mainContext.fillStyle = "#fff"
 		mainContext.strokeStyle = darkOutlineColor
 		mainContext.textBaseline = "middle"
 		mainContext.textAlign = "center"
-		mainContext.lineWidth = 8
+		mainContext.lineWidth = obj.nameScale ? 11 : 8
 		mainContext.lineJoin = "round"
 		mainContext.strokeText(tmpText, 0, -obj.scale - 34)
 		mainContext.fillText(tmpText, 0, -obj.scale - 34)
