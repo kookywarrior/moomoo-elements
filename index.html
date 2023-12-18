@@ -16,6 +16,9 @@
 			<div class="container">
 				<div onclick="changeCategory(this)" name="buildings" class="selectCategory selected">Buildings</div>
 				<div onclick="changeCategory(this)" name="resources" class="selectCategory">Resources</div>
+				<div onclick="changeCategory(this)" name="hats" class="selectCategory">Hats</div>
+				<div onclick="changeCategory(this)" name="access" class="selectCategory">Accessories</div>
+				<div onclick="changeCategory(this)" name="weapons" class="selectCategory">Weapons</div>
 				<div onclick="changeCategory(this)" name="player" class="selectCategory">Player</div>
 				<div onclick="changeCategory(this)" name="animals" class="selectCategory">Animals</div>
 				<div onclick="changeCategory(this)" name="background" class="selectCategory">Background</div>
@@ -47,6 +50,21 @@
 				<section id="resources" hidden>
 					<div id="resourcesContainer">
 						<div name="none" class="selectResource selected" onclick="selectResource(this)"></div>
+					</div>
+				</section>
+				<section id="hats" hidden>
+					<div id="hatsContainer">
+						<div name="" class="selectHat selected" onclick="selectHat(this)"></div>
+					</div>
+				</section>
+				<section id="access" hidden>
+					<div id="accessContainer">
+						<div name="" class="selectAccess selected" onclick="selectAccess(this)"></div>
+					</div>
+				</section>
+				<section id="weapons" hidden>
+					<div id="weaponsContainer">
+						<div name="" class="selectWeapon selected" onclick="selectWeapon(this)"></div>
 					</div>
 				</section>
 				<section id="player" hidden>
@@ -87,13 +105,13 @@
 					</div>
 					<input oninput="changePlayerValue('DIRECTION', this.value)" onchange="changePlayerValue('DIRECTION', this.value)" type="number" placeholder="Direction" min="0" max="359" style="float: left" />
 					<input oninput="changePlayerValue('TOPHATDIRECTION', this.value)" onchange="changePlayerValue('TOPHATDIRECTION', this.value)" type="number" placeholder="Top Hat Direction" min="0" max="359" style="float: left" />
-					<div id="hatsContainer">
+					<div id="playerHatsContainer">
 						<div class="selectHat selected" onclick="selectHat(this)"></div>
 					</div>
-					<div id="accessContainer">
+					<div id="playerAccessContainer">
 						<div class="selectAccess selected" onclick="selectAccess(this)"></div>
 					</div>
-					<div id="weaponsContainer">
+					<div id="playerWeaponsContainer">
 						<div class="selectWeapon selected" onclick="selectWeapon(this)"></div>
 					</div>
 				</section>
