@@ -558,7 +558,7 @@ const ANIMALS = {
 	bull_1: { scale: 90 },
 	wolf_1: { scale: 84 },
 	chicken_1: { scale: 70 },
-	enemy: { scale: 80, spriteMlt: 1.8 },
-	crate_1: { scale: 70, spriteMlt: 1.0 },
-	wolf_2: { scale: 90 }
+	enemy: { scale: 80, spriteMlt: 1.8, nameScale: 50 },
+	crate_1: { scale: 70, spriteMlt: 1.0, nameScale: 35 },
+	wolf_2: { scale: 90, nameScale: 35 }
 }
