@@ -32,7 +32,7 @@ body {
 	transform: translate(-50%, -50%);
 }
 
-.container {
+.menu-container {
 	width: 30%;
 	height: fit-content;
 	background-color: white;
@@ -44,15 +44,11 @@ body {
 	align-items: center;
 }
 
-.container > :first-child {
+.menu-container > :first-child {
 	margin-top: 5%;
 }
 
-section {
-	margin-top: 5%;
-}
-
-.container > * {
+.menu-container > * {
 	margin-bottom: 5%;
 	margin-left: 5%;
 	margin-right: 5%;
@@ -163,96 +159,56 @@ input[type="text"] {
 	color: grey;
 }
 
-#buildings {
+section {
+	margin-top: 5%;
 	width: 90%;
 	overflow-y: auto;
 }
 
-#buildingsContainer {
-	width: 100%;
-	display: flex;
-	flex-direction: row;
-	justify-content: flex-start;
-	flex-wrap: wrap;
-}
-
-.selectBuilding {
-	width: 25%;
-	aspect-ratio: 1;
-	cursor: pointer;
-	background-color: #586b43;
-	border-radius: 10%;
-	margin: 3%;
-	background-size: 100% 100%;
-}
-
-.selectBuilding.selected {
-	border-radius: 100%;
-}
-
-.selectBuilding:hover {
-	background-color: #657850;
-}
-
-#resources {
-	width: 90%;
-	overflow-y: auto;
-}
-
-#resourcesContainer {
-	width: 100%;
-	display: flex;
-	flex-direction: row;
-	justify-content: flex-start;
-	flex-wrap: wrap;
-}
-
-.selectResource {
-	width: 25%;
-	aspect-ratio: 1;
-	cursor: pointer;
-	background-color: #586b43;
-	border-radius: 10%;
-	margin: 3%;
-	background-size: 100% 100%;
-}
-
-.selectResource.selected {
-	border-radius: 100%;
-}
-
-.selectResource:hover {
-	background-color: #657850;
-}
-
-#hats,
-#weapons,
-#access {
-	width: 90%;
-	overflow-y: auto;
-}
-
-#hatsContainer,
-#accessContainer,
-#weaponsContainer {
-	width: 100%;
-	display: flex;
-	flex-direction: row;
-	justify-content: flex-start;
-	flex-wrap: wrap;
-}
-
-#player {
-	width: 90%;
-	overflow-y: auto;
-}
-
-#player > * {
+section > * {
 	margin-bottom: 5%;
 }
 
-#player > :last-child {
+section > :last-child {
 	margin-bottom: 0 !important;
+}
+
+.container {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	flex-wrap: wrap;
+}
+
+.container > * {
+	width: 25%;
+	aspect-ratio: 1;
+	cursor: pointer;
+	background-color: #586b43;
+	border-radius: 10%;
+	margin: 3%;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	background-position: center;
+	/* background-attachment: fixed; */
+}
+
+#player > .container > * {
+	width: 15%;
+	margin: 1.5%;
+}
+
+.container.img > * {
+	background-size: 80% 80%;
+}
+
+.container > *.selected {
+	border-radius: 100%;
+}
+
+.container > *:hover {
+	background-color: #657850;
 }
 
 #coloursContainer {
@@ -280,161 +236,8 @@ input[type="text"] {
 	border-radius: 10%;
 }
 
-#playerHatsContainer {
-	width: 100%;
-	display: flex;
-	flex-direction: row;
-	justify-content: flex-start;
-	flex-wrap: wrap;
-}
-
-.selectHat {
-	width: 25%;
-	aspect-ratio: 1;
-	cursor: pointer;
-	background-color: #586b43;
-	border-radius: 10%;
-	margin: 3%;
-	background-size: 80% 80%;
-	background-repeat: no-repeat;
-	background-attachment: fixed;
-	background-position: center;
-}
-
-#playerHatsContainer > .selectHat {
-	width: 15%;
-	margin: 1.5%;
-}
-
-.selectHat.selected {
-	border-radius: 100%;
-}
-
-.selectHat:hover {
-	background-color: #657850;
-}
-
-#playerAccessContainer {
-	width: 100%;
-	display: flex;
-	flex-direction: row;
-	justify-content: flex-start;
-	flex-wrap: wrap;
-}
-
-.selectAccess {
-	width: 25%;
-	aspect-ratio: 1;
-	cursor: pointer;
-	background-color: #586b43;
-	border-radius: 10%;
-	margin: 3%;
-	background-size: 80% 80%;
-	background-repeat: no-repeat;
-	background-attachment: fixed;
-	background-position: center;
-}
-
-#playerAccessContainer > .selectAccess {
-	width: 15%;
-	margin: 1.5%;
-}
-
-.selectAccess.selected {
-	border-radius: 100%;
-}
-
-.selectAccess:hover {
-	background-color: #657850;
-}
-
-#playerWeaponsContainer {
-	width: 100%;
-	display: flex;
-	flex-direction: row;
-	justify-content: flex-start;
-	flex-wrap: wrap;
-}
-
 .selectWeapon {
-	width: 25%;
-	aspect-ratio: 1;
-	cursor: pointer;
-	background-color: #586b43;
-	border-radius: 10%;
-	margin: 3%;
 	background-size: contain;
-	background-repeat: no-repeat;
-	background-attachment: fixed;
-	background-position: center;
-}
-
-#playerWeaponsContainer > .selectWeapon {
-	width: 15%;
-	margin: 1.5%;
-}
-
-.selectWeapon.selected {
-	border-radius: 100%;
-}
-
-.selectWeapon:hover {
-	background-color: #657850;
-}
-
-#animals {
-	width: 90%;
-	overflow-y: auto;
-}
-
-#animals > * {
-	margin-bottom: 5%;
-}
-
-#animals > :last-child {
-	margin-bottom: 0 !important;
-}
-
-#animalsContainer {
-	width: 100%;
-	display: flex;
-	flex-direction: row;
-	justify-content: flex-start;
-	flex-wrap: wrap;
-}
-
-.selectAnimal {
-	width: 25%;
-	aspect-ratio: 1;
-	cursor: pointer;
-	background-color: #586b43;
-	border-radius: 10%;
-	margin: 3%;
-	background-size: 80% 80%;
-	background-repeat: no-repeat;
-	background-attachment: fixed;
-	background-position: center;
-}
-
-.selectAnimal.selected {
-	border-radius: 100%;
-}
-
-.selectAnimal:hover {
-	background-color: #657850;
-}
-
-#background {
-	width: 90%;
-	overflow-y: auto;
-}
-
-#background > * {
-	margin-bottom: 5%;
-}
-
-#background > :last-child {
-	margin-bottom: 0 !important;
 }
 
 #background > .radio {
