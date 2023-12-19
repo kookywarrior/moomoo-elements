@@ -6,13 +6,14 @@ body {
 	font-family: "Hammersmith One";
 	background-color: #3b472d;
 	user-select: none;
-	font-size: large;
+	font-weight: 400;
+	font-size: 18px;
 	color: black;
 }
 
 #loading {
 	color: white;
-	font-size: xx-large;
+	font-size: 30px;
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -85,12 +86,6 @@ section {
 	left: 0;
 }
 
-.title {
-	font-size: larger;
-	text-align: start;
-	margin-bottom: auto !important;
-}
-
 .boolean {
 	width: 90%;
 	display: flex;
@@ -127,14 +122,14 @@ input[type="number"] {
 
 input[type="text"] {
 	text-align: center;
-    font-size: large;
-    padding: 0.4em;
-    border: none;
-    outline: none;
-    box-sizing: border-box;
-    color: #4A4A4A;
-    background-color: #e5e3e3;
-    width: 80%;
+	font-size: 18px;
+	padding: 0.4em;
+	border: none;
+	outline: none;
+	box-sizing: border-box;
+	color: #4a4a4a;
+	background-color: #e5e3e3;
+	width: 80%;
 	float: left;
 }
 
@@ -154,7 +149,7 @@ input[type="text"] {
 }
 
 .selectCategory {
-	font-size: larger;
+	font-size: 21.5px;
 	width: 90%;
 	color: black;
 	cursor: pointer;
@@ -230,12 +225,16 @@ input[type="text"] {
 	background-color: #657850;
 }
 
-#hats, #weapons, #access {
+#hats,
+#weapons,
+#access {
 	width: 90%;
 	overflow-y: auto;
 }
 
-#hatsContainer, #accessContainer, #weaponsContainer {
+#hatsContainer,
+#accessContainer,
+#weaponsContainer {
 	width: 100%;
 	display: flex;
 	flex-direction: row;
