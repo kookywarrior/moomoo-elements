@@ -397,7 +397,7 @@ function getItemSprite(name, rotate, asIcon, spikeBuild = false) {
 }
 
 // RENDER PLAYER:
-async function renderPlayer(colour, skin, tail, weapon, weaponVariant, build, player, ctxt) {
+async function renderPlayer(colour, skin, tail, weapon, weaponVariant, build, projectile, player, ctxt) {
 	ctxt = ctxt || spriteContext
 	ctxt.lineWidth = outlineWidth * scaleFillNative
 	ctxt.lineJoin = "miter"
@@ -411,8 +411,8 @@ async function renderPlayer(colour, skin, tail, weapon, weaponVariant, build, pl
 	// WEAPON BELLOW HANDS:
 	if (weapon && !WEAPONS[weapon].aboveHand) {
 		await renderTool(WEAPONS[weapon], weaponVariant, 35, 0, true, ctxt)
-		if (WEAPONS[weapon].projectile != undefined && !WEAPONS[weapon].hideProjectile) {
-			await renderProjectile(35, 0, PROJECTILES[WEAPONS[weapon].projectile], spriteContext)
+		if (projectile && WEAPONS[weapon].projectile) {
+			await renderProjectile(projectile, 35, 0, spriteContext)
 		}
 	}
 	// HANDS:
@@ -423,8 +423,8 @@ async function renderPlayer(colour, skin, tail, weapon, weaponVariant, build, pl
 	// WEAPON ABOVE HANDS:
 	if (weapon && WEAPONS[weapon].aboveHand) {
 		await renderTool(WEAPONS[weapon], weaponVariant, 35, 0, true, ctxt)
-		if (WEAPONS[weapon].projectile != undefined) {
-			await renderProjectile(35, 0, PROJECTILES[WEAPONS[weapon].projectile], spriteContext)
+		if (projectile && WEAPONS[weapon].projectile) {
+			await renderProjectile(projectile, 35, 0, spriteContext)
 		}
 	}
 	// BUILD ITEM:
@@ -488,15 +488,21 @@ async function renderTool(obj, variant, x, y, translate = true, ctxt) {
 }
 
 // RENDER PROJECTILE:
-async function renderProjectile(x, y, obj, ctxt) {
-	const tmpSprite = await loadImage("img/weapons/" + obj.src, projectileSprites)
-	ctxt.drawImage(
-		tmpSprite,
-		(x - obj.scale / 2) * scaleFillNative,
-		(y - obj.scale / 2) * scaleFillNative,
-		obj.scale * scaleFillNative,
-		obj.scale * scaleFillNative
-	)
+async function renderProjectile(name, x, y, ctxt) {
+	if (name === "turret") {
+		ctxt.fillStyle = "#939393"
+		ctxt.strokeStyle = outlineColor
+		ctxt.lineWidth = outlineWidth * scaleFillNative
+		renderCircle(x, y, PROJECTILES[name].scale, ctxt)
+	} else {
+		ctxt.drawImage(
+			await loadImage("img/weapons/" + name, projectileSprites),
+			(x - PROJECTILES[name].scale / 2) * scaleFillNative,
+			(y - PROJECTILES[name].scale / 2) * scaleFillNative,
+			PROJECTILES[name].scale * scaleFillNative,
+			PROJECTILES[name].scale * scaleFillNative
+		)
+	}
 }
 
 function roundRect(x, y, w, h, r, ctx) {
@@ -574,10 +580,30 @@ async function onlyWeapons(name, variant, filter = true) {
 	}
 }
 
-async function onlyPlayer(colour, skin, tail, weapon, weaponVariant, build, player, filter = true) {
+async function onlyProjectiles(name, filter = true) {
+	if (!name) {
+		const tmpCanvas = document.createElement("canvas")
+		tmpCanvas.width = tmpCanvas.height = 1
+		return tmpCanvas
+	}
+
+	spriteContext.save()
+	await renderProjectile(name, 0, 0, spriteContext)
+	spriteContext.restore()
+
+	mainContext.drawImage(spriteCanvas, 0, 0)
+	if (filter) {
+		filterContext.fillStyle = "rgba(0, 0, 70, 0.35)"
+		filterContext.fillRect(0, 0, filterCanvas.width, filterCanvas.height)
+		mainContext.globalCompositeOperation = "source-atop"
+		mainContext.drawImage(filterCanvas, 0, 0)
+	}
+}
+
+async function onlyPlayer(colour, skin, tail, weapon, weaponVariant, build, projectile, player, filter = true) {
 	spriteContext.save()
 	spriteContext.rotate((parseFloat(player.DIRECTION) * Math.PI) / 180 || 0)
-	await renderPlayer(colour, skin, tail, weapon, weaponVariant, build, player, spriteContext)
+	await renderPlayer(colour, skin, tail, weapon, weaponVariant, build, projectile, player, spriteContext)
 	spriteContext.restore()
 
 	const tmpCanvas = document.createElement("canvas")
