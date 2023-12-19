@@ -248,7 +248,7 @@ function getItemSprite(name, rotate, asIcon, spikeBuild = false) {
 			spritePadding = obj.spritePadding
 		}
 	}
-	tmpCanvas.width = tmpCanvas.height = (obj.scale * 2.5 + outlineWidth + spritePadding) * scaleFillNative
+	tmpCanvas.width = tmpCanvas.height = ((obj.scale + (name === "blockerwithcircle" ? 300 : 0)) * 2.5 + outlineWidth + spritePadding) * scaleFillNative
 	const tmpContext = tmpCanvas.getContext("2d")
 	tmpContext.translate(tmpCanvas.width / 2, tmpCanvas.height / 2)
 	tmpContext.rotate(asIcon || !rotate ? 0 : Math.PI / 2)
@@ -376,7 +376,7 @@ function getItemSprite(name, rotate, asIcon, spikeBuild = false) {
 		tmpContext.stroke()
 		tmpContext.fillStyle = "#71aad6"
 		renderCircle(0, 0, obj.scale * 0.6, tmpContext)
-	} else if (name == "blocker") {
+	} else if (name == "blocker" || name == "blockerwithcircle") {
 		tmpContext.fillStyle = "#7e7f82"
 		renderCircle(0, 0, obj.scale, tmpContext)
 		tmpContext.fill()
@@ -384,6 +384,12 @@ function getItemSprite(name, rotate, asIcon, spikeBuild = false) {
 		tmpContext.rotate(Math.PI / 4)
 		tmpContext.fillStyle = "#db6e6e"
 		renderRectCircle(0, 0, obj.scale * 0.65, 20, 4, tmpContext, true)
+		if (name == "blockerwithcircle") {
+			tmpContext.strokeStyle = "#db6e6e"
+			tmpContext.globalAlpha = 0.3
+			tmpContext.lineWidth = 6 * (asIcon ? 10 : scaleFillNative)
+			renderCircle(0, 0, 300, tmpContext, false, true)
+		}
 	} else if (name == "teleporter") {
 		tmpContext.fillStyle = "#7e7f82"
 		renderCircle(0, 0, obj.scale, tmpContext)
