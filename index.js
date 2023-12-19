@@ -11,7 +11,8 @@ const ZOOMFACTOR = {
 	player: 45,
 	animals: 40,
 	background: 100,
-	volcano: 125
+	volcano: 125,
+	blockerwithcircle: 60
 }
 var xOffset, yOffset
 
@@ -27,7 +28,15 @@ window.changeCategory = (element) => {
 	}
 	document.getElementById(element.getAttribute("name")).hidden = false
 	CATEGORY = element.getAttribute("name")
-	document.getElementById("zoom").value = ZOOMFACTOR[CATEGORY === "resources" && SELECTRESOURCE === "volcano" ? "volcano" : CATEGORY]
+
+	document.getElementById("zoom").value =
+		ZOOMFACTOR[
+			CATEGORY === "resources" && SELECTRESOURCE === "volcano"
+				? "volcano"
+				: CATEGORY === "buildings" && SELECTBUILDING === "blockerwithcircle"
+				? "blockerwithcircle"
+				: CATEGORY
+		]
 	window.generate()
 }
 
@@ -42,8 +51,21 @@ document.getElementById("resolution").addEventListener("change", () => {
 	window.generate()
 })
 document.getElementById("zoom").addEventListener("change", () => {
-	ZOOMFACTOR[CATEGORY === "resources" && SELECTRESOURCE === "volcano" ? "volcano" : CATEGORY] = parseFloat(document.getElementById("zoom").value) || 100
-	document.getElementById("zoom").value = ZOOMFACTOR[CATEGORY === "resources" && SELECTRESOURCE === "volcano" ? "volcano" : CATEGORY]
+	ZOOMFACTOR[
+		CATEGORY === "resources" && SELECTRESOURCE === "volcano"
+			? "volcano"
+			: CATEGORY === "buildings" && SELECTBUILDING === "blockerwithcircle"
+			? "blockerwithcircle"
+			: CATEGORY
+	] = parseFloat(document.getElementById("zoom").value) || 100
+	document.getElementById("zoom").value =
+		ZOOMFACTOR[
+			CATEGORY === "resources" && SELECTRESOURCE === "volcano"
+				? "volcano"
+				: CATEGORY === "buildings" && SELECTBUILDING === "blockerwithcircle"
+				? "blockerwithcircle"
+				: CATEGORY
+		]
 	window.generate()
 })
 
@@ -106,6 +128,14 @@ window.selectBuidling = (element) => {
 	}
 	element.classList.add("selected")
 	SELECTBUILDING = element.getAttribute("name")
+	document.getElementById("zoom").value =
+		ZOOMFACTOR[
+			CATEGORY === "resources" && SELECTRESOURCE === "volcano"
+				? "volcano"
+				: CATEGORY === "buildings" && SELECTBUILDING === "blockerwithcircle"
+				? "blockerwithcircle"
+				: CATEGORY
+		]
 	window.generate()
 }
 
@@ -119,7 +149,14 @@ window.selectResource = (element) => {
 	element.classList.add("selected")
 	SELECTRESOURCE = element.getAttribute("name")
 	SELECTBIOME = parseInt(element.getAttribute("biome"))
-	document.getElementById("zoom").value = ZOOMFACTOR[SELECTRESOURCE === "volcano" ? "volcano" : CATEGORY]
+	document.getElementById("zoom").value =
+		ZOOMFACTOR[
+			CATEGORY === "resources" && SELECTRESOURCE === "volcano"
+				? "volcano"
+				: CATEGORY === "buildings" && SELECTBUILDING === "blockerwithcircle"
+				? "blockerwithcircle"
+				: CATEGORY
+		]
 	window.generate()
 }
 
