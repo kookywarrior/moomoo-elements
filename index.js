@@ -7,6 +7,7 @@ const ZOOMFACTOR = {
 	hats: 30,
 	access: 30,
 	weapons: 30,
+	projectiles: 30,
 	player: 45,
 	animals: 40,
 	background: 100,
@@ -153,39 +154,72 @@ document.getElementById("customColour").addEventListener("input", () => {
 })
 
 var SELECTHAT = null
+var SELECTPLAYERHAT = null
 window.selectHat = (element) => {
-	const selected = document.querySelector(".selectHat.selected")
+	const selected = document.querySelector((CATEGORY === "player" ? "#player > .container > " : "") + ".selectHat.selected")
 	if (selected) {
 		selected.classList.remove("selected")
 	}
 	element.classList.add("selected")
-	SELECTHAT = element.getAttribute("name")
+	if (CATEGORY === "player") {
+		SELECTPLAYERHAT = element.getAttribute("name")
+	} else {
+		SELECTHAT = element.getAttribute("name")
+	}
 	window.generate()
 }
 
 var SELECTACCESS = null
+var SELECTPLAYERACCESS = null
 window.selectAccess = (element) => {
-	const selected = document.querySelector(".selectAccess.selected")
+	const selected = document.querySelector((CATEGORY === "player" ? "#player > .container > " : "") + ".selectAccess.selected")
 	if (selected) {
 		selected.classList.remove("selected")
 	}
 	element.classList.add("selected")
-	SELECTACCESS = element.getAttribute("name")
+	if (CATEGORY === "player") {
+		SELECTPLAYERACCESS = element.getAttribute("name")
+	} else {
+		SELECTACCESS = element.getAttribute("name")
+	}
 	window.generate()
 }
 
 var SELECTWEAPON = null
 var SELECTVARIANT = null
-var SELECTBUILD = null
+var SELECTPLAYERWEAPON = null
+var SELECTPLAYERVARIANT = null
+var SELECTPLAYERBUILDING = null
 window.selectWeapon = (element) => {
-	const selected = document.querySelector(".selectWeapon.selected")
+	const selected = document.querySelector((CATEGORY === "player" ? "#player > .container > " : "") + ".selectWeapon.selected")
 	if (selected) {
 		selected.classList.remove("selected")
 	}
 	element.classList.add("selected")
-	SELECTWEAPON = element.getAttribute("name")
-	SELECTVARIANT = element.getAttribute("variant")
-	SELECTBUILD = element.getAttribute("build")
+	if (CATEGORY === "player") {
+		SELECTPLAYERWEAPON = element.getAttribute("name")
+		SELECTPLAYERVARIANT = element.getAttribute("variant")
+		SELECTPLAYERBUILDING = element.getAttribute("build")
+	} else {
+		SELECTWEAPON = element.getAttribute("name")
+		SELECTVARIANT = element.getAttribute("variant")
+	}
+	window.generate()
+}
+
+var SELECTPROJECTILE = null
+var SELECTPLAYERPROJECTILE = null
+window.selectProjectile = (element) => {
+	const selected = document.querySelector((CATEGORY === "player" ? "#player > .container > " : "") + ".selectProjectile.selected")
+	if (selected) {
+		selected.classList.remove("selected")
+	}
+	element.classList.add("selected")
+	if (CATEGORY === "player") {
+		SELECTPLAYERPROJECTILE = element.getAttribute("name")
+	} else {
+		SELECTPROJECTILE = element.getAttribute("name")
+	}
 	window.generate()
 }
 
@@ -212,8 +246,20 @@ window.generate = () => {
 		onlyAccess(SELECTACCESS, FILTER)
 	} else if (CATEGORY === "weapons") {
 		onlyWeapons(SELECTWEAPON, SELECTVARIANT, FILTER)
+	} else if (CATEGORY === "projectiles") {
+		onlyProjectiles(SELECTPROJECTILE, FILTER)
 	} else if (CATEGORY === "player") {
-		onlyPlayer(SELECTCOLOUR, SELECTHAT, SELECTACCESS, SELECTWEAPON, SELECTVARIANT, SELECTBUILD, PLAYER, FILTER)
+		onlyPlayer(
+			SELECTCOLOUR,
+			SELECTPLAYERHAT,
+			SELECTPLAYERACCESS,
+			SELECTPLAYERWEAPON,
+			SELECTPLAYERVARIANT,
+			SELECTPLAYERBUILDING,
+			SELECTPLAYERPROJECTILE,
+			PLAYER,
+			FILTER
+		)
 	} else if (CATEGORY === "animals") {
 		onlyAnimals(SELECTANIMAL, AI, FILTER)
 	} else if (CATEGORY === "background") {
