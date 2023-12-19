@@ -73,7 +73,7 @@ const WEAPONS = {
 		width: 120,
 		xOff: -6,
 		yOff: 0,
-		projectile: "arrow"
+		projectile: true
 	},
 	greathammer: {
 		src: "great_hammer_1",
@@ -98,7 +98,7 @@ const WEAPONS = {
 		width: 120,
 		xOff: -4,
 		yOff: 0,
-		projectile: "arrow"
+		projectile: true
 	},
 	reapetercrossbow: {
 		src: "crossbow_2",
@@ -108,7 +108,7 @@ const WEAPONS = {
 		width: 120,
 		xOff: -4,
 		yOff: 0,
-		projectile: "arrow"
+		projectile: true
 	},
 	mcgrabby: {
 		src: "grab_1",
@@ -131,17 +131,11 @@ const WEAPONS = {
 	}
 }
 const PROJECTILES = {
-	arrow: {
-		scale: 103,
-		src: "arrow_1"
-	},
-	musket: {
-		scale: 160,
-		src: "bullet_1"
-	},
-	turret: {
-		scale: 20
-	}
+	arrow_1: { scale: 103 },
+	arrow_2: { scale: 103 },
+	arrow_3: { scale: 103 },
+	bullet_1: { scale: 160 },
+	turret: { scale: 20 }
 }
 
 const ITEMS = {
