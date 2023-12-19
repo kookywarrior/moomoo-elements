@@ -1,26 +1,7 @@
 var projectileSprites = {}
-var projectilesSrc = ["arrow_1", "arrow_2", "arrow_3", "bullet_1"]
 var skinSprites = {}
 var accessSprites = {}
 var toolSprites = {}
-var toolsSrc = [
-	"axe_1",
-	"bat_1",
-	"bow_1",
-	"crossbow_1",
-	"crossbow_2",
-	"dagger_1",
-	"grab_1",
-	"great_axe_1",
-	"great_hammer_1",
-	"hammer_1",
-	"samurai_1",
-	"musket_1",
-	"shield_1",
-	"spear_1",
-	"stick_1",
-	"sword_1"
-]
 var aiSprites = {}
 var iconSprites = {}
 
@@ -64,6 +45,38 @@ async function preload() {
 		tmpElement.style.backgroundImage = `url(https://moomoo.io/img/animals/${name}.png)`
 		document.getElementById("animalsContainer").appendChild(tmpElement)
 		tmpElement.setAttribute("onclick", "selectAnimal(this)")
+	}
+
+	for (const name in PROJECTILES) {
+		var url = `https://moomoo.io/img/weapons/${name}.png`
+		if (name === "turret") {
+			const tmpCanvas = document.createElement("canvas")
+			tmpCanvas.width = tmpCanvas.height = 100
+			scaleFillNative = 1
+			const tmpContext = tmpCanvas.getContext("2d")
+			tmpContext.translate(tmpCanvas.width / 2, tmpCanvas.height / 2)
+			tmpContext.strokeStyle = outlineColor
+			tmpContext.lineWidth = outlineWidth
+			tmpContext.fillStyle = "#939393"
+			renderCircle(0, 0, PROJECTILES[name].scale, tmpContext)
+			url = tmpCanvas.toDataURL()
+		}
+
+		const tmpElement = document.createElement("div")
+		tmpElement.className = "selectProjectile"
+		tmpElement.setAttribute("name", name)
+		tmpElement.style.backgroundImage = `url(${url})`
+		document.getElementById("projectilesContainer").appendChild(tmpElement)
+		tmpElement.setAttribute("onclick", "selectProjectile(this)")
+
+		if (name !== "turret" && name !== "bullet_1") {
+			const tmpElement2 = document.createElement("div")
+			tmpElement2.className = "selectProjectile"
+			tmpElement2.setAttribute("name", name)
+			tmpElement2.style.backgroundImage = `url(${url})`
+			document.getElementById("playerProjectilesContainer").appendChild(tmpElement2)
+			tmpElement2.setAttribute("onclick", "selectProjectile(this)")
+		}
 	}
 
 	const variants = ["", "_g", "_d", "_r"]
