@@ -129,7 +129,7 @@ async function preload() {
 		document.getElementById("buildingsContainer").appendChild(tmpElement)
 		tmpElement.setAttribute("onclick", "selectBuidling(this)")
 
-		if (name !== "invisiblepittrap") {
+		if (name !== "invisiblepittrap" && name !== "blockerwithcircle") {
 			const tmpElement2 = document.createElement("div")
 			tmpElement2.className = "selectWeapon"
 			tmpElement2.setAttribute("build", name)
