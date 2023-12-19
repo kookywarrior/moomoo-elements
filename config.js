@@ -234,7 +234,11 @@ const ITEMS = {
 		holdOffset: 20
 	},
 	blocker: {
-		blocker: 300,
+		colDiv: 0.7,
+		scale: 45,
+		holdOffset: 20
+	},
+	blockerwithcircle: {
 		colDiv: 0.7,
 		scale: 45,
 		holdOffset: 20
