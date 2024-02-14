@@ -71,19 +71,37 @@ function renderCircle(x, y, scale, tmpContext, dontStroke, dontFill) {
 }
 
 // RENDER STAR SHAPE:
-function renderStar(ctxt, spikes, outer, inner) {
+function renderStar(ctxt, spikes, outer, inner, dontStroke, dontFill) {
 	outer *= scaleFillNative
 	inner *= scaleFillNative
+
+	const cx = Math.max(outer, inner)
+	const cy = Math.max(outer, inner)
+	var rot = (Math.PI / 2) * 3
+	var x = cx
+	var y = cy
+	var step = Math.PI / spikes
+
+	ctxt.save()
+	ctxt.translate(-cx, -cy)
 	ctxt.beginPath()
-	ctxt.moveTo(0, -outer)
-	const rotateAngle = Math.PI / spikes
-	for (let i = 0; i < spikes; i++) {
-		ctxt.rotate(rotateAngle)
-		ctxt.lineTo(0, -inner)
-		ctxt.rotate(rotateAngle)
-		ctxt.lineTo(0, -outer)
+	ctxt.moveTo(cx, cy - outer)
+	for (i = 0; i < spikes; i++) {
+		x = cx + Math.cos(rot) * outer
+		y = cy + Math.sin(rot) * outer
+		ctxt.lineTo(x, y)
+		rot += step
+
+		x = cx + Math.cos(rot) * inner
+		y = cy + Math.sin(rot) * inner
+		ctxt.lineTo(x, y)
+		rot += step
 	}
+	ctxt.lineTo(cx, cy - outer)
 	ctxt.closePath()
+	if (!dontFill) ctxt.fill()
+	if (!dontStroke) ctxt.stroke()
+	ctxt.restore()
 }
 
 // RENDER RECTANGLE:
@@ -166,19 +184,13 @@ function getResSprite(name, scale, biomeID, asIcon) {
 		var tmpScale
 		for (var i = 0; i < 2; ++i) {
 			tmpScale = scale * (!i ? 1 : 0.5)
-			renderStar(tmpContext, name == "fivestartree" ? 5 : 7, tmpScale, tmpScale * 0.7)
 			tmpContext.fillStyle = !biomeID ? (!i ? "#9ebf57" : "#b4db62") : !i ? "#e3f1f4" : "#fff"
-			tmpContext.fill()
-			if (!i) {
-				tmpContext.stroke()
-			}
+			renderStar(tmpContext, name == "fivestartree" ? 5 : 7, tmpScale, tmpScale * 0.7, !i ? false : true)
 		}
 	} else if (name == "bush") {
 		if (biomeID == 2) {
 			tmpContext.fillStyle = "#606060"
 			renderStar(tmpContext, 6, scale * 0.3, scale * 0.71)
-			tmpContext.fill()
-			tmpContext.stroke()
 			tmpContext.fillStyle = "#89a54c"
 			renderCircle(0, 0, scale * 0.55, tmpContext)
 			tmpContext.fillStyle = "#a5c65b"
@@ -200,24 +212,17 @@ function getResSprite(name, scale, biomeID, asIcon) {
 	} else if (name == "rock" || name == "gold") {
 		tmpContext.fillStyle = name == "rock" ? (biomeID == 2 ? "#938d77" : "#939393") : "#e0c655"
 		renderStar(tmpContext, 3, scale, scale)
-		tmpContext.fill()
-		tmpContext.stroke()
 		tmpContext.fillStyle = name == "rock" ? (biomeID == 2 ? "#b2ab90" : "#bcbcbc") : "#ebdca3"
-		renderStar(tmpContext, 3, scale * 0.55, scale * 0.65)
-		tmpContext.fill()
+		renderStar(tmpContext, 3, scale * 0.55, scale * 0.65, true)
 	} else if (name == "volcano") {
 		tmpContext.strokeStyle = "#3e3e3e"
 		tmpContext.lineWidth = outlineWidth * (asIcon ? tmpCanvas.width / 81 : 1) * scaleFillNative * 2
 		tmpContext.fillStyle = "#7f7f7f"
 		renderStar(tmpContext, 5, 640, 640)
-		tmpContext.fill()
-		tmpContext.stroke()
 		tmpContext.strokeStyle = "#f56f16"
 		tmpContext.lineWidth = outlineWidth * (asIcon ? tmpCanvas.width / 81 : 1) * scaleFillNative * 1.6
 		tmpContext.fillStyle = "#f54e16"
 		renderStar(tmpContext, 5, scale * 2, scale * 2)
-		tmpContext.fill()
-		tmpContext.stroke()
 	}
 	return tmpCanvas
 }
@@ -279,17 +284,12 @@ function getItemSprite(name, rotate, asIcon, spikeBuild = false) {
 		tmpContext.fillStyle = name == "castlewall" ? "#83898e" : name == "woodwall" ? "#a5974c" : "#939393"
 		var sides = name == "castlewall" ? 4 : 3
 		renderStar(tmpContext, sides, obj.scale * 1.1, obj.scale * 1.1)
-		tmpContext.fill()
-		tmpContext.stroke()
 		tmpContext.fillStyle = name == "castlewall" ? "#9da4aa" : name == "woodwall" ? "#c9b758" : "#bcbcbc"
-		renderStar(tmpContext, sides, obj.scale * 0.65, obj.scale * 0.65)
-		tmpContext.fill()
+		renderStar(tmpContext, sides, obj.scale * 0.65, obj.scale * 0.65, true)
 	} else if (name == "spikes" || name == "greaterspikes" || name == "poisonspikes") {
 		tmpContext.fillStyle = name == "poisonspikes" ? "#7b935d" : "#939393"
 		let tmpScale = obj.scale * 0.6
 		renderStar(tmpContext, name == "spikes" ? 5 : 6, obj.scale, tmpScale)
-		tmpContext.fill()
-		tmpContext.stroke()
 		tmpContext.fillStyle = "#a5974c"
 		renderCircle(0, 0, tmpScale, tmpContext)
 		tmpContext.fillStyle = "#c9b758"
@@ -304,27 +304,20 @@ function getItemSprite(name, rotate, asIcon, spikeBuild = false) {
 	} else if (name == "mine") {
 		tmpContext.fillStyle = "#939393"
 		renderStar(tmpContext, 3, obj.scale, obj.scale)
-		tmpContext.fill()
-		tmpContext.stroke()
 		tmpContext.fillStyle = "#bcbcbc"
-		renderStar(tmpContext, 3, obj.scale * 0.55, obj.scale * 0.65)
-		tmpContext.fill()
+		renderStar(tmpContext, 3, obj.scale * 0.55, obj.scale * 0.65, true)
 	} else if (name == "sapling") {
 		for (let i = 0; i < 2; ++i) {
 			let tmpScale = obj.scale * (!i ? 1 : 0.5)
-			renderStar(tmpContext, 7, tmpScale, tmpScale * 0.7)
 			tmpContext.fillStyle = !i ? "#9ebf57" : "#b4db62"
-			tmpContext.fill()
+			renderStar(tmpContext, 7, tmpScale, tmpScale * 0.7, true)
 			if (!i) tmpContext.stroke()
 		}
 	} else if (name == "pittrap" || name == "invisiblepittrap") {
 		tmpContext.fillStyle = "#a5974c"
 		renderStar(tmpContext, 3, obj.scale * 1.1, obj.scale * 1.1)
-		tmpContext.fill()
-		tmpContext.stroke()
 		tmpContext.fillStyle = outlineColor
-		renderStar(tmpContext, 3, obj.scale * 0.65, obj.scale * 0.65)
-		tmpContext.fill()
+		renderStar(tmpContext, 3, obj.scale * 0.65, obj.scale * 0.65, true)
 	} else if (name == "boostpad") {
 		tmpContext.fillStyle = "#7e7f82"
 		renderRect(0, 0, obj.scale * 2, obj.scale * 2, tmpContext)
