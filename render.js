@@ -74,22 +74,15 @@ function renderCircle(x, y, scale, tmpContext, dontStroke, dontFill) {
 function renderStar(ctxt, spikes, outer, inner) {
 	outer *= scaleFillNative
 	inner *= scaleFillNative
-	var rot = (Math.PI / 2) * 3
-	var x, y
-	var step = Math.PI / spikes
 	ctxt.beginPath()
 	ctxt.moveTo(0, -outer)
-	for (var i = 0; i < spikes; i++) {
-		x = Math.cos(rot) * outer
-		y = Math.sin(rot) * outer
-		ctxt.lineTo(x, y)
-		rot += step
-		x = Math.cos(rot) * inner
-		y = Math.sin(rot) * inner
-		ctxt.lineTo(x, y)
-		rot += step
+	const rotateAngle = Math.PI / spikes
+	for (let i = 0; i < spikes; i++) {
+		ctxt.rotate(rotateAngle)
+		ctxt.lineTo(0, -inner)
+		ctxt.rotate(rotateAngle)
+		ctxt.lineTo(0, -outer)
 	}
-	ctxt.lineTo(0, -outer)
 	ctxt.closePath()
 }
 
