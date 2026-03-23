@@ -4,6 +4,7 @@
 @theme {
   --font-sans: 'Hammersmith One', sans-serif;
   --color-brand-green: #3b472d;
+  --shadow-bottom: 0 1vh #c4c4c4;
 }
 
 html,

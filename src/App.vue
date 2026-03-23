@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
+import TheMenuPane from './components/TheMenuPane.vue';
 
 const loaded = ref(false)
 
@@ -10,8 +11,8 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div v-if="!loaded" class="text-white text-3xl grid h-screen place-items-center">Loading...</div>
-  <main v-else>
-    
+  <div v-if="!loaded" class="text-white text-3xl">Loading...</div>
+  <main v-else class="w-9/10 aspect-video grid grid-cols-3 gap-10">
+    <TheMenuPane />
   </main>
 </template>
