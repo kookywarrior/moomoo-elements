@@ -12,7 +12,7 @@ onMounted(async () => {
 
 <template>
   <div v-if="!loaded" class="text-white text-3xl">Loading...</div>
-  <main v-else class="w-9/10 aspect-video grid grid-cols-3 gap-10">
+  <main v-else class="h-8/10 aspect-video grid grid-cols-3 gap-14">
     <TheMenuPane />
   </main>
 </template>
