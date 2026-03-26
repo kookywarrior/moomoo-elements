@@ -1,15 +1,14 @@
 <script setup lang="ts">
-import { useCategoryData } from '@/composables/useCategoryData';
 import Panel from './base/Panel.vue';
 import { useSettingsStore } from '@/stores/useSettingsStore';
+import { CATEGORY_OPTIONS } from '@/utils/optionsData';
 
-const categoryData = useCategoryData()
 const settingsStore = useSettingsStore()
 </script>
 
 <template>
   <Panel>
-    <label v-for="options in categoryData.categoryOptions" :key="options.value"
+    <label v-for="options in CATEGORY_OPTIONS" :key="options.value"
       class="w-full block text-center text-2xl hover:text-gray-500 cursor-pointer">
       <div :class="{
         'border-l-4 border-gray-800': settingsStore.selectedCategory === options.value
