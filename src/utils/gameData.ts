@@ -1,4 +1,6 @@
-const WEAPONS = {
+import type { Accessory, Animal, Hat, Item, Projectile, Weapon } from '@/types/gameData'
+
+const WEAPONS: Record<string, Weapon> = {
   toolhammer: {
     src: 'hammer_1',
     length: 140,
@@ -130,7 +132,7 @@ const WEAPONS = {
     yOff: 0,
   },
 }
-const PROJECTILES = {
+const PROJECTILES: Record<string, Projectile> = {
   arrow_1: { scale: 103 },
   arrow_2: { scale: 103 },
   arrow_3: { scale: 103 },
@@ -138,7 +140,7 @@ const PROJECTILES = {
   turret: { scale: 20 },
 }
 
-const ITEMS = {
+const ITEMS: Record<string, Item> = {
   apple: {
     scale: 22,
     holdOffset: 15,
@@ -249,7 +251,7 @@ const ITEMS = {
     holdOffset: 20,
   },
 }
-const HATS = {
+const HATS: Record<number, Hat> = {
   1: {
     name: 'Marksman Cap',
     scale: 120,
@@ -439,7 +441,7 @@ const HATS = {
   },
 }
 
-const ACCESSORIES = {
+const ACCESSORIES: Record<number, Accessory> = {
   1: {
     name: 'Super Cape',
     scale: 90,
@@ -549,7 +551,7 @@ const RESOURCES = {
   volcano: [0],
 }
 
-const ANIMALS = {
+const ANIMALS: Record<string, Animal> = {
   cow_1: { scale: 72 },
   pig_1: { scale: 72 },
   bull_2: { scale: 78 },
