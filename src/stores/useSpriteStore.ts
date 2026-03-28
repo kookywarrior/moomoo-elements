@@ -1,3 +1,4 @@
+import type { ImageSprites, UISprites } from '@/types/sprites'
 import {
   ACCESSORIES,
   ANIMALS,
@@ -12,30 +13,42 @@ import { getItemSprite, getResSprite, renderCircle } from '@/utils/render'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
-type Sprites = Record<string | number, string>
+function createDefaultSprites() {
+  const categories: (keyof UISprites)[] = [
+    'hats',
+    'accessories',
+    'animals',
+    'projectiles',
+    'weapons',
+    'items',
+    'resources',
+  ]
+
+  return Object.fromEntries(categories.map((key) => [key, []])) as unknown as UISprites
+}
 
 const useSpriteStore = defineStore('sprite', () => {
   // STATES
   const isLoaded = ref(false)
-  const hats = ref<Sprites>({})
-  const accessories = ref<Sprites>({})
-  const animals = ref<Sprites>({})
-  const projectiles = ref<Sprites>({})
-  const weapons = ref<Sprites>({})
-  const items = ref<Sprites>({})
-  const resources = ref<Sprites>({})
+  const uiSrpites = ref(createDefaultSprites())
+  const imgSprites = ref<ImageSprites>({})
 
   // ACTIONS
   async function loadHats() {
     const hatIds = Object.keys(HATS) as unknown as (keyof typeof HATS)[]
 
     const promises = hatIds.map(async (id) => {
-      const isTop = HATS[id]?.topSprite
-      const suffex = isTop ? '_top' : ''
-      const url = `https://moomoo.io/img/hats/hat_${id}${suffex}.png`
-
+      const isTopSprite = HATS[id]?.topSprite
+      const suffix = isTopSprite ? '_p' : ''
+      const url = `./img/hats/hat_${id}${suffix}.png`
       const blob = await getBlobURL(url)
-      hats.value[id] = blob
+
+      if (blob) {
+        uiSrpites.value.hats.push({
+          index: id,
+          url: blob,
+        })
+      }
     })
 
     await Promise.all(promises)
@@ -45,10 +58,15 @@ const useSpriteStore = defineStore('sprite', () => {
     const accessoryIds = Object.keys(ACCESSORIES) as unknown as (keyof typeof ACCESSORIES)[]
 
     const promises = accessoryIds.map(async (id) => {
-      const url = `https://moomoo.io/img/accessories/access_${id}.png`
-
+      const url = `./img/accessories/access_${id}.png`
       const blob = await getBlobURL(url)
-      accessories.value[id] = blob
+
+      if (blob) {
+        uiSrpites.value.accessories.push({
+          index: id,
+          url: blob,
+        })
+      }
     })
 
     await Promise.all(promises)
@@ -58,10 +76,15 @@ const useSpriteStore = defineStore('sprite', () => {
     const animalNames = Object.keys(ANIMALS) as unknown as (keyof typeof ANIMALS)[]
 
     const promises = animalNames.map(async (name) => {
-      const url = `https://moomoo.io/img/animals/${name}.png`
-
+      const url = `./img/animals/${name}.png`
       const blob = await getBlobURL(url)
-      animals.value[name] = blob
+
+      if (blob) {
+        uiSrpites.value.animals.push({
+          name,
+          url: blob,
+        })
+      }
     })
 
     await Promise.all(promises)
@@ -71,8 +94,6 @@ const useSpriteStore = defineStore('sprite', () => {
     const projectileNames = Object.keys(PROJECTILES) as unknown as (keyof typeof PROJECTILES)[]
 
     const promises = projectileNames.map(async (name) => {
-      let url = `https://moomoo.io/img/weapons/${name}.png`
-
       if (name === 'turret') {
         const canvas = document.createElement('canvas')
         canvas.width = canvas.height = 100
@@ -82,10 +103,28 @@ const useSpriteStore = defineStore('sprite', () => {
         ctx.lineWidth = 5
         ctx.fillStyle = '#939393'
         renderCircle(0, 0, PROJECTILES[name]?.scale ?? 0, ctx)
-        url = canvas.toDataURL()
+
+        canvas.toBlob((blob) => {
+          if (blob) {
+            uiSrpites.value.projectiles.push({
+              name,
+              url: URL.createObjectURL(blob),
+            })
+          }
+        })
+
+        return
       }
 
-      projectiles.value[name] = name === 'turret' ? url : await getBlobURL(url)
+      const url = `./img/weapons/${name}.png`
+      const blob = await getBlobURL(url)
+
+      if (blob) {
+        uiSrpites.value.projectiles.push({
+          name,
+          url: blob,
+        })
+      }
     })
 
     await Promise.all(promises)
@@ -101,11 +140,16 @@ const useSpriteStore = defineStore('sprite', () => {
         promises.push(
           (async () => {
             const src = WEAPONS[name]?.src
-            const isLocal = src === 'bow_1' && variant === '_d'
-            const url = `${isLocal ? '' : 'https://moomoo.io/'}img/weapons/${src + variant}.png`
-
+            const url = `./img/weapons/${src + variant}.png`
             const blob = await getBlobURL(url)
-            weapons.value[`${name}${variant}`] = blob
+
+            if (blob) {
+              uiSrpites.value.weapons.push({
+                name,
+                variant,
+                url: blob,
+              })
+            }
           })(),
         )
       })
@@ -132,7 +176,14 @@ const useSpriteStore = defineStore('sprite', () => {
       ctx.globalCompositeOperation = 'source-atop'
       ctx.fillRect(-scale / 2, -scale / 2, scale, scale)
 
-      items.value[name] = canvas.toDataURL()
+      canvas.toBlob((blob) => {
+        if (blob) {
+          uiSrpites.value.items.push({
+            name,
+            url: URL.createObjectURL(blob),
+          })
+        }
+      })
     }
   }
 
@@ -170,8 +221,15 @@ const useSpriteStore = defineStore('sprite', () => {
         ctx.globalCompositeOperation = 'source-atop'
         ctx.fillRect(-drawScale / 2, -drawScale / 2, drawScale, drawScale)
 
-        // Store using a combined key: "bush_0", "bush_1", etc.
-        resources.value[`${name}_${biome}`] = canvas.toDataURL()
+        canvas.toBlob((blob) => {
+          if (blob) {
+            uiSrpites.value.resources.push({
+              name,
+              biome,
+              url: URL.createObjectURL(blob),
+            })
+          }
+        })
       })
     })
   }
@@ -192,13 +250,8 @@ const useSpriteStore = defineStore('sprite', () => {
 
   return {
     isLoaded,
-    hats,
-    accessories,
-    animals,
-    projectiles,
-    weapons,
-    items,
-    resources,
+    uiSrpites,
+    imgSprites,
 
     init,
   }

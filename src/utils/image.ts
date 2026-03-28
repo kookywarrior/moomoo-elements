@@ -7,7 +7,7 @@ async function getBlobURL(url: string) {
     return URL.createObjectURL(blob)
   } catch (e) {
     console.error(`Failed to preload image: ${url}`, e)
-    return url
+    return null
   }
 }
 
