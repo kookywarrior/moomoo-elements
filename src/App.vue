@@ -1,16 +1,37 @@
 <script setup lang="ts">
-import TheCategoryPanel from './components/TheCategoryPanel.vue';
-import ThePreviewPanel from './components/ThePreviewPanel.vue';
-import { useSpriteStore } from './stores/useSpriteStore';
+import { computed, onMounted, onUnmounted, ref } from 'vue'
+import TheCategoryPanel from './components/TheCategoryPanel.vue'
+import TheLibraryPanel from './components/TheLibraryPanel.vue'
+import ThePreviewPanel from './components/ThePreviewPanel.vue'
+import { useSpriteStore } from './stores/useSpriteStore'
 
 const spriteStore = useSpriteStore()
 spriteStore.init()
+
+const windowWidth = ref(window.innerWidth)
+const windowHeight = ref(window.innerHeight)
+function updateDimensions() {
+  windowWidth.value = window.innerWidth
+  windowHeight.value = window.innerHeight
+}
+
+onMounted(() => window.addEventListener('resize', updateDimensions))
+onUnmounted(() => window.removeEventListener('resize', updateDimensions))
+
+const isNarrow = computed(() => {
+  return windowWidth.value < (windowHeight.value * 12.8) / 9
+})
 </script>
 
 <template>
   <div v-if="!spriteStore.isLoaded" class="text-white text-3xl">Loading...</div>
-  <main v-else class="h-8/10 aspect-video grid grid-cols-3 gap-14">
+  <main
+    v-else
+    class="aspect-video grid grid-cols-3 gap-14"
+    :class="[isNarrow ? 'w-[90vw]' : 'h-[80vh]']"
+  >
     <TheCategoryPanel />
     <ThePreviewPanel />
+    <TheLibraryPanel />
   </main>
 </template>

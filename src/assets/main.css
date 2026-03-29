@@ -9,6 +9,7 @@
   --background-filter-color: rgba(0, 0, 70, 0.35);
   --button-color: #7ee559;
   --button-hover-color: #6fc94e;
+  --library-item-color: #586b43;
 }
 
 html,
@@ -19,6 +20,7 @@ body {
   font-family: var(--font-sans);
   background-color: var(--color-brand-green);
   user-select: none;
+  font-size: clamp(14px, 1vw, 16px);
 
   @apply antialiased;
 }

@@ -1,11 +1,11 @@
 import type { AnimalSettings, PlayerSettings } from '@/types/settings'
-import { CATEGORY_OPTIONS } from '@/utils/optionsData'
+import { CATEGORIES } from '@/utils/settingsData'
 import { defineStore } from 'pinia'
 import { reactive, ref } from 'vue'
 
 const useSettingsStore = defineStore('settings', () => {
   // STATES
-  const selectedCategory = ref(CATEGORY_OPTIONS[0]?.value)
+  const selectedCategory = ref<keyof typeof CATEGORIES>('buildings')
   const filter = ref<boolean>(true)
   const resolution = ref<number>(500)
   const zoomScale = ref<number>(45)
