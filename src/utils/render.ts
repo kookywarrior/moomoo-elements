@@ -29,13 +29,13 @@ function renderLeaf(x: number, y: number, l: number, r: number, ctxt: CanvasRend
     (x + endX) / 2 + width * Math.cos(r + Math.PI / 2),
     (y + endY) / 2 + width * Math.sin(r + Math.PI / 2),
     endX,
-    endY,
+    endY
   )
   ctxt.quadraticCurveTo(
     (x + endX) / 2 - width * Math.cos(r + Math.PI / 2),
     (y + endY) / 2 - width * Math.sin(r + Math.PI / 2),
     x,
-    y,
+    y
   )
   ctxt.closePath()
   ctxt.fill()
@@ -49,7 +49,7 @@ function renderCircle(
   scale: number,
   tmpContext?: CanvasRenderingContext2D,
   dontStroke?: boolean,
-  dontFill?: boolean,
+  dontFill?: boolean
 ) {
   x *= scaleFillNative
   y *= scaleFillNative
@@ -68,7 +68,7 @@ function renderStar(
   outer: number,
   inner: number,
   dontStroke?: boolean,
-  dontFill?: boolean,
+  dontFill?: boolean
 ) {
   outer *= scaleFillNative
   inner *= scaleFillNative
@@ -109,7 +109,7 @@ function renderRect(
   w: number,
   h: number,
   ctxt: CanvasRenderingContext2D,
-  stroke?: boolean,
+  stroke?: boolean
 ) {
   x *= scaleFillNative
   y *= scaleFillNative
@@ -129,7 +129,7 @@ function renderRectCircle(
   sw: number,
   seg: number,
   ctxt: CanvasRenderingContext2D,
-  stroke?: boolean,
+  stroke?: boolean
 ) {
   x *= scaleFillNative
   y *= scaleFillNative
@@ -158,7 +158,7 @@ function renderBlob(ctxt: CanvasRenderingContext2D, spikes: number, outer: numbe
       Math.cos(rot + step) * tmpOuter,
       Math.sin(rot + step) * tmpOuter,
       Math.cos(rot + step * 2) * inner,
-      Math.sin(rot + step * 2) * inner,
+      Math.sin(rot + step * 2) * inner
     )
     rot += step * 2
   }
@@ -187,7 +187,7 @@ function roundRect(
   w: number,
   h: number,
   r: number,
-  ctx: CanvasRenderingContext2D,
+  ctx: CanvasRenderingContext2D
 ) {
   if (w < 2 * r) r = w / 2
   if (h < 2 * r) r = h / 2
@@ -227,7 +227,7 @@ function getResSprite(name: string, scale: number, biomeID: number, asIcon: bool
         name == 'fivestartree' ? 5 : 7,
         tmpScale,
         tmpScale * 0.7,
-        !i ? false : true,
+        !i ? false : true
       )
     }
   } else if (name == 'bush') {
@@ -253,7 +253,7 @@ function getResSprite(name: string, scale: number, biomeID: number, asIcon: bool
           tmpRange * Math.cos(rotVal * i),
           tmpRange * Math.sin(rotVal * i),
           randomInt(10, 12),
-          tmpContext,
+          tmpContext
         )
       }
     }
@@ -313,7 +313,7 @@ function getItemSprite(name: string, rotate: boolean, asIcon: boolean, spikeBuil
       obj.scale * Math.sin(leafDir),
       25,
       leafDir + Math.PI / 2,
-      tmpContext,
+      tmpContext
     )
   } else if (name == 'cookie') {
     tmpContext.fillStyle = '#cca861'
@@ -329,7 +329,7 @@ function getItemSprite(name: string, rotate: boolean, asIcon: boolean, spikeBuil
         tmpRange * Math.sin(rotVal * i),
         randomInt(4, 5),
         tmpContext,
-        true,
+        true
       )
     }
   } else if (name == 'cheese') {
@@ -346,7 +346,7 @@ function getItemSprite(name: string, rotate: boolean, asIcon: boolean, spikeBuil
         tmpRange * Math.sin(rotVal * i),
         randomInt(4, 5),
         tmpContext,
-        true,
+        true
       )
     }
   } else if (name == 'woodwall' || name == 'stonewall' || name == 'castlewall') {
@@ -457,6 +457,28 @@ function getItemSprite(name: string, rotate: boolean, asIcon: boolean, spikeBuil
     renderCircle(0, 0, obj.scale * 0.5, tmpContext, true)
   }
   return tmpCanvas
+}
+
+async function getTurretProjectileSprite(scale: number): Promise<string> {
+  const tmpCanvas = document.createElement('canvas')
+  tmpCanvas.width = tmpCanvas.height = 100
+  scaleFillNative = 1
+  const tmpContext = tmpCanvas.getContext('2d')!
+  tmpContext.translate(tmpCanvas.width / 2, tmpCanvas.height / 2)
+  tmpContext.strokeStyle = outlineColor
+  tmpContext.lineWidth = outlineWidth
+  tmpContext.fillStyle = '#939393'
+  renderCircle(0, 0, scale, tmpContext)
+
+  return new Promise((resolve, reject) => {
+    tmpCanvas.toBlob(blob => {
+      if (blob) {
+        resolve(URL.createObjectURL(blob))
+      } else {
+        reject(new Error('Canvas toBlob failed'))
+      }
+    })
+  })
 }
 
 // // RENDER PLAYER:
@@ -619,4 +641,5 @@ export {
   renderTriangle,
   getResSprite,
   getItemSprite,
+  getTurretProjectileSprite,
 }

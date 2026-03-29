@@ -1,0 +1,24 @@
+<script setup lang="ts">
+import { useSpriteStore } from '@/stores/useSpriteStore'
+import { useSettingsStore } from '@/stores/useSettingsStore'
+import Library from '../base/Library.vue'
+import LibraryItem from '../base/LibraryItem.vue'
+
+const spriteStore = useSpriteStore()
+const settingsStore = useSettingsStore()
+</script>
+
+<template>
+  <Library>
+    <LibraryItem name="projectile" :value="null" v-model="settingsStore.selectedProjectile" />
+    <LibraryItem
+      v-for="projectile in spriteStore.uiSrpites.projectiles"
+      :key="projectile.name"
+      name="weapon"
+      contain
+      :src="projectile.url"
+      :value="projectile.name"
+      v-model="settingsStore.selectedProjectile"
+    />
+  </Library>
+</template>

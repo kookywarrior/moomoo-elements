@@ -5,6 +5,7 @@ const props = withDefaults(
     name: string
     value: T
     size?: number
+    contain?: boolean
   }>(),
   {
     size: 100,
@@ -16,17 +17,12 @@ const model = defineModel<T>()
 
 <template>
   <label
-    class="w-1/4 aspect-square cursor-pointer bg-(--library-item-color) hover:bg-(--library-item-hover-color) rounded-lg has-checked:rounded-full grid place-items-center"
+    class="w-1/4 aspect-square cursor-pointer bg-(--library-item-color) hover:bg-(--library-item-hover-color) rounded-lg has-checked:rounded-full bg-center bg-no-repeat"
+    :style="{
+      backgroundImage: props.src ? `url(${props.src})` : 'none',
+      backgroundSize: contain ? 'contain' : `${props.size}%`,
+    }"
   >
-    <img
-      v-if="props.src"
-      :src="props.src"
-      class="object-cover"
-      :style="{
-        width: `${props.size}%`,
-        height: `${props.size}%`,
-      }"
-    />
     <input type="radio" :name="props.name" :value="props.value" v-model="model" class="hidden" />
   </label>
 </template>
