@@ -13,6 +13,7 @@ const settingsStore = useSettingsStore()
     <LibraryItem name="hat" :value="null" v-model="settingsStore.selectedHat" />
     <LibraryItem
       v-for="hat in spriteStore.uiSrpites.hats"
+      :size="80"
       :key="hat.index"
       name="hat"
       :src="hat.url"
