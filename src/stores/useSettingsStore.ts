@@ -11,7 +11,7 @@ const useSettingsStore = defineStore('settings', () => {
   const zoomScale = ref<number>(45)
   const selectedBuilding = ref<string | null>(null)
   const selectedResource = ref<string | null>(null)
-  const selectedResourceBiome = ref<string | null>(null)
+  const selectedResourceBiome = ref<number | null>(null)
   const selectedHat = ref<number | null>(null)
   const selectedAccessory = ref<number | null>(null)
   const selectedWeapon = ref<string | null>(null)
