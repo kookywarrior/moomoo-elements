@@ -11,6 +11,11 @@
   --button-hover-color: #6fc94e;
   --library-item-color: #586b43;
   --library-item-hover-color: #657850;
+  --player-colour-border: #525252;
+  --input-color: #4a4a4a;
+  --input-background: #e5e3e3;
+  --scrollbar-thumb: #8b8b8b;
+  --scrollbar-thumb-hover: #636363;
 }
 
 html,

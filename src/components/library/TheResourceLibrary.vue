@@ -4,6 +4,7 @@ import { useSettingsStore } from '@/stores/useSettingsStore'
 import Library from '../base/Library.vue'
 import LibraryItem from '../base/LibraryItem.vue'
 import { computed } from 'vue'
+import PanelWrapper from '../base/PanelWrapper.vue'
 
 const spriteStore = useSpriteStore()
 const settingsStore = useSettingsStore()
@@ -23,25 +24,27 @@ const model = computed({
 </script>
 
 <template>
-  <Library>
-    <LibraryItem
-      name="resource"
-      :value="{
-        name: null,
-        biome: null,
-      }"
-      v-model="model"
-    />
-    <LibraryItem
-      v-for="resource in spriteStore.uiSrpites.resources"
-      :key="resource.name"
-      name="resource"
-      :src="resource.url"
-      :value="{
-        name: resource.name,
-        biome: resource.biome,
-      }"
-      v-model="model"
-    />
-  </Library>
+  <PanelWrapper>
+    <Library>
+      <LibraryItem
+        name="resource"
+        :value="{
+          name: null,
+          biome: null,
+        }"
+        v-model="model"
+      />
+      <LibraryItem
+        v-for="resource in spriteStore.uiSrpites.resources"
+        :key="resource.name"
+        name="resource"
+        :src="resource.url"
+        :value="{
+          name: resource.name,
+          biome: resource.biome,
+        }"
+        v-model="model"
+      />
+    </Library>
+  </PanelWrapper>
 </template>
