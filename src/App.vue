@@ -21,6 +21,8 @@ onUnmounted(() => window.removeEventListener('resize', updateDimensions))
 const isNarrow = computed(() => {
   return windowWidth.value < (windowHeight.value * 12.8) / 9
 })
+
+const a = ref(0)
 </script>
 
 <template>

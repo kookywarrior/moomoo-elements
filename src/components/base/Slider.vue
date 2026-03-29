@@ -17,6 +17,6 @@ const model = defineModel()
   --slider-connect-bg: var(--button-color);
   --slider-tooltip-bg: var(--button-color);
   --slider-handle-ring-color: #7ee55930;
-  width: calc(100% - var(--slider-handle-width, 16px));
+  width: calc(100% - (var(--slider-handle-width, 16px) * 1.15));
 }
 </style>

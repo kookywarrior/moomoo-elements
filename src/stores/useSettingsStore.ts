@@ -30,16 +30,16 @@ const useSettingsStore = defineStore('settings', () => {
     tribe: '',
     crown: false,
     skull: false,
-    health: 0,
+    health: null,
     hpBarColour: 'green',
-    direction: 0,
-    topHatDirection: 0,
+    direction: null,
+    topHatDirection: null,
   })
   const animal = reactive<AnimalSettings>({
     selected: null,
-    health: 0,
+    health: null,
     name: '',
-    direction: 0,
+    direction: null,
   })
 
   return {

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ChromePicker } from 'vue-color'
+import { Clock12, LucideClock12 } from '@lucide/vue'
 import { useSpriteStore } from '@/stores/useSpriteStore'
 import { useSettingsStore } from '@/stores/useSettingsStore'
 import { ref } from 'vue'
@@ -10,15 +11,32 @@ import BooleanInput from '../base/BooleanInput.vue'
 import NumberInput from '../base/NumberInput.vue'
 import Slider from '../base/Slider.vue'
 import PanelWrapper from '../base/PanelWrapper.vue'
+import RadioInput from '../base/RadioInput.vue'
+import Button from '../base/Button.vue'
+import Wheel from '../base/Wheel.vue'
 
 const spriteStore = useSpriteStore()
 const settingsStore = useSettingsStore()
 
 const showPicker = ref(false)
+const showDirection = ref(false)
+const showTopHatDirection = ref(false)
 </script>
 
 <template>
   <PanelWrapper>
+    <Modal v-if="showPicker" @close="showPicker = false">
+      <ChromePicker disable-alpha v-model="settingsStore.player.colour" />
+    </Modal>
+
+    <Modal v-if="showDirection" @close="showDirection = false">
+      <Wheel v-model="settingsStore.player.direction" />
+    </Modal>
+
+    <Modal v-if="showTopHatDirection" @close="showTopHatDirection = false">
+      <Wheel v-model="settingsStore.player.topHatDirection" />
+    </Modal>
+
     <div class="w-full flex flex-wrap gap-3">
       <label
         v-for="colour in COLOURS"
@@ -47,10 +65,6 @@ const showPicker = ref(false)
           :checked="!COLOURS.includes(settingsStore.player.colour)"
         />
       </label>
-
-      <Modal v-if="showPicker" @close="showPicker = false">
-        <ChromePicker disable-alpha v-model="settingsStore.player.colour" />
-      </Modal>
     </div>
 
     <div class="flex flex-col gap-2">
@@ -65,7 +79,49 @@ const showPicker = ref(false)
 
     <div class="flex flex-col gap-3">
       <NumberInput placeholder="Health" v-model="settingsStore.player.health" :min="0" :max="100" />
-      <Slider v-model="settingsStore.player.health" />
+      <Slider v-model="settingsStore.player.health" class="mb-2" :min="0" :max="100" :snap="false"/>
+    </div>
+
+    <div class="flex flex-col">
+      <RadioInput
+        name="hp-bar-colour"
+        label="Green Health Bar"
+        value="green"
+        v-model="settingsStore.player.hpBarColour"
+      />
+      <RadioInput
+        name="hp-bar-colour"
+        label="Red Health Bar"
+        value="red"
+        v-model="settingsStore.player.hpBarColour"
+      />
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <div class="flex gap-2">
+        <NumberInput
+          class="flex-1"
+          placeholder="Direction"
+          v-model="settingsStore.player.direction"
+          :min="0"
+          :max="360"
+        />
+        <Button style="width: unset" @click="showDirection = true">
+          <LucideClock12 color="white" />
+        </Button>
+      </div>
+      <div class="flex gap-2">
+        <NumberInput
+          class="flex-1"
+          placeholder="Top Hat Direction"
+          v-model="settingsStore.player.topHatDirection"
+          :min="0"
+          :max="360"
+        />
+        <Button style="width: unset" @click="showTopHatDirection = true">
+          <LucideClock12 color="white" />
+        </Button>
+      </div>
     </div>
   </PanelWrapper>
 </template>

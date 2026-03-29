@@ -23,9 +23,7 @@ onUnmounted(() => {
       class="fixed w-screen h-screen bg-black/60 inset-0 grid place-items-center z-50"
       @click.self="emit('close')"
     >
-      <div class="shadow-2xl shadow-black/50">
-        <slot />
-      </div>
+      <slot />
     </div>
   </Teleport>
 </template>

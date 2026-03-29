@@ -11,17 +11,17 @@ type PlayerSettings = {
   tribe: string
   crown: boolean
   skull: boolean
-  health: number
+  health: number | null
   hpBarColour: 'green' | 'red'
-  direction: number
-  topHatDirection: number
+  direction: number | null
+  topHatDirection: number | null
 }
 
 type AnimalSettings = {
   selected: string | null
-  health: number
+  health: number | null
   name: string
-  direction: number
+  direction: number | null
 }
 
 export type { PlayerSettings, AnimalSettings }
