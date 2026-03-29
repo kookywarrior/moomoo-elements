@@ -33,13 +33,13 @@ const model = computed({
       v-model="model"
     />
     <LibraryItem
-      v-for="building in spriteStore.uiSrpites.resources"
-      :key="building.name"
+      v-for="resource in spriteStore.uiSrpites.resources"
+      :key="resource.name"
       name="resource"
-      :src="building.url"
+      :src="resource.url"
       :value="{
-        name: building.name,
-        biome: building.biome,
+        name: resource.name,
+        biome: resource.biome,
       }"
       v-model="model"
     />
