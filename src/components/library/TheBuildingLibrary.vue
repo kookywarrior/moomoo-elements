@@ -14,7 +14,7 @@ const settingsStore = useSettingsStore()
     <Library name="building">
       <LibraryItem :value="null" v-model="settingsStore.selectedBuilding" />
       <LibraryItem
-        v-for="building in spriteStore.uiSrpites.items"
+        v-for="building in spriteStore.uiSprites.items"
         :key="building.name"
         :src="building.url"
         :value="building.name"

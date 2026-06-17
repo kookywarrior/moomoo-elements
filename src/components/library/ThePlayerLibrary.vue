@@ -129,7 +129,7 @@ const showTopHatDirection = ref(false)
     <Library name="player_hat" class="mt-10" small>
       <LibraryItem :value="null" v-model="settingsStore.player.hat" />
       <LibraryItem
-        v-for="hat in spriteStore.uiSrpites.hats"
+        v-for="hat in spriteStore.uiSprites.hats"
         :size="80"
         :key="hat.index"
         :src="hat.url"
@@ -141,7 +141,7 @@ const showTopHatDirection = ref(false)
     <Library name="player_accessory" class="mt-10" small>
       <LibraryItem :value="null" v-model="settingsStore.player.accessory" />
       <LibraryItem
-        v-for="accessory in spriteStore.uiSrpites.accessories"
+        v-for="accessory in spriteStore.uiSprites.accessories"
         :size="80"
         :key="accessory.index"
         :src="accessory.url"
@@ -150,12 +150,10 @@ const showTopHatDirection = ref(false)
       />
     </Library>
 
-    <Library name="weapon"> </Library>
-
     <Library name="player_holding" class="mt-10" small>
       <LibraryItem :value="null" v-model="settingsStore.player.holding" />
       <LibraryItem
-        v-for="weapon in spriteStore.uiSrpites.weapons"
+        v-for="weapon in spriteStore.uiSprites.weapons"
         :key="weapon.name"
         contain
         :src="weapon.url"
@@ -167,7 +165,7 @@ const showTopHatDirection = ref(false)
         v-model="settingsStore.player.holding"
       />
       <LibraryItem
-        v-for="building in spriteStore.uiSrpites.holdableItems"
+        v-for="building in spriteStore.uiSprites.holdableItems"
         :key="building.name"
         :src="building.url"
         :value="{
@@ -181,7 +179,7 @@ const showTopHatDirection = ref(false)
     <Library name="player_projectile" class="mt-10" small>
       <LibraryItem :value="null" v-model="settingsStore.player.projectile" />
       <LibraryItem
-        v-for="projectile in spriteStore.uiSrpites.playerProjectiles"
+        v-for="projectile in spriteStore.uiSprites.playerProjectiles"
         :key="projectile.name"
         contain
         :src="projectile.url"

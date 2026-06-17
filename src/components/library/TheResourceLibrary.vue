@@ -34,7 +34,7 @@ const model = computed({
         v-model="model"
       />
       <LibraryItem
-        v-for="resource in spriteStore.uiSrpites.resources"
+        v-for="resource in spriteStore.uiSprites.resources"
         :key="resource.name"
         :src="resource.url"
         :value="{

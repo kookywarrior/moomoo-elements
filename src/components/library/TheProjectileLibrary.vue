@@ -14,7 +14,7 @@ const settingsStore = useSettingsStore()
     <Library name="projectile">
       <LibraryItem :value="null" v-model="settingsStore.selectedProjectile" />
       <LibraryItem
-        v-for="projectile in spriteStore.uiSrpites.projectiles"
+        v-for="projectile in spriteStore.uiSprites.projectiles"
         :key="projectile.name"
         contain
         :src="projectile.url"

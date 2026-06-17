@@ -18,14 +18,14 @@ const selectedCategory = computed(() => settingsStore.selectedCategory)
 
 <template>
   <Panel>
-    <TheBuildingLibrary v-show="selectedCategory === 'buildings'" />
-    <TheResourceLibrary v-show="selectedCategory === 'resources'" />
-    <TheHatLibrary v-show="selectedCategory === 'hats'" />
-    <TheAccessoryLibrary v-show="selectedCategory === 'accessories'" />
-    <TheWeaponLibrary v-show="selectedCategory === 'weapons'" />
-    <TheProjectileLibrary v-show="selectedCategory === 'projectiles'" />
-    <ThePlayerLibrary v-show="selectedCategory === 'player'" />
-    <TheAnimalLibrary v-show="selectedCategory == 'animals'" />
-    <TheBackgroundLibrary v-show="selectedCategory == 'background'" />
+    <TheBuildingLibrary v-if="selectedCategory === 'buildings'" />
+    <TheResourceLibrary v-else-if="selectedCategory === 'resources'" />
+    <TheHatLibrary v-else-if="selectedCategory === 'hats'" />
+    <TheAccessoryLibrary v-else-if="selectedCategory === 'accessories'" />
+    <TheWeaponLibrary v-else-if="selectedCategory === 'weapons'" />
+    <TheProjectileLibrary v-else-if="selectedCategory === 'projectiles'" />
+    <ThePlayerLibrary v-else-if="selectedCategory === 'player'" />
+    <TheAnimalLibrary v-else-if="selectedCategory === 'animals'" />
+    <TheBackgroundLibrary v-else-if="selectedCategory === 'background'" />
   </Panel>
 </template>

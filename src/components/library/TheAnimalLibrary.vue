@@ -52,7 +52,7 @@ const showDirection = ref(false)
     <Library name="animal" class="mt-10">
       <LibraryItem :value="null" v-model="settingsStore.animal.selected" />
       <LibraryItem
-        v-for="animal in spriteStore.uiSrpites.animals"
+        v-for="animal in spriteStore.uiSprites.animals"
         :size="80"
         :key="animal.name"
         :src="animal.url"

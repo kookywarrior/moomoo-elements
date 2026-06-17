@@ -14,7 +14,7 @@ const settingsStore = useSettingsStore()
     <Library name="accessory">
       <LibraryItem :value="null" v-model="settingsStore.selectedAccessory" />
       <LibraryItem
-        v-for="accessory in spriteStore.uiSrpites.accessories"
+        v-for="accessory in spriteStore.uiSprites.accessories"
         :size="80"
         :key="accessory.index"
         :src="accessory.url"

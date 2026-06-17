@@ -34,7 +34,7 @@ const model = computed({
         v-model="model"
       />
       <LibraryItem
-        v-for="weapon in spriteStore.uiSrpites.weapons"
+        v-for="weapon in spriteStore.uiSprites.weapons"
         :key="weapon.name"
         contain
         :src="weapon.url"

@@ -1,4 +1,5 @@
 import type { Accessory, Animal, Hat, Item, Projectile, Weapon } from '@/types/gameData'
+import type { CATEGORIES } from './settingsData'
 
 const WEAPONS: Record<string, Weapon> = {
   toolhammer: {
@@ -565,6 +566,20 @@ const ANIMALS: Record<string, Animal> = {
   wolf_2: { scale: 90, nameScale: 35 },
 }
 
+const ZOOM_FACTOR = {
+  buildings: 25,
+  resources: 35,
+  hats: 30,
+  accessories: 30,
+  weapons: 30,
+  projectiles: 30,
+  player: 45,
+  animals: 40,
+  background: 100,
+  volcano: 125,
+  blockerwithcircle: 60,
+} satisfies Record<keyof typeof CATEGORIES | 'volcano' | 'blockerwithcircle', number>
+
 export {
   WEAPONS,
   PROJECTILES,
@@ -576,4 +591,5 @@ export {
   ROCK_SCALES,
   RESOURCES,
   ANIMALS,
+  ZOOM_FACTOR,
 }

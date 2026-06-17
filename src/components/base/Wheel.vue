@@ -66,7 +66,7 @@ onUnmounted(() => stopDragging())
 
       <div
         class="absolute top-1/2 left-1/2 w-1.5 h-14 bg-gray-500 origin-bottom rounded-full"
-        :style="{ transform: `translate(-50%, -100%) rotate(${modelValue}deg)` }"
+        :style="{ transform: `translate(-50%, -100%) rotate(${modelValue ?? 0}deg)` }"
       >
         <div
           class="absolute -top-1 left-1/2 -translate-x-1/2 w-3 h-3 bg-gray-500 rotate-45 rounded-sm"

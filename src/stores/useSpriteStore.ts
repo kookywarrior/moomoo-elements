@@ -32,7 +32,7 @@ function createDefaultSprites() {
 const useSpriteStore = defineStore('sprite', () => {
   // STATES
   const isLoaded = ref(false)
-  const uiSrpites = ref(createDefaultSprites())
+  const uiSprites = ref(createDefaultSprites())
   const imgSprites = ref<ImageSprites>({})
 
   // ACTIONS
@@ -46,7 +46,7 @@ const useSpriteStore = defineStore('sprite', () => {
       const blob = await getBlobURL(url)
 
       if (blob) {
-        uiSrpites.value.hats.push({
+        uiSprites.value.hats.push({
           index: id,
           url: blob,
         })
@@ -64,7 +64,7 @@ const useSpriteStore = defineStore('sprite', () => {
       const blob = await getBlobURL(url)
 
       if (blob) {
-        uiSrpites.value.accessories.push({
+        uiSprites.value.accessories.push({
           index: id,
           url: blob,
         })
@@ -82,7 +82,7 @@ const useSpriteStore = defineStore('sprite', () => {
       const blob = await getBlobURL(url)
 
       if (blob) {
-        uiSrpites.value.animals.push({
+        uiSprites.value.animals.push({
           name,
           url: blob,
         })
@@ -98,7 +98,7 @@ const useSpriteStore = defineStore('sprite', () => {
     const promises = projectileNames.map(async name => {
       if (name === 'turret') {
         const blob = await getTurretProjectileSprite(PROJECTILES[name]?.scale ?? 0)
-        uiSrpites.value.projectiles.push({
+        uiSprites.value.projectiles.push({
           name,
           url: blob,
         })
@@ -110,13 +110,13 @@ const useSpriteStore = defineStore('sprite', () => {
       const blob = await getBlobURL(url)
 
       if (blob) {
-        uiSrpites.value.projectiles.push({
+        uiSprites.value.projectiles.push({
           name,
           url: blob,
         })
 
         if (PROJECTILES[name]?.notForPlayer !== true) {
-          uiSrpites.value.playerProjectiles.push({
+          uiSprites.value.playerProjectiles.push({
             name,
             url: blob,
           })
@@ -141,7 +141,7 @@ const useSpriteStore = defineStore('sprite', () => {
             const blob = await getBlobURL(url)
 
             if (blob) {
-              uiSrpites.value.weapons.push({
+              uiSprites.value.weapons.push({
                 name,
                 variant,
                 url: blob,
@@ -178,13 +178,13 @@ const useSpriteStore = defineStore('sprite', () => {
       return new Promise<void>(resolve => {
         canvas.toBlob(blob => {
           if (blob) {
-            uiSrpites.value.items.push({
+            uiSprites.value.items.push({
               name,
               url: URL.createObjectURL(blob),
             })
 
             if (ITEMS[name]?.notHoldable !== true) {
-              uiSrpites.value.holdableItems.push({
+              uiSprites.value.holdableItems.push({
                 name,
                 url: URL.createObjectURL(blob),
               })
@@ -238,7 +238,7 @@ const useSpriteStore = defineStore('sprite', () => {
             await new Promise<void>(resolve => {
               canvas.toBlob(blob => {
                 if (blob) {
-                  uiSrpites.value.resources.push({
+                  uiSprites.value.resources.push({
                     name,
                     biome,
                     url: URL.createObjectURL(blob),
@@ -271,7 +271,7 @@ const useSpriteStore = defineStore('sprite', () => {
 
   return {
     isLoaded,
-    uiSrpites,
+    uiSprites,
     imgSprites,
 
     init,

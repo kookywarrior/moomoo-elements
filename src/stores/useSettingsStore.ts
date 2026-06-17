@@ -5,10 +5,11 @@ import { reactive, ref } from 'vue'
 
 const useSettingsStore = defineStore('settings', () => {
   // STATES
+  const scaleFillNative = ref<number>(1)
   const selectedCategory = ref<keyof typeof CATEGORIES>('buildings')
   const filter = ref<boolean>(true)
   const resolution = ref<number>(500)
-  const zoomScale = ref<number>(45)
+  const zoomScale = ref<number>(25)
   const selectedBuilding = ref<string | null>(null)
   const selectedResource = ref<string | null>(null)
   const selectedResourceBiome = ref<number | null>(null)
@@ -43,6 +44,7 @@ const useSettingsStore = defineStore('settings', () => {
   const showBackgroundGrid = ref<boolean>(true)
 
   return {
+    scaleFillNative,
     selectedCategory,
     filter,
     resolution,

@@ -2,7 +2,7 @@
 import { useSettingsStore } from '@/stores/useSettingsStore'
 import BooleanInput from '../base/BooleanInput.vue'
 import PanelWrapper from '../base/PanelWrapper.vue'
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted, watch } from 'vue'
 import NumberInput from '../base/NumberInput.vue'
 
 const settingsStore = useSettingsStore()
@@ -17,30 +17,67 @@ function roundToDecimal(value: number, decimals: number) {
   return Math.round(value * multiplier) / multiplier
 }
 
-function updateBackgroundPosition(offsetX: number, offsetY: number) {
-  if (positionElement.value && mapElement.value) {
-    positionElement.value.style.left = `${(offsetX * 100) / mapElement.value.getBoundingClientRect().width - 2}%`
-    positionElement.value.style.top = `${(offsetY * 100) / mapElement.value.getBoundingClientRect().height - 2}%`
-    settingsStore.backgroundPosition = {
-      x: roundToDecimal((offsetX * 14400) / mapElement.value.getBoundingClientRect().width - 2, 2),
-      y: roundToDecimal((offsetY * 14400) / mapElement.value.getBoundingClientRect().height - 2, 2),
-    }
+function syncMarkerToStore() {
+  if (!positionElement.value || !mapElement.value) return
+
+  // Calculate percentage cleanly (0% to 100%)
+  const pctX = (settingsStore.backgroundPosition.x / 14400) * 100
+  const pctY = (settingsStore.backgroundPosition.y / 14400) * 100
+
+  // Subtract half the marker width (4% / 2 = 2) to center the dot on point click
+  positionElement.value.style.left = `${pctX - 2}%`
+  positionElement.value.style.top = `${pctY - 2}%`
+}
+
+function handlePositionUpdate(clientX: number, clientY: number) {
+  if (!mapElement.value) return
+
+  const rect = mapElement.value.getBoundingClientRect()
+
+  // Calculate mouse coordinate
+  let localX = clientX - rect.left
+  let localY = clientY - rect.top
+
+  // Clamp values between 0 and rect size boundaries
+  localX = Math.max(0, Math.min(localX, rect.width))
+  localY = Math.max(0, Math.min(localY, rect.height))
+
+  settingsStore.backgroundPosition = {
+    x: roundToDecimal((localX * 14400) / rect.width, 2),
+    y: roundToDecimal((localY * 14400) / rect.height, 2),
   }
 }
 
 function onMouseMove(event: MouseEvent) {
   if (mouseDown) {
-    updateBackgroundPosition(event.offsetX, event.offsetY)
+    handlePositionUpdate(event.clientX, event.clientY)
   }
 }
 
 function onMouseDown(event: MouseEvent) {
-  updateBackgroundPosition(event.offsetX, event.offsetY)
   mouseDown = true
+  handlePositionUpdate(event.clientX, event.clientY)
 }
 
-document.addEventListener('mouseup', () => {
+function onMouseUp() {
   mouseDown = false
+}
+
+watch(
+  () => settingsStore.backgroundPosition,
+  () => {
+    syncMarkerToStore()
+  },
+  { deep: true, immediate: true }
+)
+
+onMounted(() => {
+  document.addEventListener('mouseup', onMouseUp)
+  syncMarkerToStore()
+})
+
+onUnmounted(() => {
+  document.removeEventListener('mouseup', onMouseUp)
 })
 </script>
 
@@ -50,7 +87,7 @@ document.addEventListener('mouseup', () => {
       @mousedown="onMouseDown"
       @mousemove="onMouseMove"
       ref="mapElement"
-      class="relative cursor-pointer w-full aspect-square overflow-hidden"
+      class="relative cursor-pointer w-full aspect-square overflow-hidden select-none"
       style="
         background-image:
           linear-gradient(to right, rgba(0, 0, 70, 0.35), rgba(0, 0, 70, 0.35)),
@@ -71,7 +108,7 @@ document.addEventListener('mouseup', () => {
     >
       <div
         ref="positionElement"
-        class="w-[4%] h-[4%] rounded-full bg-white absolute left-[48%] top-[48%] pointer-events-none"
+        class="w-[4%] h-[4%] rounded-full bg-white absolute pointer-events-none shadow-md border border-black/20"
       ></div>
     </div>
   </PanelWrapper>

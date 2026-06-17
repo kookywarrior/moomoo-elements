@@ -1,13 +1,10 @@
+import { useSettingsStore } from '@/stores/useSettingsStore'
 import { ACCESSORIES, HATS, ITEMS, PROJECTILES, WEAPONS } from './gameData'
 import { randomInt } from './generate'
 
-var maxScreenWidth = 1920,
-  maxScreenHeight = 1080,
-  scaleFillNative = 1
-
-const outlineColor = '#525252',
-  darkOutlineColor = '#3d3f42',
-  outlineWidth = 5.5
+const outlineColor = '#525252'
+const darkOutlineColor = '#3d3f42'
+const outlineWidth = 5.5
 
 const spriteCanvas = document.createElement('canvas')
 const spriteContext = spriteCanvas.getContext('2d')!
@@ -17,9 +14,10 @@ spriteCanvas.width = spriteCanvas.height = filterCanvas.width = filterCanvas.hei
 
 // RENDER LEAF:
 function renderLeaf(x: number, y: number, l: number, r: number, ctxt: CanvasRenderingContext2D) {
-  x *= scaleFillNative
-  y *= scaleFillNative
-  l *= scaleFillNative
+  const settingsStore = useSettingsStore()
+  x *= settingsStore.scaleFillNative
+  y *= settingsStore.scaleFillNative
+  l *= settingsStore.scaleFillNative
   var endX = x + l * Math.cos(r)
   var endY = y + l * Math.sin(r)
   var width = l * 0.4
@@ -51,9 +49,10 @@ function renderCircle(
   dontStroke?: boolean,
   dontFill?: boolean
 ) {
-  x *= scaleFillNative
-  y *= scaleFillNative
-  scale *= scaleFillNative
+  const settingsStore = useSettingsStore()
+  x *= settingsStore.scaleFillNative
+  y *= settingsStore.scaleFillNative
+  scale *= settingsStore.scaleFillNative
   tmpContext = tmpContext || spriteContext
   tmpContext.beginPath()
   tmpContext.arc(x, y, scale, 0, 2 * Math.PI)
@@ -70,8 +69,9 @@ function renderStar(
   dontStroke?: boolean,
   dontFill?: boolean
 ) {
-  outer *= scaleFillNative
-  inner *= scaleFillNative
+  const settingsStore = useSettingsStore()
+  outer *= settingsStore.scaleFillNative
+  inner *= settingsStore.scaleFillNative
 
   const cx = Math.max(outer, inner)
   const cy = Math.max(outer, inner)
@@ -111,10 +111,11 @@ function renderRect(
   ctxt: CanvasRenderingContext2D,
   stroke?: boolean
 ) {
-  x *= scaleFillNative
-  y *= scaleFillNative
-  w *= scaleFillNative
-  h *= scaleFillNative
+  const settingsStore = useSettingsStore()
+  x *= settingsStore.scaleFillNative
+  y *= settingsStore.scaleFillNative
+  w *= settingsStore.scaleFillNative
+  h *= settingsStore.scaleFillNative
   ctxt.fillRect(x - w / 2, y - h / 2, w, h)
   if (!stroke) {
     ctxt.strokeRect(x - w / 2, y - h / 2, w, h)
@@ -131,8 +132,9 @@ function renderRectCircle(
   ctxt: CanvasRenderingContext2D,
   stroke?: boolean
 ) {
-  x *= scaleFillNative
-  y *= scaleFillNative
+  const settingsStore = useSettingsStore()
+  x *= settingsStore.scaleFillNative
+  y *= settingsStore.scaleFillNative
   ctxt.save()
   ctxt.translate(x, y)
   seg = Math.ceil(seg / 2)
@@ -145,8 +147,9 @@ function renderRectCircle(
 
 // RENDER BLOB:
 function renderBlob(ctxt: CanvasRenderingContext2D, spikes: number, outer: number, inner: number) {
-  outer *= scaleFillNative
-  inner *= scaleFillNative
+  const settingsStore = useSettingsStore()
+  outer *= settingsStore.scaleFillNative
+  inner *= settingsStore.scaleFillNative
   var rot = (Math.PI / 2) * 3
   var step = Math.PI / spikes
   var tmpOuter
@@ -168,7 +171,8 @@ function renderBlob(ctxt: CanvasRenderingContext2D, spikes: number, outer: numbe
 
 // RENDER TRIANGLE:
 function renderTriangle(s: number, ctx: CanvasRenderingContext2D) {
-  s *= scaleFillNative
+  const settingsStore = useSettingsStore()
+  s *= settingsStore.scaleFillNative
   ctx = ctx || spriteContext
   var h = s * (Math.sqrt(3) / 2)
   ctx.beginPath()
@@ -181,7 +185,7 @@ function renderTriangle(s: number, ctx: CanvasRenderingContext2D) {
 }
 
 // ROUND RECT:
-function roundRect(
+function renderRoundRect(
   x: number,
   y: number,
   w: number,
@@ -203,20 +207,22 @@ function roundRect(
   ctx.closePath()
 }
 
-function getResSprite(name: string, scale: number, biomeID: number, asIcon: boolean) {
-  if (name == 'none') {
+function getResSprite(name: string | null, scale: number, biomeID: number | null, asIcon: boolean) {
+  if (name == null || biomeID == null) {
     const tmpCanvas = document.createElement('canvas')
     tmpCanvas.width = tmpCanvas.height = 1
     return tmpCanvas
   }
-  scaleFillNative = asIcon ? 1 : scaleFillNative
+  const settingsStore = useSettingsStore()
+  settingsStore.scaleFillNative = asIcon ? 1 : settingsStore.scaleFillNative
   const tmpCanvas = document.createElement('canvas')
   tmpCanvas.width = tmpCanvas.height =
-    ((name == 'volcano' ? 640 : scale) * 2.1 + outlineWidth) * scaleFillNative
+    ((name == 'volcano' ? 640 : scale) * 2.1 + outlineWidth) * settingsStore.scaleFillNative
   const tmpContext = tmpCanvas.getContext('2d')!
   tmpContext.translate(tmpCanvas.width / 2, tmpCanvas.height / 2)
   tmpContext.strokeStyle = outlineColor
-  tmpContext.lineWidth = outlineWidth * (asIcon ? tmpCanvas.width / 81 : 1) * scaleFillNative
+  tmpContext.lineWidth =
+    outlineWidth * (asIcon ? tmpCanvas.width / 81 : 1) * settingsStore.scaleFillNative
   if (name == 'fivestartree' || name == 'sevenstartree') {
     var tmpScale
     for (var i = 0; i < 2; ++i) {
@@ -264,25 +270,27 @@ function getResSprite(name: string, scale: number, biomeID: number, asIcon: bool
     renderStar(tmpContext, 3, scale * 0.55, scale * 0.65, true)
   } else if (name == 'volcano') {
     tmpContext.strokeStyle = '#3e3e3e'
-    tmpContext.lineWidth = outlineWidth * (asIcon ? tmpCanvas.width / 81 : 1) * scaleFillNative * 2
+    tmpContext.lineWidth =
+      outlineWidth * (asIcon ? tmpCanvas.width / 81 : 1) * settingsStore.scaleFillNative * 2
     tmpContext.fillStyle = '#7f7f7f'
     renderStar(tmpContext, 5, 640, 640)
     tmpContext.strokeStyle = '#f56f16'
     tmpContext.lineWidth =
-      outlineWidth * (asIcon ? tmpCanvas.width / 81 : 1) * scaleFillNative * 1.6
+      outlineWidth * (asIcon ? tmpCanvas.width / 81 : 1) * settingsStore.scaleFillNative * 1.6
     tmpContext.fillStyle = '#f54e16'
     renderStar(tmpContext, 5, scale * 2, scale * 2)
   }
   return tmpCanvas
 }
 
-function getItemSprite(name: string, rotate: boolean, asIcon: boolean, spikeBuild = false) {
-  if (name == 'none') {
+function getItemSprite(name: string | null, rotate: boolean, asIcon: boolean, spikeBuild = false) {
+  if (name == null) {
     const tmpCanvas = document.createElement('canvas')
     tmpCanvas.width = tmpCanvas.height = 1
     return tmpCanvas
   }
-  scaleFillNative = asIcon ? 1 : scaleFillNative
+  const settingsStore = useSettingsStore()
+  settingsStore.scaleFillNative = asIcon ? 1 : settingsStore.scaleFillNative
   const obj = ITEMS[name]!
   const tmpCanvas = document.createElement('canvas')
   var spritePadding = 0
@@ -297,12 +305,13 @@ function getItemSprite(name: string, rotate: boolean, asIcon: boolean, spikeBuil
   }
   tmpCanvas.width = tmpCanvas.height =
     ((obj.scale + (name === 'blockerwithcircle' ? 300 : 0)) * 2.5 + outlineWidth + spritePadding) *
-    scaleFillNative
+    settingsStore.scaleFillNative
   const tmpContext = tmpCanvas.getContext('2d')!
   tmpContext.translate(tmpCanvas.width / 2, tmpCanvas.height / 2)
   tmpContext.rotate(asIcon || !rotate ? 0 : Math.PI / 2)
   tmpContext.strokeStyle = outlineColor
-  tmpContext.lineWidth = outlineWidth * (asIcon ? tmpCanvas.width / 81 : 1) * scaleFillNative
+  tmpContext.lineWidth =
+    outlineWidth * (asIcon ? tmpCanvas.width / 81 : 1) * settingsStore.scaleFillNative
   if (name == 'apple') {
     tmpContext.fillStyle = '#c15555'
     renderCircle(0, 0, obj.scale, tmpContext)
@@ -444,7 +453,7 @@ function getItemSprite(name: string, rotate: boolean, asIcon: boolean, spikeBuil
     if (name == 'blockerwithcircle') {
       tmpContext.strokeStyle = '#db6e6e'
       tmpContext.globalAlpha = 0.3
-      tmpContext.lineWidth = 6 * (asIcon ? 10 : scaleFillNative)
+      tmpContext.lineWidth = 6 * (asIcon ? 10 : settingsStore.scaleFillNative)
       renderCircle(0, 0, 300, tmpContext, false, true)
     }
   } else if (name == 'teleporter') {
@@ -462,7 +471,8 @@ function getItemSprite(name: string, rotate: boolean, asIcon: boolean, spikeBuil
 async function getTurretProjectileSprite(scale: number): Promise<string> {
   const tmpCanvas = document.createElement('canvas')
   tmpCanvas.width = tmpCanvas.height = 100
-  scaleFillNative = 1
+  const settingsStore = useSettingsStore()
+  settingsStore.scaleFillNative = 1
   const tmpContext = tmpCanvas.getContext('2d')!
   tmpContext.translate(tmpCanvas.width / 2, tmpCanvas.height / 2)
   tmpContext.strokeStyle = outlineColor
@@ -481,156 +491,6 @@ async function getTurretProjectileSprite(scale: number): Promise<string> {
   })
 }
 
-// // RENDER PLAYER:
-// async function renderPlayer(
-//   colour: string,
-//   skin: string,
-//   tail: string,
-//   weapon: string,
-//   weaponVariant: string,
-//   build: string,
-//   projectile: string,
-//   player: any,
-//   ctxt: CanvasRenderingContext2D,
-// ) {
-//   ctxt = ctxt || spriteContext
-//   ctxt.lineWidth = outlineWidth * scaleFillNative
-//   ctxt.lineJoin = 'miter'
-//   var handAngle = (Math.PI / 4) * (WEAPONS[weapon]?.armS || 1)
-//   var oHandAngle = weapon ? WEAPONS[weapon]?.hndS || 1 : 1
-//   var oHandDist = weapon ? WEAPONS[weapon]?.hndD || 1 : 1
-//   // TAIL/CAPE:
-//   if (tail) {
-//     await renderTail(tail, ctxt)
-//   }
-//   // WEAPON BELLOW HANDS:
-//   if (weapon && !WEAPONS[weapon]?.aboveHand) {
-//     await renderTool(WEAPONS[weapon], weaponVariant, 35, 0, true, ctxt)
-//     if (projectile && WEAPONS[weapon]?.projectile) {
-//       await renderProjectile(projectile, 35, 0, spriteContext)
-//     }
-//   }
-//   // HANDS:
-//   ctxt.strokeStyle = outlineColor
-//   ctxt.fillStyle = colour
-//   renderCircle(35 * Math.cos(handAngle), 35 * Math.sin(handAngle), 14)
-//   renderCircle(
-//     35 * oHandDist * Math.cos(-handAngle * oHandAngle),
-//     35 * oHandDist * Math.sin(-handAngle * oHandAngle),
-//     14,
-//   )
-//   // WEAPON ABOVE HANDS:
-//   if (weapon && WEAPONS[weapon]?.aboveHand) {
-//     await renderTool(WEAPONS[weapon], weaponVariant, 35, 0, true, ctxt)
-//     if (projectile && WEAPONS[weapon].projectile) {
-//       await renderProjectile(projectile, 35, 0, spriteContext)
-//     }
-//   }
-//   // BUILD ITEM:
-//   if (build && ITEMS[build]) {
-//     const tmpSprite = getItemSprite(build, true, false, true)
-//     ctxt.drawImage(tmpSprite, 35 - ITEMS[build].holdOffset, -tmpSprite.width / 2)
-//   }
-//   // BODY:
-//   renderCircle(0, 0, 35, ctxt)
-//   // SKIN:
-//   if (skin) {
-//     ctxt.rotate(Math.PI / 2)
-//     await renderSkin(skin, ctxt, null, null, player)
-//   }
-// }
-
-// // RENDER SKINS:
-// async function renderSkin(
-//   index: number | string,
-//   ctxt: CanvasRenderingContext2D,
-//   scale: number,
-//   parentSkin: any,
-//   player?: any,
-// ) {
-//   const tmpObj = HATS[index as keyof typeof HATS]
-//   const tmpSprite = await loadImage('img/hats/hat_' + index, skinSprites)
-//   scale = parentSkin ? scale : tmpObj.scale
-//   ctxt.save()
-//   ctxt.drawImage(
-//     tmpSprite,
-//     (-scale * scaleFillNative) / 2,
-//     (-scale * scaleFillNative) / 2,
-//     scale * scaleFillNative,
-//     scale * scaleFillNative,
-//   )
-//   ctxt.restore()
-//   if (!parentSkin && tmpObj.topSprite) {
-//     ctxt.save()
-//     ctxt.rotate((parseFloat(player.TOPHATDIRECTION) * Math.PI) / 180 || 0)
-//     await renderSkin(index + '_top', ctxt, scale, tmpObj)
-//     ctxt.restore()
-//   }
-// }
-
-// // RENDER TAIL:
-// async function renderTail(index: number, ctxt: CanvasRenderingContext2D, translate = true) {
-//   const tmpObj = ACCESSORIES[index]
-//   const tmpSprite = await loadImage('img/accessories/access_' + index, accessSprites)
-//   ctxt.save()
-//   if (translate) {
-//     ctxt.translate((-20 - (tmpObj?.xOff || 0)) * scaleFillNative, 0)
-//   }
-
-//   const scale = tmpObj?.scale || 0
-//   ctxt.drawImage(
-//     tmpSprite,
-//     (-scale * scaleFillNative) / 2,
-//     (-scale * scaleFillNative) / 2,
-//     scale * scaleFillNative,
-//     scale * scaleFillNative,
-//   )
-//   ctxt.restore()
-// }
-
-// // RENDER TOOL:
-// async function renderTool(
-//   obj: any,
-//   variant: string,
-//   x: number,
-//   y: number,
-//   translate = true,
-//   ctxt: CanvasRenderingContext2D,
-// ) {
-//   const tmpSprite = await loadImage('img/weapons/' + obj.src + (variant || ''), toolSprites)
-//   ctxt.drawImage(
-//     tmpSprite,
-//     ((translate ? x + obj.xOff : 0) - obj.length / 2) * scaleFillNative,
-//     ((translate ? y + obj.yOff : 0) - obj.width / 2) * scaleFillNative,
-//     obj.length * scaleFillNative,
-//     obj.width * scaleFillNative,
-//   )
-// }
-
-// // RENDER PROJECTILE:
-// async function renderProjectile(
-//   name: string,
-//   x: number,
-//   y: number,
-//   ctxt: CanvasRenderingContext2D,
-// ) {
-//   if (name === 'turret') {
-//     ctxt.fillStyle = '#939393'
-//     ctxt.strokeStyle = outlineColor
-//     ctxt.lineWidth = outlineWidth * scaleFillNative
-//     renderCircle(x, y, PROJECTILES[name]?.scale ?? 0, ctxt)
-//   } else {
-//     const scale = PROJECTILES[name]?.scale ?? 0
-//     ctxt.drawImage(
-//       await loadImage('img/weapons/' + name, projectileSprites),
-//       (x - scale / 2) * scaleFillNative,
-//       (y - scale / 2) * scaleFillNative,
-//       scale * scaleFillNative,
-//       scale * scaleFillNative,
-//     )
-//   }
-// }
-
 export {
   renderLeaf,
   renderCircle,
@@ -639,7 +499,15 @@ export {
   renderRectCircle,
   renderBlob,
   renderTriangle,
+  renderRoundRect,
   getResSprite,
   getItemSprite,
   getTurretProjectileSprite,
+  outlineColor,
+  outlineWidth,
+  darkOutlineColor,
+  spriteCanvas,
+  spriteContext,
+  filterCanvas,
+  filterContext,
 }
