@@ -2,11 +2,29 @@
 import Slider from '@vueform/slider'
 
 const model = defineModel()
+const props = withDefaults(
+  defineProps<{
+    min?: number
+    max?: number
+  }>(),
+  {
+    min: 0,
+    max: 100,
+  }
+)
 </script>
 
 <template>
-  <div class="w-full grid place-items-center">
-    <Slider class="slider" v-model="model" :min="0" :max="100" :tooltips="false" :lazy="false" />
+  <div class="w-full px-2">
+    <Slider
+      class="slider"
+      :modelValue="model"
+      :min="props.min"
+      :max="props.max"
+      :lazy="false"
+      :tooltips="false"
+      @update="(val: any) => (model = Number(val))"
+    />
   </div>
 </template>
 
@@ -17,6 +35,5 @@ const model = defineModel()
   --slider-connect-bg: var(--button-color);
   --slider-tooltip-bg: var(--button-color);
   --slider-handle-ring-color: #7ee55930;
-  width: calc(100% - (var(--slider-handle-width, 16px) * 1.15));
 }
 </style>

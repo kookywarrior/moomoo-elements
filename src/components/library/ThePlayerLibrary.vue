@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ChromePicker } from 'vue-color'
-import { Clock12, LucideClock12 } from '@lucide/vue'
+import { LucideClock12 } from '@lucide/vue'
 import { useSpriteStore } from '@/stores/useSpriteStore'
 import { useSettingsStore } from '@/stores/useSettingsStore'
 import { ref } from 'vue'
@@ -14,6 +14,8 @@ import PanelWrapper from '../base/PanelWrapper.vue'
 import RadioInput from '../base/RadioInput.vue'
 import Button from '../base/Button.vue'
 import Wheel from '../base/Wheel.vue'
+import Library from '../base/Library.vue'
+import LibraryItem from '../base/LibraryItem.vue'
 
 const spriteStore = useSpriteStore()
 const settingsStore = useSettingsStore()
@@ -79,7 +81,7 @@ const showTopHatDirection = ref(false)
 
     <div class="flex flex-col gap-3">
       <NumberInput placeholder="Health" v-model="settingsStore.player.health" :min="0" :max="100" />
-      <Slider v-model="settingsStore.player.health" class="mb-2" :min="0" :max="100" :snap="false"/>
+      <Slider v-model="settingsStore.player.health" class="mb-2" />
     </div>
 
     <div class="flex flex-col">
@@ -123,6 +125,70 @@ const showTopHatDirection = ref(false)
         </Button>
       </div>
     </div>
+
+    <Library name="player_hat" class="mt-10" small>
+      <LibraryItem :value="null" v-model="settingsStore.player.hat" />
+      <LibraryItem
+        v-for="hat in spriteStore.uiSrpites.hats"
+        :size="80"
+        :key="hat.index"
+        :src="hat.url"
+        :value="hat.index"
+        v-model="settingsStore.player.hat"
+      />
+    </Library>
+
+    <Library name="player_accessory" class="mt-10" small>
+      <LibraryItem :value="null" v-model="settingsStore.player.accessory" />
+      <LibraryItem
+        v-for="accessory in spriteStore.uiSrpites.accessories"
+        :size="80"
+        :key="accessory.index"
+        :src="accessory.url"
+        :value="accessory.index"
+        v-model="settingsStore.player.accessory"
+      />
+    </Library>
+
+    <Library name="weapon"> </Library>
+
+    <Library name="player_holding" class="mt-10" small>
+      <LibraryItem :value="null" v-model="settingsStore.player.holding" />
+      <LibraryItem
+        v-for="weapon in spriteStore.uiSrpites.weapons"
+        :key="weapon.name"
+        contain
+        :src="weapon.url"
+        :value="{
+          type: 'weapon',
+          weapon: weapon.name,
+          weaponVariant: weapon.variant,
+        }"
+        v-model="settingsStore.player.holding"
+      />
+      <LibraryItem
+        v-for="building in spriteStore.uiSrpites.holdableItems"
+        :key="building.name"
+        :src="building.url"
+        :value="{
+          type: 'item',
+          item: building.name,
+        }"
+        v-model="settingsStore.player.holding"
+      />
+    </Library>
+
+    <Library name="player_projectile" class="mt-10" small>
+      <LibraryItem :value="null" v-model="settingsStore.player.projectile" />
+      <LibraryItem
+        v-for="projectile in spriteStore.uiSrpites.playerProjectiles"
+        :key="projectile.name"
+        contain
+        :src="projectile.url"
+        :value="projectile.name"
+        v-model="settingsStore.player.projectile"
+      />
+    </Library>
   </PanelWrapper>
 </template>
 

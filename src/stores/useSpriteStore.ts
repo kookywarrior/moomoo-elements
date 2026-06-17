@@ -9,12 +9,7 @@ import {
   WEAPONS,
 } from '@/utils/gameData'
 import { getBlobURL } from '@/utils/image'
-import {
-  getItemSprite,
-  getResSprite,
-  getTurretProjectileSprite,
-  renderCircle,
-} from '@/utils/render'
+import { getItemSprite, getResSprite, getTurretProjectileSprite } from '@/utils/render'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
@@ -24,8 +19,10 @@ function createDefaultSprites() {
     'accessories',
     'animals',
     'projectiles',
+    'playerProjectiles',
     'weapons',
     'items',
+    'holdableItems',
     'resources',
   ]
 
@@ -117,6 +114,13 @@ const useSpriteStore = defineStore('sprite', () => {
           name,
           url: blob,
         })
+
+        if (PROJECTILES[name]?.notForPlayer !== true) {
+          uiSrpites.value.playerProjectiles.push({
+            name,
+            url: blob,
+          })
+        }
       }
     })
 
@@ -178,6 +182,13 @@ const useSpriteStore = defineStore('sprite', () => {
               name,
               url: URL.createObjectURL(blob),
             })
+
+            if (ITEMS[name]?.notHoldable !== true) {
+              uiSrpites.value.holdableItems.push({
+                name,
+                url: URL.createObjectURL(blob),
+              })
+            }
           }
           resolve()
         })

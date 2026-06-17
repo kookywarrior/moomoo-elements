@@ -20,6 +20,7 @@ type Item = {
   spritePadding?: number
   iconLineMult?: number
   colDiv?: number
+  notHoldable?: boolean
 }
 
 type Hat = {
@@ -42,6 +43,7 @@ type Animal = {
 
 type Projectile = {
   scale: number
+  notForPlayer?: boolean
 }
 
 export type { Weapon, Item, Hat, Accessory, Animal, Projectile }

@@ -25,9 +25,8 @@ const model = computed({
 
 <template>
   <PanelWrapper>
-    <Library>
+    <Library name="resource">
       <LibraryItem
-        name="resource"
         :value="{
           name: null,
           biome: null,
@@ -37,7 +36,6 @@ const model = computed({
       <LibraryItem
         v-for="resource in spriteStore.uiSrpites.resources"
         :key="resource.name"
-        name="resource"
         :src="resource.url"
         :value="{
           name: resource.name,

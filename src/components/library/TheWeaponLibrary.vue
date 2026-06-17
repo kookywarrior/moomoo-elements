@@ -25,9 +25,8 @@ const model = computed({
 
 <template>
   <PanelWrapper>
-    <Library>
+    <Library name="weapon">
       <LibraryItem
-        name="weapon"
         :value="{
           name: null,
           variant: null,
@@ -37,7 +36,6 @@ const model = computed({
       <LibraryItem
         v-for="weapon in spriteStore.uiSrpites.weapons"
         :key="weapon.name"
-        name="weapon"
         contain
         :src="weapon.url"
         :value="{

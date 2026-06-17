@@ -136,8 +136,8 @@ const PROJECTILES: Record<string, Projectile> = {
   arrow_1: { scale: 103 },
   arrow_2: { scale: 103 },
   arrow_3: { scale: 103 },
-  bullet_1: { scale: 160 },
-  turret: { scale: 20 },
+  bullet_1: { scale: 160, notForPlayer: true },
+  turret: { scale: 20, notForPlayer: true },
 }
 
 const ITEMS: Record<string, Item> = {
@@ -212,6 +212,7 @@ const ITEMS: Record<string, Item> = {
     colDiv: 0.2,
     scale: 50,
     holdOffset: 20,
+    notHoldable: true,
   },
   boostpad: {
     colDiv: 0.7,
@@ -244,6 +245,7 @@ const ITEMS: Record<string, Item> = {
     colDiv: 0.7,
     scale: 45,
     holdOffset: 20,
+    notHoldable: true,
   },
   teleporter: {
     colDiv: 0.7,

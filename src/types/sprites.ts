@@ -5,8 +5,10 @@ type UISpriteIdentity = {
   accessories: { index: number }
   animals: { name: string }
   projectiles: { name: string }
+  playerProjectiles: { name: string }
   weapons: { name: string; variant: string }
   items: { name: string }
+  holdableItems: { name: string }
   resources: { name: string; biome: number }
 }
 type UISprites = {

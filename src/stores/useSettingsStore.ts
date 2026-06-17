@@ -20,9 +20,7 @@ const useSettingsStore = defineStore('settings', () => {
   const player = reactive<PlayerSettings>({
     hat: null,
     accessory: null,
-    weapon: null,
-    weaponVariant: null,
-    item: null,
+    holding: null,
     projectile: null,
 
     colour: '#bf8f54',

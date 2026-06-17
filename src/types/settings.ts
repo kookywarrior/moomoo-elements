@@ -1,9 +1,17 @@
 type PlayerSettings = {
   hat: number | null
   accessory: number | null
-  weapon: string | null
-  weaponVariant: string | null
-  item: string | null
+  holding:
+    | {
+        type: 'weapon'
+        weapon: string
+        weaponVariant: string
+      }
+    | {
+        type: 'item'
+        item: string
+      }
+    | null
   projectile: string | null
 
   colour: string

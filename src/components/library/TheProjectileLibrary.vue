@@ -11,12 +11,11 @@ const settingsStore = useSettingsStore()
 
 <template>
   <PanelWrapper>
-    <Library>
-      <LibraryItem name="projectile" :value="null" v-model="settingsStore.selectedProjectile" />
+    <Library name="projectile">
+      <LibraryItem :value="null" v-model="settingsStore.selectedProjectile" />
       <LibraryItem
         v-for="projectile in spriteStore.uiSrpites.projectiles"
         :key="projectile.name"
-        name="weapon"
         contain
         :src="projectile.url"
         :value="projectile.name"

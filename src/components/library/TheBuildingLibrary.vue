@@ -11,12 +11,11 @@ const settingsStore = useSettingsStore()
 
 <template>
   <PanelWrapper>
-    <Library>
-      <LibraryItem name="building" :value="null" v-model="settingsStore.selectedBuilding" />
+    <Library name="building">
+      <LibraryItem :value="null" v-model="settingsStore.selectedBuilding" />
       <LibraryItem
         v-for="building in spriteStore.uiSrpites.items"
         :key="building.name"
-        name="building"
         :src="building.url"
         :value="building.name"
         v-model="settingsStore.selectedBuilding"
