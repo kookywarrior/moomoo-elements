@@ -110,12 +110,12 @@ async function generatePreview() {
 
   settingsStore.zoomScale =
     ZOOM_FACTOR[
-      settingsStore.selectedCategory === 'resources' && settingsStore.selectedResource === 'volcano'
-        ? 'volcano'
-        : settingsStore.selectedCategory === 'buildings' &&
-            settingsStore.selectedBuilding === 'blockerwithcircle'
-          ? 'blockerwithcircle'
-          : settingsStore.selectedCategory
+    settingsStore.selectedCategory === 'resources' && settingsStore.selectedResource === 'volcano'
+      ? 'volcano'
+      : settingsStore.selectedCategory === 'buildings' &&
+        settingsStore.selectedBuilding === 'blockerwithcircle'
+        ? 'blockerwithcircle'
+        : settingsStore.selectedCategory
     ]
 
   await nextTick()
@@ -391,7 +391,7 @@ async function generatePreview() {
     const tmpObj = ANIMALS[settingsStore.animal.selected]!
     var tmpScale = tmpObj.scale * 1.2 * (tmpObj.spriteMlt || 1) * settingsStore.scaleFillNative
     spriteContext.save()
-    spriteContext.rotate(((settingsStore.animal.direction ?? 0) * Math.PI) / 180 || 0)
+    spriteContext.rotate((((settingsStore.animal.direction ?? 0) * Math.PI) / 180 || 0) - Math.PI)
 
     const tmpSprite = await loadImage('img/animals/' + settingsStore.animal.selected)
     if (!tmpSprite) return
@@ -882,17 +882,11 @@ async function saveImage() {
 <template>
   <Panel>
     <PanelWrapper>
-      <div
-        class="relative w-full"
-        :class="[
-          settingsStore.selectedCategory === 'background' ? 'aspect-video' : 'aspect-square',
-        ]"
-      >
+      <div class="relative w-full" :class="[
+        settingsStore.selectedCategory === 'background' ? 'aspect-video' : 'aspect-square',
+      ]">
         <div class="absolute w-full h-full bg-(--background-color)"></div>
-        <div
-          v-show="settingsStore.filter"
-          class="absolute w-full h-full bg-(--background-filter-color)"
-        ></div>
+        <div v-show="settingsStore.filter" class="absolute w-full h-full bg-(--background-filter-color)"></div>
         <canvas ref="mainCanvasElement" class="absolute w-full h-full"></canvas>
       </div>
 
