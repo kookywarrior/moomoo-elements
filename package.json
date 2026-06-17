@@ -33,11 +33,6 @@
     "vite-plugin-vue-devtools": "^8.0.7",
     "vue-tsc": "^3.2.5"
   },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "@parcel/watcher"
-    ]
-  },
   "engines": {
     "node": "^20.19.0 || >=22.12.0"
   }
