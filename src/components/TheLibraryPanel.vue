@@ -10,6 +10,7 @@ import TheWeaponLibrary from './library/TheWeaponLibrary.vue'
 import TheProjectileLibrary from './library/TheProjectileLibrary.vue'
 import ThePlayerLibrary from './library/ThePlayerLibrary.vue'
 import TheAnimalLibrary from './library/TheAnimalLibrary.vue'
+import TheBackgroundLibrary from './library/TheBackgroundLibrary.vue'
 
 const settingsStore = useSettingsStore()
 const selectedCategory = computed(() => settingsStore.selectedCategory)
@@ -25,5 +26,6 @@ const selectedCategory = computed(() => settingsStore.selectedCategory)
     <TheProjectileLibrary v-show="selectedCategory === 'projectiles'" />
     <ThePlayerLibrary v-show="selectedCategory === 'player'" />
     <TheAnimalLibrary v-show="selectedCategory == 'animals'" />
+    <TheBackgroundLibrary v-show="selectedCategory == 'background'" />
   </Panel>
 </template>

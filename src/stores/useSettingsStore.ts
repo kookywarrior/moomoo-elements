@@ -39,6 +39,8 @@ const useSettingsStore = defineStore('settings', () => {
     name: '',
     direction: null,
   })
+  const backgroundPosition = ref<{ x: number; y: number }>({ x: 14400 / 2, y: 14400 / 2 })
+  const showBackgroundGrid = ref<boolean>(true)
 
   return {
     selectedCategory,
@@ -55,6 +57,8 @@ const useSettingsStore = defineStore('settings', () => {
     selectedProjectile,
     player,
     animal,
+    backgroundPosition,
+    showBackgroundGrid,
   }
 })
 
