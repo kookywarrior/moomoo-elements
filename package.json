@@ -1,6 +1,6 @@
 {
-  "name": "moomoo-elements-new",
-  "version": "0.0.0",
+  "name": "moomoo-elements",
+  "version": "2.0.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -32,6 +32,11 @@
     "vite": "^7.3.1",
     "vite-plugin-vue-devtools": "^8.0.7",
     "vue-tsc": "^3.2.5"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@parcel/watcher"
+    ]
   },
   "engines": {
     "node": "^20.19.0 || >=22.12.0"
