@@ -26,14 +26,17 @@ const a = ref(0)
 </script>
 
 <template>
+  <div class="absolute bottom-0 right-0 px-4 py-2 bg-white rounded-tl-sm">
+    <a href="./legacy/index.html" class="text-[#a56dc8] rounded-tl hover:text-[#795094] text-lg">
+      View Legacy Version
+    </a>
+  </div>
+
   <div v-if="!spriteStore.isLoaded" class="text-white text-3xl">Loading...</div>
-  <main
-    v-else
-    class="aspect-video grid grid-cols-3 gap-14"
-    :class="[isNarrow ? 'w-[90vw]' : 'h-[80vh]']"
-  >
+  <main v-else class="aspect-video grid grid-cols-3 gap-14" :class="[isNarrow ? 'w-[90vw]' : 'h-[80vh]']">
     <TheCategoryPanel />
     <ThePreviewPanel />
     <TheLibraryPanel />
   </main>
+
 </template>
