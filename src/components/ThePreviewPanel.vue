@@ -34,6 +34,7 @@ import {
 import { randomFloat, randomInt } from '@/utils/generate'
 import { useSpriteStore } from '@/stores/useSpriteStore'
 import type { Hat, Weapon } from '@/types/gameData'
+import { toast } from 'vue3-toastify'
 
 const settingsStore = useSettingsStore()
 const spriteStore = useSpriteStore()
@@ -109,7 +110,7 @@ async function generatePreview() {
 
   settingsStore.zoomScale =
     ZOOM_FACTOR[
-      settingsStore.selectedCategory === 'resources' && settingsStore.selectedBuilding === 'volcano'
+      settingsStore.selectedCategory === 'resources' && settingsStore.selectedResource === 'volcano'
         ? 'volcano'
         : settingsStore.selectedCategory === 'buildings' &&
             settingsStore.selectedBuilding === 'blockerwithcircle'
@@ -787,7 +788,7 @@ watch(
   () => {
     if (
       settingsStore.selectedCategory === 'resources' &&
-      settingsStore.selectedBuilding === 'volcano'
+      settingsStore.selectedResource === 'volcano'
     ) {
       ZOOM_FACTOR.volcano = settingsStore.zoomScale
     } else if (
@@ -838,11 +839,18 @@ async function copyImage() {
         }),
       ])
 
-      alert('Image copied to clipboard successfully!')
+      toast.success('Image copied to clipboard successfully!', {
+        autoClose: 2000,
+      })
     }, 'image/png')
   } catch (error) {
     console.error('Failed to copy image to clipboard:', error)
-    alert('Failed to copy image. Your browser might lack permissions.')
+    toast.error(
+      'Failed to copy image. Please try to copy it manually by right-clicking the canvas.',
+      {
+        autoClose: 4000,
+      }
+    )
   }
 }
 
@@ -861,7 +869,12 @@ async function saveImage() {
     document.body.removeChild(downloadLink)
   } catch (error) {
     console.error('Failed to export and download image asset:', error)
-    alert('Failed to save the image asset.')
+    toast.error(
+      'Failed to save the image asset. Please try to save it manually by right-clicking the canvas.',
+      {
+        autoClose: 4000,
+      }
+    )
   }
 }
 </script>
